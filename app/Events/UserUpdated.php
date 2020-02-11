@@ -16,7 +16,7 @@ class UserUpdated extends Event
     /**
      * Create a new event instance.
      *
-     * @param \App\Models\User $user
+     * @param User  $user
      * @param array $changes
      *
      * @return void

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Accounts;
+use App\Services\AccountService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -10,14 +10,17 @@ use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
+    /** @var AccountService $accountService */
+    protected $accountService;
+
     /**
      * Controller constructor.
      *
-     * @param Accounts $accounts
+     * @param AccountService $accounts
      */
-    public function __construct(Accounts $accounts)
+    public function __construct(AccountService $accounts)
     {
-        $this->accounts = $accounts;
+        $this->accountService = $accounts;
     }
 
     /**
@@ -28,7 +31,7 @@ class UserController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $users = $this->accounts->getUsersWithPagination($request);
+        $users = $this->accountService->getUsersWithPagination($request);
 
         return response()->json($users, Response::HTTP_OK);
     }
@@ -43,7 +46,7 @@ class UserController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $user = $this->accounts->storeUser($request->all());
+        $user = $this->accountService->storeUser($request->all());
 
         return response()->json($user, Response::HTTP_CREATED);
     }
@@ -57,7 +60,7 @@ class UserController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $user = $this->accounts->getUserById($id);
+        $user = $this->accountService->getUserById($id);
 
         return response()->json($user, Response::HTTP_OK);
     }
@@ -73,7 +76,7 @@ class UserController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $user = $this->accounts->updateUserById($id, $request->all());
+        $user = $this->accountService->updateUserById($id, $request->all());
 
         return response()->json($user, Response::HTTP_OK);
     }
@@ -87,7 +90,7 @@ class UserController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $this->accounts->deleteUserById($id);
+        $this->accountService->deleteUserById($id);
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }

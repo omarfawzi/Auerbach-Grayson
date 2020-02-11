@@ -20,8 +20,8 @@ class ErrorTransformer extends TransformerAbstract
     public function transform(Exception $exception): array
     {
         $error = [
-            'message' => (string) $this->getMessage($exception),
-            'status' => (string) $this->getStatusCode($exception),
+            'message' => $this->getMessage($exception),
+            'status' => $this->getStatusCode($exception),
         ];
         if (count($details = $this->getDetails($exception))) {
             $error['details'] = $details;

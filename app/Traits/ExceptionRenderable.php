@@ -38,7 +38,7 @@ trait ExceptionRenderable
      *
      * @return bool
      */
-    public function isJsonRenderable($request, Exception $exception): bool
+    public function isJsonRenderable(Request $request, Exception $exception): bool
     {
         if (config('app.debug') && $exception instanceof FatalThrowableError) {
             return false;
