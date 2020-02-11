@@ -18,7 +18,7 @@ class TokenTransformer extends TransformerAbstract
         return [
             'access_token' => (string) $token,
             'token_type' => 'bearer',
-            'expires_in' => (string) app('auth')->factory()->getTTL() * 60,
+            'expires_in' => app('auth')->factory()->getTTL() * 60,
         ];
     }
 }

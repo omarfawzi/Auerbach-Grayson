@@ -3,63 +3,54 @@
 namespace App;
 
 use App\Exceptions\UnauthorizedException;
-use App\Transformers\TokenTransformer;
-use App\Transformers\UserTransformer;
+use App\Models\User;
 
 class Auth
 {
     /**
-     * Authenticate a user by emailand password
+     * Authenticate a user by email and password
      *
      * @param string $email
      * @param string $password
      *
-     * @return array
+     * @return string
      */
-    public function authenticateByEmailAndPassword(string $email, string $password): array
+    public function authenticateByEmailAndPassword(string $email, string $password): string
     {
         if (!$token = app('auth')->attempt(compact('email', 'password'))) {
             throw new UnauthorizedException();
         }
 
-        return fractal($token, new TokenTransformer())->toArray();
+        return $token;
     }
 
     /**
      * Get the current authenticated user.
      *
-     * @return array
+     * @return User
      */
-    public function getAuthenticatedUser(): array
+    public function getAuthenticatedUser(): User
     {
-        $user = app('auth')->user();
-
-        return fractal($user, new UserTransformer())->toArray();
+        return app('auth')->user();
     }
 
     /**
      * Refresh current authentication token.
      *
-     * @return array
+     * @return string
      */
-    public function refreshAuthenticationToken(): array
+    public function refreshAuthenticationToken(): string
     {
-        $token = app('auth')->refresh();
-
-        return fractal($token, new TokenTransformer())->toArray();
+        return app('auth')->refresh();
     }
 
     /**
      * Invalidate current authentication token.
      *
-     * @return bool
+     * @return void
      */
-    public function invalidateAuthenticationToken(): bool
+    public function invalidateAuthenticationToken(): void
     {
-        if (!app('auth')->logout()) {
-            return false;
-        }
-
-        return true;
+       app('auth')->logout();
     }
 }

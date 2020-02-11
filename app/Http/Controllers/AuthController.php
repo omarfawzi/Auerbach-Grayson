@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Auth;
+use App\Transformers\TokenTransformer;
+use App\Transformers\UserTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -32,11 +34,11 @@ class AuthController extends Controller
     public function store(Request $request): JsonResponse
     {
         $token = $this->auth->authenticateByEmailAndPassword(
-            (string) $request->input('email'),
-            (string) $request->input('password')
+            $request->input('email'),
+            $request->input('password')
         );
 
-        return response()->json($token, Response::HTTP_OK);
+        return response()->json(fractal($token, new TokenTransformer())->toArray(), Response::HTTP_OK);
     }
 
     /**
@@ -48,7 +50,7 @@ class AuthController extends Controller
     {
         $user = $this->auth->getAuthenticatedUser();
 
-        return response()->json($user, Response::HTTP_OK);
+        return response()->json(fractal($user, new UserTransformer())->toArray(), Response::HTTP_OK);
     }
 
     /**
@@ -60,7 +62,7 @@ class AuthController extends Controller
     {
         $token = $this->auth->refreshAuthenticationToken();
 
-        return response()->json($token, Response::HTTP_OK);
+        return response()->json(fractal($token, new TokenTransformer())->toArray(), Response::HTTP_OK);
     }
 
     /**
