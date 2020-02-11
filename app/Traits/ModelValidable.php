@@ -9,7 +9,7 @@ trait ModelValidable
     /**
      * The model validator instance.
      *
-     * @var \Illuminate\Validation\Validator
+     * @var Validator
      */
     public $validator;
 
@@ -34,7 +34,7 @@ trait ModelValidable
     /**
      * Get the model validator.
      *
-     * @return \Illuminate\Validation\Validator
+     * @return Validator
      */
     public function validator(): Validator
     {

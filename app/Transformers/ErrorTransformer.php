@@ -41,7 +41,7 @@ class ErrorTransformer extends TransformerAbstract
     /**
      * Get the message of the exception.
      *
-     * @param  \Exception  $exception
+     * @param Exception $exception
      *
      * @return string
      */
@@ -62,7 +62,7 @@ class ErrorTransformer extends TransformerAbstract
     /**
      * Get the status code of the exception.
      *
-     * @param  \Exception  $exception
+     * @param Exception $exception
      *
      * @return int
      */
@@ -91,7 +91,7 @@ class ErrorTransformer extends TransformerAbstract
     /**
      * Get the details of the exception.
      *
-     * @param  \Exception  $exception
+     * @param Exception $exception
      *
      * @return array
      */
@@ -112,7 +112,7 @@ class ErrorTransformer extends TransformerAbstract
     /**
      * Get the trace of the exception.
      *
-     * @param  \Exception  $exception
+     * @param Exception $exception
      *
      * @return array
      */

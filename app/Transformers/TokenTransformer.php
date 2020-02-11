@@ -16,7 +16,7 @@ class TokenTransformer extends TransformerAbstract
     public function transform(string $token): array
     {
         return [
-            'access_token' => (string) $token,
+            'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => app('auth')->factory()->getTTL() * 60,
         ];

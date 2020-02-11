@@ -14,15 +14,26 @@ class AuthController extends Controller
     /** @var Auth $auth */
     protected $auth;
 
+    /** @var TokenTransformer $tokenTransformer */
+    protected $tokenTransformer;
+
+    /** @var UserTransformer $userTransformer */
+    protected $userTransformer;
+
     /**
-     * Controller constructor.
+     * AuthController constructor.
      *
-     * @param Auth $auth
+     * @param Auth             $auth
+     * @param TokenTransformer $tokenTransformer
+     * @param UserTransformer  $userTransformer
      */
-    public function __construct(Auth $auth)
+    public function __construct(Auth $auth, TokenTransformer $tokenTransformer, UserTransformer $userTransformer)
     {
-        $this->auth = $auth;
+        $this->auth             = $auth;
+        $this->tokenTransformer = $tokenTransformer;
+        $this->userTransformer  = $userTransformer;
     }
+
 
     /**
      * Get a JWT via given credentials.
@@ -38,7 +49,7 @@ class AuthController extends Controller
             $request->input('password')
         );
 
-        return response()->json(fractal($token, new TokenTransformer())->toArray(), Response::HTTP_OK);
+        return response()->json($this->tokenTransformer->transform($token), Response::HTTP_OK);
     }
 
     /**
@@ -50,7 +61,7 @@ class AuthController extends Controller
     {
         $user = $this->auth->getAuthenticatedUser();
 
-        return response()->json(fractal($user, new UserTransformer())->toArray(), Response::HTTP_OK);
+        return response()->json($this->userTransformer->transform($user), Response::HTTP_OK);
     }
 
     /**
@@ -62,7 +73,7 @@ class AuthController extends Controller
     {
         $token = $this->auth->refreshAuthenticationToken();
 
-        return response()->json(fractal($token, new TokenTransformer())->toArray(), Response::HTTP_OK);
+        return response()->json($this->tokenTransformer->transform($token), Response::HTTP_OK);
     }
 
     /**
