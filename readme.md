@@ -26,7 +26,7 @@ This project has been rewritten from scratch. If you are looking for the previou
 #### Create new user
 
 -   `php artisan ti`
--   `factory('App\Models\User')->create(['email' => 'admin@localtest.me', 'password' => 'secret'])`
+-   `factory('App\Models\Client')->create(['email' => 'admin@localtest.me', 'password' => 'secret'])`
 
 ### Configuration
 
@@ -96,7 +96,7 @@ This project has been rewritten from scratch. If you are looking for the previou
 
     namespace App\Transformers;
 
-    use App\User;
+    use App\Client;
     use League\Fractal\TransformerAbstract;
 
     class UserTransformer extends TransformerAbstract
@@ -104,10 +104,10 @@ This project has been rewritten from scratch. If you are looking for the previou
         /**
          * Transform object to array.
          *
-         * @param  \App\User $user
+         * @param  \App\Client $user
          * @return array
          */
-        public function transform(User $user): array
+        public function transform(Client $user): array
         {
             return [
                 'id' => (int) $user->id,

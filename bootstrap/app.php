@@ -34,7 +34,7 @@ $app->configure('database');
 // $app->configure('services');
 // $app->configure('view');
 
-// $app->withFacades();
+$app->withFacades();
 $app->withEloquent();
 
 /*

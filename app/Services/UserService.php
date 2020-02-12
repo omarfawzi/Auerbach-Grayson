@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class AccountService
+class UserService
 {
     /**
      * Get list of paginated users.
@@ -41,6 +41,18 @@ class AccountService
         $user = User::findOrFail($id);
 
         return fractal($user, new UserTransformer())->toArray();
+    }
+
+    /**
+     * Get a user by ID.
+     *
+     * @param  string  $email
+     **
+     * @return User
+     */
+    public function getUserByEmail(string $email): ?User
+    {
+        return User::where('email',$email);
     }
 
     /**

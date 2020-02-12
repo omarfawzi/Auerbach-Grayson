@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Auth;
+use App\Events\User\UserSignUp;
+use App\Exceptions\UnauthorizedException;
+use App\Models\SQL\Client;
+use App\Models\User;
+use App\Services\ClientService;
+use App\Services\UserService;
 use App\Transformers\TokenTransformer;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -20,18 +27,33 @@ class AuthController extends Controller
     /** @var UserTransformer $userTransformer */
     protected $userTransformer;
 
+    /** @var ClientService $clientService */
+    protected $clientService;
+
+    /** @var UserService $userService */
+    protected $userService;
+
     /**
      * AuthController constructor.
      *
      * @param Auth             $auth
      * @param TokenTransformer $tokenTransformer
      * @param UserTransformer  $userTransformer
+     * @param ClientService    $clientService
+     * @param UserService      $userService
      */
-    public function __construct(Auth $auth, TokenTransformer $tokenTransformer, UserTransformer $userTransformer)
-    {
+    public function __construct(
+        Auth $auth,
+        TokenTransformer $tokenTransformer,
+        UserTransformer $userTransformer,
+        ClientService $clientService,
+        UserService $userService
+    ) {
         $this->auth             = $auth;
         $this->tokenTransformer = $tokenTransformer;
         $this->userTransformer  = $userTransformer;
+        $this->clientService    = $clientService;
+        $this->userService      = $userService;
     }
 
 
@@ -44,16 +66,40 @@ class AuthController extends Controller
      */
     public function login(Request $request): JsonResponse
     {
-        $token = $this->auth->authenticateByEmailAndPassword(
-            $request->input('email'),
-            $request->input('password')
-        );
+        $validator = Validator::make($request->all(['email','password']),[
+            'email' => 'required',
+            'password' => 'required',
+        ]);
 
-        return response()->json($this->tokenTransformer->transform($token), Response::HTTP_OK);
+        $validator->validate();
+
+        $client = $this->clientService->getClientByEmail($request->input('email'));
+
+        if (!$client instanceof Client) {
+            throw new UnauthorizedException();
+        }
+
+        $user = $this->userService->getUserByEmail($request->input('email'));
+
+        if ($user instanceof User) {
+            $token = $this->auth->authenticateByEmailAndPassword(
+                $request->input('email'),
+                $request->input('password')
+            );
+            $response = $this->tokenTransformer->transform($token);
+        }
+        else {
+            event(new UserSignUp($user));
+            $response = [
+                'message' => 'Email Sent to User with new password'
+            ];
+        }
+
+        return response()->json($response, Response::HTTP_OK);
     }
 
     /**
-     * Get the authenticated User.
+     * Get the authenticated Client.
      *
      * @return JsonResponse
      */
