@@ -52,7 +52,7 @@ class UserService
      */
     public function getUserByEmail(string $email): ?User
     {
-        return User::where('email',$email);
+        return User::where('email',$email)->first();
     }
 
     /**
