@@ -2,6 +2,7 @@
 
 namespace App\Factories;
 
+use App\Transformers\CompanyTransformer;
 use App\Transformers\ErrorTransformer;
 use App\Transformers\MessageTransformer;
 use App\Transformers\ReportTransformer;
@@ -27,6 +28,9 @@ class TransformerFactory
     /** @var ReportTransformer $reportTransformer */
     private $reportTransformer;
 
+    /** @var CompanyTransformer $companyTransformer */
+    private $companyTransformer;
+
     /**
      * TransformerFactory constructor.
      *
@@ -35,19 +39,22 @@ class TransformerFactory
      * @param TokenTransformer   $tokenTransformer
      * @param MessageTransformer $messageTransformer
      * @param ReportTransformer  $reportTransformer
+     * @param CompanyTransformer $companyTransformer
      */
     public function __construct(
         UserTransformer $userTransformer,
         ErrorTransformer $errorTransformer,
         TokenTransformer $tokenTransformer,
         MessageTransformer $messageTransformer,
-        ReportTransformer $reportTransformer
+        ReportTransformer $reportTransformer,
+        CompanyTransformer $companyTransformer
     ) {
         $this->userTransformer    = $userTransformer;
         $this->errorTransformer   = $errorTransformer;
         $this->tokenTransformer   = $tokenTransformer;
         $this->messageTransformer = $messageTransformer;
         $this->reportTransformer  = $reportTransformer;
+        $this->companyTransformer = $companyTransformer;
     }
 
 
@@ -69,6 +76,8 @@ class TransformerFactory
                 return $this->userTransformer;
             case ReportTransformer::class:
                 return $this->reportTransformer;
+            case CompanyTransformer::class:
+                return $this->companyTransformer;
             default:
                 throw new InvalidArgumentException("Transformer $transformer not found");
         }

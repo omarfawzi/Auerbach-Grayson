@@ -19,6 +19,10 @@ $router->group(['prefix' => 'api'], function ($router) {
         $router->get('/', 'ReportController@index');
         $router->get('/{id}', 'ReportController@show');
     });
+
+    $router->group(['prefix'=>'companies'], function ($router) {
+        $router->get('/', 'CompanyController@index');
+    });
 });
 
 

@@ -7,7 +7,6 @@ use App\Repositories\ReportRepository;
 use App\Transformers\ReportTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ReportController
@@ -37,16 +36,11 @@ class ReportController
      */
     public function index(Request $request) : JsonResponse
     {
-        $validator = Validator::make(
-            $request->all(['type']),
-            [
-                'type'    => 'required'
-            ]
+        $reports = $this->reportRepository->getReports(
+            $request->get('type'),
+            $request->get('limit') ?? 15,
+            $request->get('page') ?? 1
         );
-
-        $validator->validate();
-
-        $reports = $this->reportRepository->getReportsByType($request->get('type'), $request->get('limit'));
 
         $response = fractal($reports,$this->transformerFactory->make(ReportTransformer::class))->toArray();
 
