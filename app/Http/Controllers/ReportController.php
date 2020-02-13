@@ -8,6 +8,7 @@ use App\Transformers\ReportTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ReportController
 {
@@ -30,7 +31,11 @@ class ReportController
     }
 
 
-    public function index(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function index(Request $request) : JsonResponse
     {
         $validator = Validator::make(
             $request->all(['type']),
