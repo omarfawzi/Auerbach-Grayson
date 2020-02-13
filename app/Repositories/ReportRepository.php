@@ -29,4 +29,13 @@ class ReportRepository
 
         return $query->get()->all();
     }
+
+    /**
+     * @param int $id
+     * @return Report|null
+     */
+    public function getReportById(int $id) : ?Report
+    {
+        return Report::findOrFail($id);
+    }
 }

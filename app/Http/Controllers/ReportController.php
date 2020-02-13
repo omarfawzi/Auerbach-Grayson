@@ -52,4 +52,17 @@ class ReportController
 
         return response()->json($response, Response::HTTP_OK);
     }
+
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function show(int $id) : JsonResponse
+    {
+        $report = $this->reportRepository->getReportById($id);
+
+        $response = fractal($report,$this->transformerFactory->make(ReportTransformer::class))->toArray();
+
+        return response()->json($response, Response::HTTP_OK);
+    }
 }
