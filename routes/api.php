@@ -15,8 +15,8 @@ $router->group(['prefix' => 'api'], function ($router) {
 
     $router->post('/login', 'AuthController@login');
 
-    $router->group(['middleware' => 'auth:api'], function ($router) {
-        $router->get('/home', 'HomeController@index');
+    $router->group(['prefix'=>'reports'], function ($router) {
+        $router->get('/', 'ReportController@index');
     });
 });
 
