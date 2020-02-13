@@ -100,7 +100,7 @@ class AuthController extends Controller
         } else {
             event(new ClientSignUp($client));
             $response = $this->transformerFactory->make(MessageTransformer::class)->transform(
-                'Email Sent Successfully'
+                'Password Sent to Email'
             );
         }
 
