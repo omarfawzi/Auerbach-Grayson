@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\UserService;
+use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -10,17 +10,17 @@ use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
-    /** @var UserService $userService */
-    protected $userService;
+    /** @var UserRepository $userRepository */
+    protected $userRepository;
 
     /**
      * Controller constructor.
      *
-     * @param UserService $userService
+     * @param UserRepository $userRepository
      */
-    public function __construct(UserService $userService)
+    public function __construct(UserRepository $userRepository)
     {
-        $this->userService = $userService;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -31,7 +31,7 @@ class UserController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $users = $this->userService->getUsersWithPagination($request);
+        $users = $this->userRepository->getUsersWithPagination($request);
 
         return response()->json($users, Response::HTTP_OK);
     }
@@ -46,7 +46,7 @@ class UserController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $user = $this->userService->storeUser($request->all());
+        $user = $this->userRepository->storeUser($request->all());
 
         return response()->json($user, Response::HTTP_CREATED);
     }
@@ -60,7 +60,7 @@ class UserController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $user = $this->userService->getUserById($id);
+        $user = $this->userRepository->getUserById($id);
 
         return response()->json($user, Response::HTTP_OK);
     }
@@ -76,7 +76,7 @@ class UserController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $user = $this->userService->updateUserById($id, $request->all());
+        $user = $this->userRepository->updateUserById($id, $request->all());
 
         return response()->json($user, Response::HTTP_OK);
     }
@@ -90,7 +90,7 @@ class UserController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $this->userService->deleteUserById($id);
+        $this->userRepository->deleteUserById($id);
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }

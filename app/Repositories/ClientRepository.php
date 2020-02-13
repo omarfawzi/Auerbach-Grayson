@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Repositories;
 
 use App\Models\SQL\Client;
 
-class ClientService
+class ClientRepository
 {
     /**
      * @param string $email

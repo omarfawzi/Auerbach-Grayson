@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Events\User\UserSignUp;
-use App\Listeners\SendWelcomeEmail;
+use App\Events\User\ClientSignUp;
+use App\Listeners\SendSignUpEmail;
 use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -14,8 +14,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        UserSignUp::class => [
-            SendWelcomeEmail::class,
+        ClientSignUp::class => [
+            SendSignUpEmail::class,
         ]
     ];
 }

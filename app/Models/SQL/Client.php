@@ -19,4 +19,12 @@ class Client extends Model
     {
         return  $this->Email;
     }
+
+    /**
+     * @return string
+     */
+    public function getName() : string
+    {
+        return $this->First.' '.$this->Last;
+    }
 }
