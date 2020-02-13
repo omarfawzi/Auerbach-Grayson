@@ -17,7 +17,7 @@ use Carbon\Carbon;
 
 $router->group(['prefix' => 'api'], function ($router) {
 
-    $router->post('/auth', 'AuthController@login');
+    $router->post('/login', 'AuthController@login');
 
     $router->group(['middleware' => 'auth:api', 'prefix' => 'auth'], function ($router) {
         $router->get('/', 'AuthController@show');

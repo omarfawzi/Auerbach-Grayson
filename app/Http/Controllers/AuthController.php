@@ -80,6 +80,7 @@ class AuthController extends Controller
                 'password' => 'required',
             ]
         );
+
         $validator->validate();
 
         $client = $this->clientRepository->getClientByEmail($request->input('email'));
