@@ -15,32 +15,34 @@ trait FractalView
     /**
      * @param LengthAwarePaginator $lengthAwarePaginator
      * @param TransformerAbstract  $transformerAbstract
-     * @return array
+     * @return JsonResponse
      */
     public function listView(
         LengthAwarePaginator $lengthAwarePaginator,
         TransformerAbstract $transformerAbstract
-    ): array {
-        return fractal($lengthAwarePaginator, $transformerAbstract)->paginateWith(
-            new IlluminatePaginatorAdapter($lengthAwarePaginator)
-        )->toArray();
+    ): JsonResponse {
+        return $this->toJson(
+            fractal($lengthAwarePaginator, $transformerAbstract)->paginateWith(
+                new IlluminatePaginatorAdapter($lengthAwarePaginator)
+            )->toArray()
+        );
     }
 
     /**
-     * @param Model $model
+     * @param Model               $model
      * @param TransformerAbstract $transformerAbstract
-     * @return array
+     * @return JsonResponse
      */
-    public function singleView(Model $model, TransformerAbstract $transformerAbstract): array
+    public function singleView(Model $model, TransformerAbstract $transformerAbstract): JsonResponse
     {
-        return fractal($model, $transformerAbstract)->toArray();
+        return $this->toJson(fractal($model, $transformerAbstract)->toArray());
     }
 
     /**
      * @param array $data
      * @return JsonResponse
      */
-    public function toJson(array $data): JsonResponse
+    private function toJson(array $data): JsonResponse
     {
         return response()->json($data, Response::HTTP_OK);
     }

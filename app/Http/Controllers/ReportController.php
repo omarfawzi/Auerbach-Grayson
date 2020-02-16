@@ -43,7 +43,7 @@ class ReportController
             $request->all()
         );
 
-        return $this->toJson($this->listView($reports, $this->transformerFactory->make(ReportTransformer::class)));
+        return $this->listView($reports, $this->transformerFactory->make(ReportTransformer::class));
     }
 
     /**
@@ -54,6 +54,6 @@ class ReportController
     {
         $report = $this->reportRepository->getReportById($id);
 
-        return $this->toJson($this->singleView($report, $this->transformerFactory->make(ReportTransformer::class)));
+        return $this->singleView($report, $this->transformerFactory->make(ReportTransformer::class));
     }
 }

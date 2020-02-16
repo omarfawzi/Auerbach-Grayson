@@ -41,6 +41,6 @@ class CompanyController
             $request->get('limit', config('api.defaults.limit'))
         );
 
-        return $this->toJson($this->listView($companies, $this->transformerFactory->make(CompanyTransformer::class)));
+        return $this->listView($companies, $this->transformerFactory->make(CompanyTransformer::class));
     }
 }

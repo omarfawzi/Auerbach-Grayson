@@ -39,6 +39,6 @@ class SectorController
     {
         $sectors = $this->sectorRepository->getSectors($request->get('limit', config('api.defaults.limit')));
 
-        return $this->toJson($this->listView($sectors, $this->transformerFactory->make(SectorTransformer::class)));
+        return $this->listView($sectors, $this->transformerFactory->make(SectorTransformer::class));
     }
 }
