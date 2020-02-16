@@ -3,11 +3,12 @@
 namespace App\Repositories;
 
 use App\Models\SQL\Company;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class CompanyRepository
 {
-    public function getCompanies(int $limit = 5, int $page = -1)
+    public function getCompanies(int $limit = 5) : LengthAwarePaginator
     {
-        return Company::skip($limit * ($page - 1))->limit($limit)->get()->all();
+        return Company::paginate($limit);
     }
 }

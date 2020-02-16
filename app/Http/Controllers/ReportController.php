@@ -7,6 +7,7 @@ use App\Repositories\ReportRepository;
 use App\Transformers\ReportTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ReportController
@@ -38,11 +39,12 @@ class ReportController
     {
         $reports = $this->reportRepository->getReports(
             $request->get('type'),
-            $request->get('limit', config('api.defaults.limit')),
-            $request->get('page', config('api.defaults.page'))
+            $request->get('limit', config('api.defaults.limit'))
         );
 
-        $response = fractal($reports,$this->transformerFactory->make(ReportTransformer::class))->toArray();
+        $response = fractal($reports,$this->transformerFactory->make(ReportTransformer::class))->paginateWith(
+            new IlluminatePaginatorAdapter($reports)
+        )->toArray();
 
         return response()->json($response, Response::HTTP_OK);
     }

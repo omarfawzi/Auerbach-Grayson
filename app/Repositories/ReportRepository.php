@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\SQL\Report;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 
 class ReportRepository
@@ -19,13 +20,12 @@ class ReportRepository
     /**
      * @param string   $type
      * @param int|null $limit
-     * @param int|null $page
-     * @return Report[]|null
+     * @return LengthAwarePaginator
      */
-    public function getReports(?string $type, int $limit = 15, int $page = 1): ?array
+    public function getReports(?string $type, int $limit = 15): LengthAwarePaginator
     {
         /** @var Builder $query */
-        $query = Report::orderBy('DateEntered')->skip($limit * ($page - 1))->limit($limit);
+        $query = Report::orderBy('DateEntered');
 
         if ($type){
             $query->whereHas(
@@ -36,6 +36,6 @@ class ReportRepository
             );
         }
 
-        return $query->get()->all();
+        return $query->paginate($limit);
     }
 }

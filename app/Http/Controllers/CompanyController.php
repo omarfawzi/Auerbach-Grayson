@@ -7,7 +7,8 @@ use App\Repositories\CompanyRepository;
 use App\Transformers\CompanyTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Symfony\Component\HttpFoundation\Request;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use Illuminate\Http\Request;
 
 class CompanyController
 {
@@ -37,11 +38,12 @@ class CompanyController
     public function index(Request $request): JsonResponse
     {
         $companies = $this->companyRepository->getCompanies(
-            $request->get('limit', config('api.defaults.limit')),
-            $request->get('page', config('api.defaults.page'))
+            $request->get('limit', config('api.defaults.limit'))
         );
 
-        $response = fractal($companies, $this->transformerFactory->make(CompanyTransformer::class))->toArray();
+        $response = fractal($companies, $this->transformerFactory->make(CompanyTransformer::class))->paginateWith(
+            new IlluminatePaginatorAdapter($companies)
+        )->toArray();
 
         return response()->json($response, Response::HTTP_OK);
     }
