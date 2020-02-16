@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\AttributeHashable;
-use App\Traits\ModelValidable;
-use App\Traits\QueryFilterable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -14,7 +11,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
-    use Authenticatable, Authorizable, QueryFilterable, ModelValidable, AttributeHashable;
+    use Authenticatable, Authorizable;
 
     /**
      * The attributes that are mass assignable.
@@ -43,23 +40,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'id', 'name', 'email',
     ];
 
-    /**
-     * The fields that should be filterable by query.
-     *
-     * @var array
-     */
-    protected $filterable = [
-        'name', 'email',
-    ];
-
-    /**
-     * Hash the attributes before saving.
-     *
-     * @var array
-     */
-    protected $hashable = [
-        'password',
-    ];
 
     /**
      * Validation rules for the model.
