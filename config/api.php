@@ -2,7 +2,7 @@
 
 return [
     'defaults' => [
-        'limit' => 15,
+        'limit' => 20,
         'page' => 1
     ]
 ];

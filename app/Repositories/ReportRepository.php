@@ -21,7 +21,7 @@ class ReportRepository
      * @param array    $filters
      * @return LengthAwarePaginator
      */
-    public function getReports(int $limit = 15 , array $filters = []): LengthAwarePaginator
+    public function getReports(int $limit , array $filters = []): LengthAwarePaginator
     {
         $query = Report::filter($filters)->orderBy('DateEntered');
 

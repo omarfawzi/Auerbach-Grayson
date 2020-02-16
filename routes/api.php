@@ -10,18 +10,23 @@
 |
  */
 
+use Laravel\Lumen\Routing\Router;
 
-$router->group(['prefix' => 'api'], function ($router) {
+$router->group(['prefix' => 'api'], function (Router $router) {
 
     $router->post('/login', 'AuthController@login');
 
-    $router->group(['prefix'=>'reports'], function ($router) {
+    $router->group(['prefix'=>'reports'], function (Router $router) {
         $router->get('/', 'ReportController@index');
         $router->get('/{id}', 'ReportController@show');
     });
 
-    $router->group(['prefix'=>'companies'], function ($router) {
+    $router->group(['prefix'=>'companies'], function (Router $router) {
         $router->get('/', 'CompanyController@index');
+    });
+
+    $router->group(['prefix'=>'sectors'], function (Router $router) {
+        $router->get('/', 'SectorController@index');
     });
 });
 

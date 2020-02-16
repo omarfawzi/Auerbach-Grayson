@@ -7,7 +7,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class CompanyRepository
 {
-    public function getCompanies(int $limit = 5) : LengthAwarePaginator
+    /**
+     * @param int $limit
+     * @return LengthAwarePaginator
+     */
+    public function getCompanies(int $limit) : LengthAwarePaginator
     {
         return Company::paginate($limit);
     }

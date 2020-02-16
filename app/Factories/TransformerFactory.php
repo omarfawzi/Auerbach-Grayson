@@ -6,6 +6,7 @@ use App\Transformers\CompanyTransformer;
 use App\Transformers\ErrorTransformer;
 use App\Transformers\MessageTransformer;
 use App\Transformers\ReportTransformer;
+use App\Transformers\SectorTransformer;
 use App\Transformers\TokenTransformer;
 use App\Transformers\UserTransformer;
 use InvalidArgumentException;
@@ -31,6 +32,9 @@ class TransformerFactory
     /** @var CompanyTransformer $companyTransformer */
     private $companyTransformer;
 
+    /** @var SectorTransformer $sectorTransformer */
+    private $sectorTransformer;
+
     /**
      * TransformerFactory constructor.
      *
@@ -40,6 +44,7 @@ class TransformerFactory
      * @param MessageTransformer $messageTransformer
      * @param ReportTransformer  $reportTransformer
      * @param CompanyTransformer $companyTransformer
+     * @param SectorTransformer  $sectorTransformer
      */
     public function __construct(
         UserTransformer $userTransformer,
@@ -47,7 +52,8 @@ class TransformerFactory
         TokenTransformer $tokenTransformer,
         MessageTransformer $messageTransformer,
         ReportTransformer $reportTransformer,
-        CompanyTransformer $companyTransformer
+        CompanyTransformer $companyTransformer,
+        SectorTransformer $sectorTransformer
     ) {
         $this->userTransformer    = $userTransformer;
         $this->errorTransformer   = $errorTransformer;
@@ -55,6 +61,7 @@ class TransformerFactory
         $this->messageTransformer = $messageTransformer;
         $this->reportTransformer  = $reportTransformer;
         $this->companyTransformer = $companyTransformer;
+        $this->sectorTransformer  = $sectorTransformer;
     }
 
 
@@ -64,6 +71,7 @@ class TransformerFactory
      */
     public function make(string $transformer) : TransformerAbstract
     {
+
         switch ($transformer)
         {
             case ErrorTransformer::class:
@@ -78,6 +86,8 @@ class TransformerFactory
                 return $this->reportTransformer;
             case CompanyTransformer::class:
                 return $this->companyTransformer;
+            case SectorTransformer::class:
+                return $this->sectorTransformer;
             default:
                 throw new InvalidArgumentException("Transformer $transformer not found");
         }
