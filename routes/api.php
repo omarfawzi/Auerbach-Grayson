@@ -28,6 +28,11 @@ $router->group(['prefix' => 'api'], function (Router $router) {
     $router->group(['prefix'=>'sectors'], function (Router $router) {
         $router->get('/', 'SectorController@index');
     });
+
+    $router->group(['prefix'=>'regions'], function (Router $router) {
+        $router->get('/', 'RegionController@index');
+    });
+
 });
 
 

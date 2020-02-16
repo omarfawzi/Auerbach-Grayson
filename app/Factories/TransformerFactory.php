@@ -5,6 +5,7 @@ namespace App\Factories;
 use App\Transformers\CompanyTransformer;
 use App\Transformers\ErrorTransformer;
 use App\Transformers\MessageTransformer;
+use App\Transformers\RegionTransformer;
 use App\Transformers\ReportTransformer;
 use App\Transformers\SectorTransformer;
 use App\Transformers\TokenTransformer;
@@ -35,6 +36,9 @@ class TransformerFactory
     /** @var SectorTransformer $sectorTransformer */
     private $sectorTransformer;
 
+    /** @var RegionTransformer $regionTransformer */
+    private $regionTransformer;
+
     /**
      * TransformerFactory constructor.
      *
@@ -45,6 +49,7 @@ class TransformerFactory
      * @param ReportTransformer  $reportTransformer
      * @param CompanyTransformer $companyTransformer
      * @param SectorTransformer  $sectorTransformer
+     * @param RegionTransformer  $regionTransformer
      */
     public function __construct(
         UserTransformer $userTransformer,
@@ -53,7 +58,8 @@ class TransformerFactory
         MessageTransformer $messageTransformer,
         ReportTransformer $reportTransformer,
         CompanyTransformer $companyTransformer,
-        SectorTransformer $sectorTransformer
+        SectorTransformer $sectorTransformer,
+        RegionTransformer $regionTransformer
     ) {
         $this->userTransformer    = $userTransformer;
         $this->errorTransformer   = $errorTransformer;
@@ -62,6 +68,7 @@ class TransformerFactory
         $this->reportTransformer  = $reportTransformer;
         $this->companyTransformer = $companyTransformer;
         $this->sectorTransformer  = $sectorTransformer;
+        $this->regionTransformer  = $regionTransformer;
     }
 
 
@@ -88,6 +95,8 @@ class TransformerFactory
                 return $this->companyTransformer;
             case SectorTransformer::class:
                 return $this->sectorTransformer;
+            case RegionTransformer::class:
+                return $this->regionTransformer;
             default:
                 throw new InvalidArgumentException("Transformer $transformer not found");
         }
