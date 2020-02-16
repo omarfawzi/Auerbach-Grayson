@@ -38,8 +38,8 @@ class ReportController
     {
         $reports = $this->reportRepository->getReports(
             $request->get('type'),
-            $request->get('limit') ?? 15,
-            $request->get('page') ?? 1
+            $request->get('limit', config('api.defaults.limit')),
+            $request->get('page', config('api.defaults.page'))
         );
 
         $response = fractal($reports,$this->transformerFactory->make(ReportTransformer::class))->toArray();

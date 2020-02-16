@@ -25,6 +25,7 @@ $app = new \Laravel\Lumen\Application(
 
 $app->configure('app');
 $app->configure('auth');
+$app->configure('api');
 // $app->configure('broadcasting');
 // $app->configure('cache');
 $app->configure('database');

@@ -34,11 +34,14 @@ class CompanyController
      * @param Request $request
      * @return JsonResponse
      */
-    public function index(Request $request) : JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $companies = $this->companyRepository->getCompanies();
+        $companies = $this->companyRepository->getCompanies(
+            $request->get('limit', config('api.defaults.limit')),
+            $request->get('page', config('api.defaults.page'))
+        );
 
-        $response = fractal($companies,$this->transformerFactory->make(CompanyTransformer::class))->toArray();
+        $response = fractal($companies, $this->transformerFactory->make(CompanyTransformer::class))->toArray();
 
         return response()->json($response, Response::HTTP_OK);
     }
