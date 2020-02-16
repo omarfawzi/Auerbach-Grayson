@@ -9,6 +9,10 @@ class ReportFilter extends ModelFilter
 {
     protected $relationsEnabled = true;
 
+    /**
+     * @param string $type
+     * @return ReportFilter|Builder
+     */
     public function type(string $type)
     {
         return $this->whereHas(
