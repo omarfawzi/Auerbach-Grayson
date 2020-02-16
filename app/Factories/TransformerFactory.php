@@ -60,7 +60,7 @@ class TransformerFactory
 
     /**
      * @param string $transformer
-     * @return ErrorTransformer|MessageTransformer|TokenTransformer|UserTransformer
+     * @return TransformerAbstract
      */
     public function make(string $transformer) : TransformerAbstract
     {
