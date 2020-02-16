@@ -16,28 +16,28 @@ use League\Fractal\TransformerAbstract;
 class TransformerFactory
 {
     /** @var UserTransformer $userTransformer */
-    private $userTransformer;
+    protected $userTransformer;
 
     /** @var ErrorTransformer $errorTransformer */
-    private $errorTransformer;
+    protected $errorTransformer;
 
     /** @var TokenTransformer $tokenTransformer */
-    private $tokenTransformer;
+    protected $tokenTransformer;
 
     /** @var MessageTransformer $messageTransformer */
-    private $messageTransformer;
+    protected $messageTransformer;
 
     /** @var ReportTransformer $reportTransformer */
-    private $reportTransformer;
+    protected $reportTransformer;
 
     /** @var CompanyTransformer $companyTransformer */
-    private $companyTransformer;
+    protected $companyTransformer;
 
     /** @var SectorTransformer $sectorTransformer */
-    private $sectorTransformer;
+    protected $sectorTransformer;
 
     /** @var RegionTransformer $regionTransformer */
-    private $regionTransformer;
+    protected $regionTransformer;
 
     /**
      * TransformerFactory constructor.
