@@ -13,17 +13,17 @@ trait FractalView
 {
 
     /**
-     * @param LengthAwarePaginator $lengthAwarePaginator
+     * @param LengthAwarePaginator $data
      * @param TransformerAbstract  $transformerAbstract
      * @return JsonResponse
      */
     public function listView(
-        LengthAwarePaginator $lengthAwarePaginator,
+        LengthAwarePaginator $data,
         TransformerAbstract $transformerAbstract
     ): JsonResponse {
         return $this->toJson(
-            fractal($lengthAwarePaginator, $transformerAbstract)->paginateWith(
-                new IlluminatePaginatorAdapter($lengthAwarePaginator)
+            fractal($data, $transformerAbstract)->paginateWith(
+                new IlluminatePaginatorAdapter($data)
             )->toArray()
         );
     }
