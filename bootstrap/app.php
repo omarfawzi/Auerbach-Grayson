@@ -26,6 +26,7 @@ $app = new \Laravel\Lumen\Application(
 $app->configure('app');
 $app->configure('auth');
 $app->configure('api');
+
 // $app->configure('broadcasting');
 // $app->configure('cache');
 $app->configure('database');
@@ -95,10 +96,13 @@ $app->register(\App\Providers\EventServiceProvider::class);
 $app->register(\Spatie\Fractal\FractalServiceProvider::class);
 $app->register(\Spatie\QueryBuilder\QueryBuilderServiceProvider::class);
 $app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+$app->register(\EloquentFilter\LumenServiceProvider::class);
 
 if ($app->environment() == 'local') {
     $app->register(\Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 }
+
+config(['eloquentfilter.namespace' => "App\\Models\\Filters\\"]);
 
 /*
 |--------------------------------------------------------------------------

@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\SQL\Report;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Builder;
 
 class ReportRepository
 {
@@ -18,24 +17,14 @@ class ReportRepository
     }
 
     /**
-     * @param string   $type
      * @param int|null $limit
+     * @param array    $filters
      * @return LengthAwarePaginator
      */
-    public function getReports(?string $type, int $limit = 15): LengthAwarePaginator
+    public function getReports(int $limit = 15 , array $filters = []): LengthAwarePaginator
     {
-        /** @var Builder $query */
-        $query = Report::orderBy('DateEntered');
+        $query = Report::filter($filters)->orderBy('DateEntered');
 
-        if ($type){
-            $query->whereHas(
-                'type',
-                function (Builder $query) use ($type) {
-                    $query->where('Type.Type', '=', $type);
-                }
-            );
-        }
-
-        return $query->paginate($limit);
+        return $query->paginateFilter($limit);
     }
 }

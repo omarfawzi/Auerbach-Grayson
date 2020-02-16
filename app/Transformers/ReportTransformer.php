@@ -15,7 +15,8 @@ class ReportTransformer extends TransformerAbstract
             'synopsis' => $report->Synopsis,
             'date' => $report->ReportDate,
             'pages' => $report->Pages,
-            'by' => $report->AnalystIndex
+            'by' => $report->AnalystIndex,
+            'type' => $report->type->Type
         ];
     }
 }

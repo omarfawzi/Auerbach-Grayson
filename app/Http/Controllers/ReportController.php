@@ -38,8 +38,8 @@ class ReportController
     public function index(Request $request) : JsonResponse
     {
         $reports = $this->reportRepository->getReports(
-            $request->get('type'),
-            $request->get('limit', config('api.defaults.limit'))
+            $request->get('limit', config('api.defaults.limit')),
+            $request->all()
         );
 
         $response = fractal($reports,$this->transformerFactory->make(ReportTransformer::class))->paginateWith(
