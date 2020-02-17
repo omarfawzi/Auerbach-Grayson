@@ -10,16 +10,17 @@ use App\Models\SQL\Client;
 use App\Models\User;
 use App\Repositories\ClientRepository;
 use App\Repositories\UserRepository;
+use App\Traits\FractalView;
 use App\Transformers\MessageTransformer;
 use App\Transformers\TokenTransformer;
-use App\Transformers\UserTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    use FractalView;
+
     /** @var Auth $auth */
     protected $auth;
 
@@ -53,18 +54,6 @@ class AuthController extends Controller
     }
 
     /**
-     * Log the user out (Invalidate the token).
-     *
-     * @return JsonResponse
-     */
-    public function destroy(): JsonResponse
-    {
-        $this->auth->invalidateAuthenticationToken();
-
-        return response()->json(null, Response::HTTP_NO_CONTENT);
-    }
-
-    /**
      * Get a JWT via given credentials.
      *
      * @param Request $request
@@ -80,60 +69,27 @@ class AuthController extends Controller
                 'password' => 'required',
             ]
         );
-
         $validator->validate();
-
         $client = $this->clientRepository->getClientByEmail($request->input('email'));
-
         if (!$client instanceof Client) {
             throw new UnauthorizedException();
         }
-
         $user = $this->userRepository->getUserByEmail($request->input('email'));
-
         if ($user instanceof User) {
-            $token    = $this->auth->authenticateByEmailAndPassword(
+            $token = $this->auth->authenticateByEmailAndPassword(
                 $request->input('email'),
                 $request->input('password')
             );
-            $response = $this->transformerFactory->make(TokenTransformer::class)->transform($token);
+
+            return $this->singleView($token, $this->transformerFactory->make(TokenTransformer::class));
         } else {
+
             event(new ClientSignUp($client));
-            $response = $this->transformerFactory->make(MessageTransformer::class)->transform(
-                'Password Sent to Email'
+
+            return $this->singleView(
+                config('api.messages.reset_password_email'),
+                $this->transformerFactory->make(MessageTransformer::class)
             );
         }
-
-        return response()->json($response, Response::HTTP_OK);
-    }
-
-    /**
-     * Get the authenticated Client.
-     *
-     * @return JsonResponse
-     */
-    public function show(): JsonResponse
-    {
-        $user = $this->auth->getAuthenticatedUser();
-
-        return response()->json(
-            $this->transformerFactory->make(UserTransformer::class)->transform($user),
-            Response::HTTP_OK
-        );
-    }
-
-    /**
-     * Refresh a token.
-     *
-     * @return JsonResponse
-     */
-    public function update(): JsonResponse
-    {
-        $token = $this->auth->refreshAuthenticationToken();
-
-        return response()->json(
-            $this->transformerFactory->make(TokenTransformer::class)->transform($token),
-            Response::HTTP_OK
-        );
     }
 }

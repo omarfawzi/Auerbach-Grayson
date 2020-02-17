@@ -29,11 +29,11 @@ trait FractalView
     }
 
     /**
-     * @param Model               $model
+     * @param Model|string        $model
      * @param TransformerAbstract $transformerAbstract
      * @return JsonResponse
      */
-    public function singleView(Model $model, TransformerAbstract $transformerAbstract): JsonResponse
+    public function singleView($model, TransformerAbstract $transformerAbstract): JsonResponse
     {
         return $this->toJson(fractal($model, $transformerAbstract)->toArray());
     }
