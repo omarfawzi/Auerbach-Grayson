@@ -26,7 +26,7 @@ $app = new \Laravel\Lumen\Application(
 $app->configure('app');
 $app->configure('auth');
 $app->configure('api');
-
+$app->configure('swagger-lume');
 // $app->configure('broadcasting');
 // $app->configure('cache');
 $app->configure('database');
@@ -97,6 +97,7 @@ $app->register(\Spatie\Fractal\FractalServiceProvider::class);
 $app->register(\Spatie\QueryBuilder\QueryBuilderServiceProvider::class);
 $app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(\EloquentFilter\LumenServiceProvider::class);
+$app->register(\SwaggerLume\ServiceProvider::class);
 
 if ($app->environment() == 'local') {
     $app->register(\Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
