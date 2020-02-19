@@ -2,35 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use OpenApi\Annotations\Contact;
-use OpenApi\Annotations\Info;
-use OpenApi\Annotations\Property;
-use OpenApi\Annotations\Schema;
-use OpenApi\Annotations\Server;
+use OpenApi\Annotations as OA;
 
 /**
  *
- * @Info(
- *     title="AGCO API",
+ * @OA\Info(
+ *     title="AGCO Research",
  *     version="1.0.0",
- *     description="This is a demo service, which provides the function of demonstrating the swagger api",
+ *     description="API Documentation for AGCO",
  * )
  *
- * @Server(
+ * @OA\Server(
  *     url="http://localhost:8000/api",
- *     description= "development environment"
+ *     description= "Development Environment"
  * )
- *
- * @Schema(
+ * @OA\Server(
+ *     url="https://virtserver.swaggerhub.com/omarfawzi/AGCO-Research/1.0.0",
+ *     description= "SwaggerHub API Auto Mocking"
+ * )
+ * @OA\Schema(
  *     schema="ApiResponse",
  *     type="object",
- *     description="Response entity, response result uses this structure uniformly",
- *     @Property(
+ *     description="Response entity",
+ *     @OA\Property(
  *         property="code",
  *         type="string",
  *         description= "response code"
  *     ),
- *     @Property (property = "message", type = "string", description = "response result prompt")
+ *     @OA\Property (property = "message", type = "string", description = "response result prompt")
  * )
  *
  *

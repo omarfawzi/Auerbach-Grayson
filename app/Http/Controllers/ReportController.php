@@ -39,7 +39,7 @@ class ReportController
      *     summary="Get Reports",
      *     tags={"Reports"},
      *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/ListParams")),
-     *     @OA\Parameter(in="query",name="type",required=false),
+     *     @OA\Parameter(in="query",name="type",required=false,@OA\Schema(type="string")),
      *     @OA\Response(
      *        response="200",
      *        description="Get Reports",
@@ -70,7 +70,7 @@ class ReportController
      *     path="/reports/{id}",
      *     summary="Get Report",
      *     tags={"Reports"},
-     *     @OA\Parameter(in="path",name="id",required=false),
+     *     @OA\Parameter(in="path",name="id",required=true,@OA\Schema(type="number")),
      *     @OA\Response(
      *        response="200",
      *        description="Get Report",
