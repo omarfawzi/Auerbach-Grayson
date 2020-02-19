@@ -2,21 +2,26 @@
 
 namespace App\Transformers;
 
+use App\Dto\Output\ReportDto;
 use App\Models\SQL\Report;
 use League\Fractal\TransformerAbstract;
 
 class ReportTransformer extends TransformerAbstract
 {
-    public function transform(Report $report)
+    /**
+     * @param Report $report
+     * @return array
+     */
+    public function transform(Report $report): array
     {
-        return [
-            'id'    => $report->ReportID,
-            'title' => $report->Title,
-            'synopsis' => $report->Synopsis,
-            'date' => $report->ReportDate,
-            'pages' => $report->Pages,
-            'by' => $report->AnalystIndex,
-            'type' => optional($report->type)->Type
-        ];
+        return (new ReportDto(
+            $report->ReportID,
+            $report->Title,
+            $report->Synopsis,
+            $report->ReportDate,
+            $report->Pages,
+            $report->AnalystIndex,
+            optional($report->type)->Type
+        ))->toArray();
     }
 }

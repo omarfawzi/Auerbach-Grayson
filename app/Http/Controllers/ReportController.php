@@ -6,8 +6,9 @@ use App\Factories\TransformerFactory;
 use App\Repositories\ReportRepository;
 use App\Traits\FractalView;
 use App\Transformers\ReportTransformer;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use OpenApi\Annotations as OA;
 
 class ReportController
 {
@@ -33,6 +34,24 @@ class ReportController
 
 
     /**
+     * @OA\Get(
+     *     path="/reports",
+     *     summary="Get Reports",
+     *     tags={"Reports"},
+     *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/ListParams")),
+     *     @OA\Parameter(in="query",name="type",required=false),
+     *     @OA\Response(
+     *        response="200",
+     *        description="Get Reports",
+     *       @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *            @OA\Property(property="data",type="array",@OA\Items(type="object",ref="#/components/schemas/ReportDto")),
+     *            @OA\Property(property="meta", ref="#/components/schemas/Meta")
+     *        )
+     *      )
+     *    )
+     * )
      * @param Request $request
      * @return JsonResponse
      */
@@ -47,6 +66,22 @@ class ReportController
     }
 
     /**
+     * @OA\Get(
+     *     path="/reports/{id}",
+     *     summary="Get Report",
+     *     tags={"Reports"},
+     *     @OA\Parameter(in="path",name="id",required=false),
+     *     @OA\Response(
+     *        response="200",
+     *        description="Get Report",
+     *       @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *            @OA\Property(property="data",ref="#/components/schemas/ReportDto")
+     *        )
+     *      )
+     *    )
+     * )
      * @param int $id
      * @return JsonResponse
      */
