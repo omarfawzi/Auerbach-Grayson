@@ -34,7 +34,6 @@ class RegionController
 
     /**
      * @OA\Get(
-     *
      *     path="/regions",
      *     summary="Get Regions",
      *     tags={"Regions"},
@@ -45,8 +44,8 @@ class RegionController
      *       @OA\MediaType(
      *          mediaType="application/json",
      *          @OA\Schema(
-     *           @OA\Property(property="data", ref="#/components/schemas/RegionDto"),
-     *           @OA\Property(property="meta", ref="#/components/schemas/Meta")
+     *            @OA\Property(property="data", ref="#/components/schemas/RegionDto"),
+     *            @OA\Property(property="meta", ref="#/components/schemas/Meta")
      *        )
      *      )
      *    )
