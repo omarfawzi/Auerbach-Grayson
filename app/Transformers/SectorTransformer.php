@@ -2,7 +2,6 @@
 
 namespace App\Transformers;
 
-use App\Dto\Output\SectorDto;
 use App\Models\SQL\Sector;
 use League\Fractal\TransformerAbstract;
 
@@ -14,6 +13,6 @@ class SectorTransformer extends TransformerAbstract
      */
     public function transform(Sector $sector): array
     {
-        return (new SectorDto($sector->GICS_SectorId, $sector->GICS_Sector))->toArray();
+        return $sector->toArray();
     }
 }

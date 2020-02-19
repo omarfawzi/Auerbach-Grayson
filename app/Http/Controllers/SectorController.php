@@ -44,7 +44,7 @@ class SectorController
      *       @OA\MediaType(
      *          mediaType="application/json",
      *          @OA\Schema(
-     *            @OA\Property(property="data",type="array",@OA\Items(type="object",ref="#/components/schemas/SectorDto")),
+     *            @OA\Property(property="data",type="array",@OA\Items(type="object",ref="#/components/schemas/Sector")),
      *            @OA\Property(property="meta", ref="#/components/schemas/Meta")
      *        )
      *      )

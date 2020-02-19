@@ -44,7 +44,7 @@ class RegionController
      *       @OA\MediaType(
      *          mediaType="application/json",
      *          @OA\Schema(
-     *            @OA\Property(property="data",type="array",@OA\Items(type="object",ref="#/components/schemas/RegionDto")),
+     *            @OA\Property(property="data",type="array",@OA\Items(type="object",ref="#/components/schemas/Region")),
      *            @OA\Property(property="meta", ref="#/components/schemas/Meta")
      *        )
      *      )

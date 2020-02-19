@@ -46,7 +46,7 @@ class ReportController
      *       @OA\MediaType(
      *          mediaType="application/json",
      *          @OA\Schema(
-     *            @OA\Property(property="data",type="array",@OA\Items(type="object",ref="#/components/schemas/ReportDto")),
+     *            @OA\Property(property="data",type="array",@OA\Items(type="object",ref="#/components/schemas/Report")),
      *            @OA\Property(property="meta", ref="#/components/schemas/Meta")
      *        )
      *      )
@@ -77,7 +77,7 @@ class ReportController
      *        @OA\MediaType(
      *           mediaType="application/json",
      *           @OA\Schema(
-     *           @OA\Property(property="data",ref="#/components/schemas/ReportDto")
+     *           @OA\Property(property="data",ref="#/components/schemas/Report")
      *        )
      *      )
      *    )
