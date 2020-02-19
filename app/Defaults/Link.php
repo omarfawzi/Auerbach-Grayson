@@ -2,7 +2,6 @@
 
 namespace App\Defaults;
 
-use Illuminate\Http\JsonResponse;
 use OpenApi\Annotations as OA;
 
 /**
@@ -10,7 +9,7 @@ use OpenApi\Annotations as OA;
  * @OA\Schema(description="Link inside pagination")
  * @package App\Defaults
  */
-class Link  extends JsonResponse
+class Link
 {
     /**
      * @OA\Property(

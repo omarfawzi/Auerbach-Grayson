@@ -2,7 +2,7 @@
 
 namespace App\Dto\Output;
 
-use Illuminate\Http\JsonResponse;
+use App\Dto\Dto;
 use OpenApi\Annotations as OA;
 
 /**
@@ -10,7 +10,7 @@ use OpenApi\Annotations as OA;
  * @OA\Schema(description="Region Output Description")
  * @package App\Dto\Output
  */
-class RegionDto extends JsonResponse
+class RegionDto extends Dto
 {
     /**
      * @OA\Property(
@@ -20,7 +20,7 @@ class RegionDto extends JsonResponse
      *
      * @var int $id
      */
-    public $id = 0;
+    public $id;
 
     /**
      * @OA\Property(
@@ -31,4 +31,16 @@ class RegionDto extends JsonResponse
      * @var string $name
      */
     public $name;
+
+    /**
+     * RegionDto constructor.
+     *
+     * @param int    $id
+     * @param string $name
+     */
+    public function __construct(int $id, string $name)
+    {
+        $this->id   = $id;
+        $this->name = $name;
+    }
 }
