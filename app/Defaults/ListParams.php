@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Parameter;
+namespace App\Defaults;
 
 use OpenApi\Annotations as OA;
 
 /**
- * Class Pagination
- * @OA\Schema(description="Pagination Default Parameters")
- * @package App\Parameter
+ * Class ListParams
+ * @OA\Schema(description="Default Parameters For List View")
+ * @package App\Defaults
  */
-class Pagination
+class ListParams
 {
     /**
      * @OA\Property(

@@ -36,14 +36,15 @@ class RegionController
      * @OA\Get(
      *     path="/regions",
      *     summary="Get Regions",
-     *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/Pagination")),
+     *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/ListParams")),
      *     @OA\Response(
      *        response="200",
      *        description="Get Regions",
      *       @OA\MediaType(
      *          mediaType="application/json",
      *          @OA\Schema(
-     *             @OA\Property(property="data", ref="#/components/schemas/RegionDto")
+     *           @OA\Property(property="data", ref="#/components/schemas/RegionDto"),
+     *           @OA\Property(property="meta", ref="#/components/schemas/Meta")
      *        )
      *      )
      *    )
