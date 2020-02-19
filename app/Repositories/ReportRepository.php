@@ -23,8 +23,6 @@ class ReportRepository
      */
     public function getReports(int $limit , array $filters = []): LengthAwarePaginator
     {
-        $query = Report::filter($filters)->orderBy('DateEntered');
-
-        return $query->paginateFilter($limit);
+        return Report::filter($filters)->orderBy('DateEntered')->paginateFilter($limit);
     }
 }
