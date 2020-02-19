@@ -34,8 +34,10 @@ class RegionController
 
     /**
      * @OA\Get(
+     *
      *     path="/regions",
      *     summary="Get Regions",
+     *     tags={"Regions"},
      *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/ListParams")),
      *     @OA\Response(
      *        response="200",
