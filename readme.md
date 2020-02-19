@@ -2,7 +2,7 @@
 
 ### API
 
-You can find api docs [Here](https://app.swaggerhub.com/apis/omarfawzi/AGCO-Research/1.0.0)
+DOCs : [Here](https://app.swaggerhub.com/apis/omarfawzi/AGCO-Research/1.0.0)
 
 ### Issues
 
