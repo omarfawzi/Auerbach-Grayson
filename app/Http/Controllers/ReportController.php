@@ -74,10 +74,10 @@ class ReportController
      *     @OA\Response(
      *        response="200",
      *        description="Get Report",
-     *       @OA\MediaType(
-     *          mediaType="application/json",
-     *          @OA\Schema(
-     *            @OA\Property(property="data",ref="#/components/schemas/ReportDto")
+     *        @OA\MediaType(
+     *           mediaType="application/json",
+     *           @OA\Schema(
+     *           @OA\Property(property="data",ref="#/components/schemas/ReportDto")
      *        )
      *      )
      *    )
