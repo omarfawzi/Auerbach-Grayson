@@ -11,7 +11,7 @@ class ReportRepository
      * @param int $id
      * @return Report|null
      */
-    public function getReportById(int $id): ?Report
+    public function getReport(int $id): ?Report
     {
         return Report::findOrFail($id);
     }

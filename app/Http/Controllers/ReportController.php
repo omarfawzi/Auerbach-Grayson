@@ -87,7 +87,7 @@ class ReportController
      */
     public function show(int $id): JsonResponse
     {
-        $report = $this->reportRepository->getReportById($id);
+        $report = $this->reportRepository->getReport($id);
 
         return $this->singleView($report, $this->transformerFactory->make(ReportTransformer::class));
     }
