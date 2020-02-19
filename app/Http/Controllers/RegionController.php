@@ -8,6 +8,7 @@ use App\Traits\FractalView;
 use App\Transformers\RegionTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 
 class RegionController
 {
@@ -32,6 +33,21 @@ class RegionController
     }
 
     /**
+     * @OA\Get(
+     *     path="/regions",
+     *     summary="Get Regions",
+     *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/Pagination")),
+     *     @OA\Response(
+     *        response="200",
+     *        description="Get Regions",
+     *       @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *             @OA\Property(property="data", ref="#/components/schemas/RegionDto")
+     *        )
+     *      )
+     *    )
+     * )
      * @param Request $request
      * @return JsonResponse
      */
