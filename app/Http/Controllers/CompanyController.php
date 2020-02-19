@@ -8,6 +8,7 @@ use App\Traits\FractalView;
 use App\Transformers\CompanyTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 
 class CompanyController
 {
@@ -32,6 +33,23 @@ class CompanyController
     }
 
     /**
+     * @OA\Get(
+     *     path="/companies",
+     *     summary="Get Companies",
+     *     tags={"Companies"},
+     *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/ListParams")),
+     *     @OA\Response(
+     *        response="200",
+     *        description="Get Companies",
+     *       @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *            @OA\Property(property="data", ref="#/components/schemas/CompanyDto"),
+     *            @OA\Property(property="meta", ref="#/components/schemas/Meta")
+     *        )
+     *      )
+     *    )
+     * )
      * @param Request $request
      * @return JsonResponse
      */
