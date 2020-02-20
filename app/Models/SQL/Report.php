@@ -17,7 +17,7 @@ class Report extends Model
 
     public function type()
     {
-        return $this->hasOne(Type::class,'TypeID','TypeID');
+        return $this->belongsTo(Type::class,'TypeID','TypeID');
     }
 
     /**
