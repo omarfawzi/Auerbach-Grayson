@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Defaults;
+namespace App\Schema;
 
 use OpenApi\Annotations as OA;
 
 /**
  * Class Pagination
  * @OA\Schema(description="Pagination Body")
- * @package App\Defaults
+ * @package App\Schema
  */
 class Pagination
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Defaults;
+namespace App\Schema;
 
 use OpenApi\Annotations as OA;
 
 /**
  * Class Meta
  * @OA\Schema(description="Meta Body")
- * @package App\Defaults
+ * @package App\Schema
  */
 class Meta
 {

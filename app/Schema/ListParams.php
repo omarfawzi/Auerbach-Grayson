@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Defaults;
+namespace App\Schema;
 
 use OpenApi\Annotations as OA;
 
 /**
  * Class ListParams
  * @OA\Schema(description="Default Parameters For List View")
- * @package App\Defaults
+ * @package App\Schema
  */
 class ListParams
 {

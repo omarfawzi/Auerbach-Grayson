@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Defaults;
+namespace App\Schema;
 
 use OpenApi\Annotations as OA;
 
 /**
  * Class Link
  * @OA\Schema(description="Link inside pagination")
- * @package App\Defaults
+ * @package App\Schema
  */
 class Link
 {

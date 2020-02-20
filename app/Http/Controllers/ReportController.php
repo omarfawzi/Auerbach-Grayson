@@ -40,6 +40,7 @@ class ReportController
      *     tags={"Reports"},
      *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/ListParams")),
      *     @OA\Parameter(in="query",name="type",required=false,@OA\Schema(type="string")),
+     *     @OA\Parameter(in="query",name="title",required=false,@OA\Schema(type="string")),
      *     @OA\Response(
      *        response="200",
      *        description="Get Reports",
