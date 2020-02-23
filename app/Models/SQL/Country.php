@@ -11,4 +11,9 @@ class Country extends Model
     protected $table = 'Country';
 
     protected $primaryKey = 'CountryID';
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class,'RegionId','RegionId');
+    }
 }
