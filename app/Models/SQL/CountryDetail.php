@@ -4,11 +4,9 @@ namespace App\Models\SQL;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Country extends Model
+class CountryDetail extends Model
 {
     protected $connection = 'sqlsrv';
 
-    protected $table = 'Country';
-
-    protected $primaryKey = 'CountryID';
+    protected $table = 'CountryDetail';
 }

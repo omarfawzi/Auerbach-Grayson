@@ -20,6 +20,16 @@ class Report extends Model
         return $this->belongsTo(Type::class,'TypeID','TypeID');
     }
 
+    public function countries()
+    {
+        return $this->hasManyThrough(Country::class,CountryDetail::class,'ReportID','CountryID','ReportID','CountryID');
+    }
+
+    public function companies()
+    {
+        return $this->hasManyThrough(Company::class,CompanyDetail::class,'ReportID','CompanyID','ReportID','CompanyID');
+    }
+
     /**
      * @return array
      */
