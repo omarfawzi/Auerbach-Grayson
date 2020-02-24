@@ -10,32 +10,32 @@ class ReportFilter extends ModelFilter
     protected $relationsEnabled = true;
 
     /**
-     * @param array $searchValue
+     * @param array $values
      * @return ReportFilter|Builder
      */
-    public function company(array $searchValue)
+    public function company(array $values)
     {
         return $this->whereHas(
             'companies',
-            function (Builder $query) use ($searchValue) {
-                $query->whereIn('Company.Company', $searchValue)->orWhereIn('Company.Bloomberg', $searchValue);
+            function (Builder $query) use ($values) {
+                $query->whereIn('Company.Company', $values)->orWhereIn('Company.Bloomberg', $values);
             }
         );
     }
 
     /**
-     * @param array $searchValue
+     * @param array $values
      * @return ReportFilter|Builder
      */
-    public function country(array $searchValue)
+    public function country(array $values)
     {
         return $this->whereHas(
             'countries',
-            function (Builder $query) use ($searchValue) {
-                $query->whereIn('Country.Country',$searchValue)->orWhereHas(
+            function (Builder $query) use ($values) {
+                $query->whereIn('Country.Country',$values)->orWhereHas(
                         'region',
-                        function (Builder $query) use ($searchValue) {
-                            $query->whereIn('Region.Region', $searchValue);
+                        function (Builder $query) use ($values) {
+                            $query->whereIn('Region.Region', $values);
                         }
                     );
             }
