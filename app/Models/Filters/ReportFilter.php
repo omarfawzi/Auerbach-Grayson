@@ -60,7 +60,7 @@ class ReportFilter extends ModelFilter
         return $this->whereHas(
             'type',
             function (Builder $query) use ($type) {
-                $query->whereIn('Type.Type',$type);
+                $query->where('Type.Type',$type);
             }
         );
     }
