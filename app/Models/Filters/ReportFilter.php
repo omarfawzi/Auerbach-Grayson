@@ -10,32 +10,32 @@ class ReportFilter extends ModelFilter
     protected $relationsEnabled = true;
 
     /**
-     * @param string $company
+     * @param array $searchValue
      * @return ReportFilter|Builder
      */
-    public function company(string $company)
+    public function company(array $searchValue)
     {
         return $this->whereHas(
             'companies',
-            function (Builder $query) use ($company) {
-                $query->where('Company.Company', '=', $company)->orWhere('Company.Bloomberg', '=', $company);
+            function (Builder $query) use ($searchValue) {
+                $query->whereIn('Company.Company', $searchValue)->orWhereIn('Company.Bloomberg', $searchValue);
             }
         );
     }
 
     /**
-     * @param string $country
+     * @param array $searchValue
      * @return ReportFilter|Builder
      */
-    public function country(string $country)
+    public function country(array $searchValue)
     {
         return $this->whereHas(
             'countries',
-            function (Builder $query) use ($country) {
-                $query->where('Country.Country', '=', $country)->orWhereHas(
+            function (Builder $query) use ($searchValue) {
+                $query->whereIn('Country.Country',$searchValue)->orWhereHas(
                         'region',
-                        function (Builder $query) use ($country) {
-                            $query->where('Region.Region', '=', $country);
+                        function (Builder $query) use ($searchValue) {
+                            $query->whereIn('Region.Region', $searchValue);
                         }
                     );
             }
@@ -60,7 +60,7 @@ class ReportFilter extends ModelFilter
         return $this->whereHas(
             'type',
             function (Builder $query) use ($type) {
-                $query->where('Type.Type', '=', $type);
+                $query->whereIn('Type.Type',$type);
             }
         );
     }
