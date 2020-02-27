@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Schema\Recommendation;
+use App\Models\SQL\Recommendation;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class RecommendationRepository

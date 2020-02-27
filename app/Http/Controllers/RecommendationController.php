@@ -58,8 +58,8 @@ class RecommendationController
      */
     public function index(Request $request) : JsonResponse
     {
-        $regions = $this->recommendationRepository->getRecommendations($request->get('limit', config('api.defaults.limit')));
+        $recommendations = $this->recommendationRepository->getRecommendations($request->get('limit', config('api.defaults.limit')));
 
-        return $this->listView($regions,$this->transformerFactory->make(RecommendationTransformer::class));
+        return $this->listView($recommendations,$this->transformerFactory->make(RecommendationTransformer::class));
     }
 }
