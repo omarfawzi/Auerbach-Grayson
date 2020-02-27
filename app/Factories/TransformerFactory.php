@@ -5,6 +5,7 @@ namespace App\Factories;
 use App\Transformers\CompanyTransformer;
 use App\Transformers\ErrorTransformer;
 use App\Transformers\MessageTransformer;
+use App\Transformers\RecommendationTransformer;
 use App\Transformers\RegionTransformer;
 use App\Transformers\ReportTransformer;
 use App\Transformers\SectorTransformer;
@@ -39,17 +40,21 @@ class TransformerFactory
     /** @var RegionTransformer $regionTransformer */
     protected $regionTransformer;
 
+    /** @var RecommendationTransformer $recommendationTransformer */
+    protected $recommendationTransformer;
+
     /**
      * TransformerFactory constructor.
      *
-     * @param UserTransformer    $userTransformer
-     * @param ErrorTransformer   $errorTransformer
-     * @param TokenTransformer   $tokenTransformer
-     * @param MessageTransformer $messageTransformer
-     * @param ReportTransformer  $reportTransformer
-     * @param CompanyTransformer $companyTransformer
-     * @param SectorTransformer  $sectorTransformer
-     * @param RegionTransformer  $regionTransformer
+     * @param UserTransformer           $userTransformer
+     * @param ErrorTransformer          $errorTransformer
+     * @param TokenTransformer          $tokenTransformer
+     * @param MessageTransformer        $messageTransformer
+     * @param ReportTransformer         $reportTransformer
+     * @param CompanyTransformer        $companyTransformer
+     * @param SectorTransformer         $sectorTransformer
+     * @param RegionTransformer         $regionTransformer
+     * @param RecommendationTransformer $recommendationTransformer
      */
     public function __construct(
         UserTransformer $userTransformer,
@@ -59,16 +64,18 @@ class TransformerFactory
         ReportTransformer $reportTransformer,
         CompanyTransformer $companyTransformer,
         SectorTransformer $sectorTransformer,
-        RegionTransformer $regionTransformer
+        RegionTransformer $regionTransformer,
+        RecommendationTransformer $recommendationTransformer
     ) {
-        $this->userTransformer    = $userTransformer;
-        $this->errorTransformer   = $errorTransformer;
-        $this->tokenTransformer   = $tokenTransformer;
-        $this->messageTransformer = $messageTransformer;
-        $this->reportTransformer  = $reportTransformer;
-        $this->companyTransformer = $companyTransformer;
-        $this->sectorTransformer  = $sectorTransformer;
-        $this->regionTransformer  = $regionTransformer;
+        $this->userTransformer           = $userTransformer;
+        $this->errorTransformer          = $errorTransformer;
+        $this->tokenTransformer          = $tokenTransformer;
+        $this->messageTransformer        = $messageTransformer;
+        $this->reportTransformer         = $reportTransformer;
+        $this->companyTransformer        = $companyTransformer;
+        $this->sectorTransformer         = $sectorTransformer;
+        $this->regionTransformer         = $regionTransformer;
+        $this->recommendationTransformer = $recommendationTransformer;
     }
 
 
@@ -76,11 +83,10 @@ class TransformerFactory
      * @param string $transformer
      * @return TransformerAbstract
      */
-    public function make(string $transformer) : TransformerAbstract
+    public function make(string $transformer): TransformerAbstract
     {
 
-        switch ($transformer)
-        {
+        switch ($transformer) {
             case ErrorTransformer::class:
                 return $this->errorTransformer;
             case MessageTransformer::class:
@@ -97,6 +103,8 @@ class TransformerFactory
                 return $this->sectorTransformer;
             case RegionTransformer::class:
                 return $this->regionTransformer;
+            case RecommendationTransformer::class:
+                return $this->recommendationTransformer;
             default:
                 throw new InvalidArgumentException("Transformer $transformer not found");
         }

@@ -30,6 +30,11 @@ class Report extends Model
         return $this->hasManyThrough(Company::class,CompanyDetail::class,'ReportID','CompanyID','ReportID','CompanyID');
     }
 
+    public function recommendations()
+    {
+        return $this->hasManyThrough(Recommendation::class,CompanyDetail::class,'ReportID','RecommendID','ReportID','RecommendID');
+    }
+
     /**
      * @return array
      */

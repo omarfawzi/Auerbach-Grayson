@@ -29,6 +29,10 @@ $router->group(['prefix' => 'api'], function (Router $router) {
         $router->get('/', 'SectorController@index');
     });
 
+    $router->group(['prefix'=>'recommendations'], function (Router $router) {
+        $router->get('/', 'RecommendationController@index');
+    });
+
     $router->group(['prefix'=>'regions'], function (Router $router) {
         $router->get('/', 'RegionController@index');
     });

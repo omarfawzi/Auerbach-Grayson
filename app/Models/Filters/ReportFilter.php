@@ -32,12 +32,26 @@ class ReportFilter extends ModelFilter
         return $this->whereHas(
             'countries',
             function (Builder $query) use ($values) {
-                $query->whereIn('Country.Country',$values)->orWhereHas(
-                        'region',
-                        function (Builder $query) use ($values) {
-                            $query->whereIn('Region.Region', $values);
-                        }
-                    );
+                $query->whereIn('Country.Country', $values)->orWhereHas(
+                    'region',
+                    function (Builder $query) use ($values) {
+                        $query->whereIn('Region.Region', $values);
+                    }
+                );
+            }
+        );
+    }
+
+    /**
+     * @param array $values
+     * @return ReportFilter|Builder
+     */
+    public function recommendation(array $values)
+    {
+        return $this->whereHas(
+            'recommendations',
+            function (Builder $query) use ($values) {
+                $query->whereIn('Recommendation.Recommendation', $values);
             }
         );
     }
@@ -60,7 +74,7 @@ class ReportFilter extends ModelFilter
         return $this->whereHas(
             'type',
             function (Builder $query) use ($type) {
-                $query->where('Type.Type',$type);
+                $query->where('Type.Type', $type);
             }
         );
     }
