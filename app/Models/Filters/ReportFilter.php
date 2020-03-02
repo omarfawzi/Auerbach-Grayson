@@ -18,7 +18,20 @@ class ReportFilter extends ModelFilter
         return $this->whereHas(
             'companies',
             function (Builder $query) use ($values) {
-                $query->whereIn('Company.Company', $values)->orWhereIn('Company.Bloomberg', $values);
+                $query->whereIn('Company.Company', $values);
+                if ($this->input('recommendation')) {
+                    $query->join(
+                        'Recommendation',
+                        'Recommendation.RecommendID',
+                        '=',
+                        'CompanyDetail.RecommendID',
+                        'inner'
+                    )->where(
+                        function ($query) use ($values) {
+                            $query->whereIn('Recommendation.Recommendation', $this->input('recommendation'));
+                        }
+                    );
+                }
             }
         );
     }
@@ -46,14 +59,18 @@ class ReportFilter extends ModelFilter
      * @param array $values
      * @return ReportFilter|Builder
      */
-    public function recommendation(array $values)
+    public function recommendation($values)
     {
-        return $this->whereHas(
-            'recommendations',
-            function (Builder $query) use ($values) {
-                $query->whereIn('Recommendation.Recommendation', $values);
-            }
-        );
+        if ($this->input('company')) {
+            return null;
+        } else {
+            return $this->whereHas(
+                'recommendations',
+                function (Builder $query) use ($values) {
+                    $query->whereIn('Recommendation.Recommendation', $values);
+                }
+            );
+        }
     }
 
     /**
