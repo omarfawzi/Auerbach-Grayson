@@ -7,16 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sector extends Model
 {
-
     protected $connection = 'sqlsrv';
 
     protected $table = 'GICS_Sector';
 
     protected $primaryKey = 'GICS_SectorId';
 
-    public function subscription()
+    public function subscriptions()
     {
-        return $this->morphMany(Subscription::class,'subscribable',null,'relationId','GICS_SectorId');
+        return $this->morphMany(Subscription::class,'subscribable',null,null,'GICS_SectorId');
     }
 
     /**
@@ -26,7 +25,8 @@ class Sector extends Model
     {
         return [
             'id' => $this->GICS_SectorId,
-            'name' => $this->GICS_Sector
+            'name' => $this->GICS_Sector,
+            'subscriptions' => $this->subscriptions->toArray()
         ];
     }
 }

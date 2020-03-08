@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subscription extends Model
 {
-    private const SECTOR_SUBSCRIPTION_TYPE = 'sector';
+    protected $connection = 'mysql';
 
-    private const COMPANY_SUBSCRIPTION_TYPE = 'company';
+    public const SECTOR_SUBSCRIPTION_TYPE = 'sector';
+
+    public const COMPANY_SUBSCRIPTION_TYPE = 'company';
 
     public const SUBSCRIPTION_TYPES = [
         self::SECTOR_SUBSCRIPTION_TYPE,
@@ -24,7 +26,8 @@ class Subscription extends Model
     {
         return [
             'id' => $this->id,
-            'type' => $this->type
+            'type' => $this->subscribable_type,
+            'subscribable' => optional($this->subscribable)->toArray()
         ];
     }
 

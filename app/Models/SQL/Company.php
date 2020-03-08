@@ -26,9 +26,9 @@ class Company extends Model
         return $this->hasManyThrough(Industry::class,IndustryDetail::class,'CompanyID','IndustryID','CompanyID','IndustryID');
     }
 
-    public function subscription()
+    public function subscriptions()
     {
-        return $this->morphMany(Subscription::class,'subscribable',null,'relationId','CompanyID');
+        return $this->morphMany(Subscription::class,'subscribable',null,null,'CompanyID');
     }
 
     /**
