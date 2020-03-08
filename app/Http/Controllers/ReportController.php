@@ -41,7 +41,7 @@ class ReportController
      *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/ListParams")),
      *     @OA\Parameter(in="query",name="type",required=false,@OA\Schema(type="string")),
      *     @OA\Parameter(in="query",name="title",required=false,@OA\Schema(type="string")),
-     *     @OA\Parameter(in="query",name="date",required=false,@OA\Schema(type="string"),example="1996-06-20"),
+     *     @OA\Parameter(in="query",name="date",required=false,@OA\Schema(type="string"),example="today,week,month,year,all"),
      *     @OA\Parameter(in="query",name="country[]",required=false,@OA\Schema(type="array",@OA\Items(type="string"))),
      *     @OA\Parameter(in="query",name="company[]",required=false,@OA\Schema(type="array",@OA\Items(type="string"))),
      *     @OA\Parameter(in="query",name="recommendation[]",required=false,@OA\Schema(type="array",@OA\Items(type="string"))),
