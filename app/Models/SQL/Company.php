@@ -20,6 +20,11 @@ class Company extends Model
         return $this->Bloomberg;
     }
 
+    public function industries()
+    {
+        return $this->hasManyThrough(Industry::class,IndustryDetail::class,'CompanyID','IndustryID','CompanyID','IndustryID');
+    }
+
     /**
      * @return array
      */
