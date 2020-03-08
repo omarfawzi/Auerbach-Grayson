@@ -18,7 +18,7 @@ class ReportFilter extends ModelFilter
         return $this->whereHas(
             'companies',
             function (Builder $query) use ($values) {
-                $query->whereIn('Company.Company', $values);
+                $query->whereIn('Company', $values);
                 if ($this->input('recommendation')) {
                     $query->join(
                         'Recommendation',
@@ -58,10 +58,10 @@ class ReportFilter extends ModelFilter
         return $this->whereHas(
             'countries',
             function (Builder $query) use ($values) {
-                $query->whereIn('Country.Country', $values)->orWhereHas(
+                $query->whereIn('Country', $values)->orWhereHas(
                     'region',
                     function (Builder $query) use ($values) {
-                        $query->whereIn('Region.Region', $values);
+                        $query->whereIn('Region', $values);
                     }
                 );
             }
@@ -80,7 +80,7 @@ class ReportFilter extends ModelFilter
             return $this->whereHas(
                 'recommendations',
                 function (Builder $query) use ($values) {
-                    $query->whereIn('Recommendation.Recommendation', $values);
+                    $query->whereIn('Recommendation', $values);
                 }
             );
         }
@@ -104,7 +104,7 @@ class ReportFilter extends ModelFilter
                             $query->whereHas(
                                 'sector',
                                 function (Builder $query) use ($values) {
-                                    $query->whereIn('GICS_Sector.GICS_Sector', $values);
+                                    $query->whereIn('GICS_Sector', $values);
                                 }
                             );
                         }
@@ -132,7 +132,7 @@ class ReportFilter extends ModelFilter
         return $this->whereHas(
             'type',
             function (Builder $query) use ($type) {
-                $query->where('Type.Type', $type);
+                $query->where('Type', $type);
             }
         );
     }
