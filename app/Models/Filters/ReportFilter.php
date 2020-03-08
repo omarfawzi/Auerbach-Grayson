@@ -2,6 +2,7 @@
 
 namespace App\Models\Filters;
 
+use App\Factories\DateFactory;
 use EloquentFilter\ModelFilter;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -66,6 +67,15 @@ class ReportFilter extends ModelFilter
                 );
             }
         );
+    }
+
+    /**
+     * @param string $date
+     * @return ReportFilter|\Illuminate\Database\Query\Builder
+     */
+    public function date(string $date)
+    {
+        return $this->whereDate('ReportDate', '>=', (new DateFactory())->make($date));
     }
 
     /**
