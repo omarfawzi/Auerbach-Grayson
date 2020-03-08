@@ -37,6 +37,10 @@ $router->group(['prefix' => 'api'], function (Router $router) {
         $router->get('/', 'RegionController@index');
     });
 
+    $router->group(['prefix'=>'subscriptions'], function (Router $router) {
+        $router->get('/', 'RegionController@index');
+    });
+
 });
 
 

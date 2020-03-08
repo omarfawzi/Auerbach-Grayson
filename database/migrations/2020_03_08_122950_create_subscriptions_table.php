@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\Subscribtion;
+use App\Models\Subscription;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubscribtionsTable extends Migration
+class CreateSubscriptionsTable extends Migration
 {
     /**
      * Reverse the migrations.
@@ -14,7 +14,7 @@ class CreateSubscribtionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subscribtions');
+        Schema::dropIfExists('subscriptions');
     }
 
     /**
@@ -25,11 +25,13 @@ class CreateSubscribtionsTable extends Migration
     public function up()
     {
         Schema::create(
-            'subscribtions',
+            'subscriptions',
             function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('relationId');
-                $table->enum('type', Subscribtion::SUBSCRIPTION_TYPES);
+                $table->unsignedInteger('userId');
+                $table->enum('type', Subscription::SUBSCRIPTION_TYPES);
+                $table->foreign('userId')->references('id')->on('users');
                 $table->timestamps();
             }
         );
