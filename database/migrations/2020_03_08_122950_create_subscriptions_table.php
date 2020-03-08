@@ -28,10 +28,10 @@ class CreateSubscriptionsTable extends Migration
             'subscriptions',
             function (Blueprint $table) {
                 $table->increments('id');
-                $table->integer('relationId');
-                $table->unsignedInteger('userId');
+                $table->integer('subscribable_id');
+                $table->unsignedInteger('user_id');
                 $table->enum('type', Subscription::SUBSCRIPTION_TYPES);
-                $table->foreign('userId')->references('id')->on('users');
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
             }
         );
