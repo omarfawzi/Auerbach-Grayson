@@ -86,6 +86,10 @@ class ReportFilter extends ModelFilter
         }
     }
 
+    /**
+     * @param array $values
+     * @return ReportFilter|Builder|null
+     */
     public function sector(array $values)
     {
         if ($this->input('company')) {
