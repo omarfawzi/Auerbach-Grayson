@@ -14,6 +14,6 @@ class SubscriptionRepository
      */
     public function getSubscriptions(int $userId , int $limit) : LengthAwarePaginator
     {
-        return Subscription::where('userId',$userId)->paginate($limit);
+        return Subscription::where('user_id',$userId)->paginate($limit);
     }
 }
