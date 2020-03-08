@@ -15,4 +15,17 @@ class Subscription extends Model
         self::COMPANY_SUBSCRIPTION_TYPE
     ];
 
+    public function subscribable()
+    {
+        return $this->morphTo();
+    }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'type' => $this->type
+        ];
+    }
+
 }

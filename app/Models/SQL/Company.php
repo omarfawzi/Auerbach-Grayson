@@ -2,6 +2,7 @@
 
 namespace App\Models\SQL;
 
+use App\Models\Subscription;
 use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
@@ -23,6 +24,11 @@ class Company extends Model
     public function industries()
     {
         return $this->hasManyThrough(Industry::class,IndustryDetail::class,'CompanyID','IndustryID','CompanyID','IndustryID');
+    }
+
+    public function subscription()
+    {
+        return $this->morphMany(Subscription::class,'subscribable',null,'relationId','CompanyID');
     }
 
     /**

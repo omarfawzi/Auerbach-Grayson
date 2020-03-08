@@ -2,6 +2,7 @@
 
 namespace App\Models\SQL;
 
+use App\Models\Subscription;
 use Illuminate\Database\Eloquent\Model;
 
 class Sector extends Model
@@ -12,6 +13,11 @@ class Sector extends Model
     protected $table = 'GICS_Sector';
 
     protected $primaryKey = 'GICS_SectorId';
+
+    public function subscription()
+    {
+        return $this->morphMany(Subscription::class,'subscribable',null,'relationId','GICS_SectorId');
+    }
 
     /**
      * @return array

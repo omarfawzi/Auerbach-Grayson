@@ -9,6 +9,7 @@ use App\Transformers\RecommendationTransformer;
 use App\Transformers\RegionTransformer;
 use App\Transformers\ReportTransformer;
 use App\Transformers\SectorTransformer;
+use App\Transformers\SubscriptionTransformer;
 use App\Transformers\TokenTransformer;
 use App\Transformers\UserTransformer;
 use InvalidArgumentException;
@@ -43,6 +44,9 @@ class TransformerFactory
     /** @var RecommendationTransformer $recommendationTransformer */
     protected $recommendationTransformer;
 
+    /** @var SubscriptionTransformer $subscriptionTransformer */
+    protected $subscriptionTransformer;
+
     /**
      * TransformerFactory constructor.
      *
@@ -55,6 +59,7 @@ class TransformerFactory
      * @param SectorTransformer         $sectorTransformer
      * @param RegionTransformer         $regionTransformer
      * @param RecommendationTransformer $recommendationTransformer
+     * @param SubscriptionTransformer   $subscriptionTransformer
      */
     public function __construct(
         UserTransformer $userTransformer,
@@ -65,7 +70,8 @@ class TransformerFactory
         CompanyTransformer $companyTransformer,
         SectorTransformer $sectorTransformer,
         RegionTransformer $regionTransformer,
-        RecommendationTransformer $recommendationTransformer
+        RecommendationTransformer $recommendationTransformer,
+        SubscriptionTransformer $subscriptionTransformer
     ) {
         $this->userTransformer           = $userTransformer;
         $this->errorTransformer          = $errorTransformer;
@@ -76,6 +82,7 @@ class TransformerFactory
         $this->sectorTransformer         = $sectorTransformer;
         $this->regionTransformer         = $regionTransformer;
         $this->recommendationTransformer = $recommendationTransformer;
+        $this->subscriptionTransformer   = $subscriptionTransformer;
     }
 
 
@@ -105,6 +112,8 @@ class TransformerFactory
                 return $this->regionTransformer;
             case RecommendationTransformer::class:
                 return $this->recommendationTransformer;
+            case SubscriptionTransformer::class:
+                return $this->subscriptionTransformer;
             default:
                 throw new InvalidArgumentException("Transformer $transformer not found");
         }
