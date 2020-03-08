@@ -24,9 +24,26 @@ class ReportFilter extends ModelFilter
                         'Recommendation',
                         'Recommendation.RecommendID',
                         '=',
-                        'CompanyDetail.RecommendID',
-                        'inner'
+                        'CompanyDetail.RecommendID'
                     )->whereIn('Recommendation.Recommendation', $this->input('recommendation'));
+                }
+                if ($this->input('sector')) {
+                    $query->join(
+                        'IndustryDetail',
+                        'IndustryDetail.CompanyID',
+                        '=',
+                        'Company.CompanyID'
+                    )->join(
+                        'Industry',
+                        'Industry.IndustryID',
+                        '=',
+                        'IndustryDetail.IndustryID'
+                    )->join(
+                        'GICS_Sector',
+                        'GICS_Sector.GICS_SectorId',
+                        '=',
+                        'Industry.GICS_SectorId'
+                    )->whereIn('GICS_Sector.GICS_Sector', $this->input('sector'));
                 }
             }
         );
@@ -55,7 +72,7 @@ class ReportFilter extends ModelFilter
      * @param array $values
      * @return ReportFilter|Builder
      */
-    public function recommendation($values)
+    public function recommendation(array $values)
     {
         if ($this->input('company')) {
             return null;
@@ -64,6 +81,30 @@ class ReportFilter extends ModelFilter
                 'recommendations',
                 function (Builder $query) use ($values) {
                     $query->whereIn('Recommendation.Recommendation', $values);
+                }
+            );
+        }
+    }
+
+    public function sector(array $values)
+    {
+        if ($this->input('company')) {
+            return null;
+        } else {
+            return $this->whereHas(
+                'companies',
+                function (Builder $query) use ($values) {
+                    $query->whereHas(
+                        'industries',
+                        function (Builder $query) use ($values) {
+                            $query->whereHas(
+                                'sector',
+                                function (Builder $query) use ($values) {
+                                    $query->whereIn('GICS_Sector.GICS_Sector', $values);
+                                }
+                            );
+                        }
+                    );
                 }
             );
         }
