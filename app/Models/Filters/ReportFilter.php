@@ -26,11 +26,7 @@ class ReportFilter extends ModelFilter
                         '=',
                         'CompanyDetail.RecommendID',
                         'inner'
-                    )->where(
-                        function ($query) use ($values) {
-                            $query->whereIn('Recommendation.Recommendation', $this->input('recommendation'));
-                        }
-                    );
+                    )->whereIn('Recommendation.Recommendation', $this->input('recommendation'));
                 }
             }
         );
