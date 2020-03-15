@@ -87,7 +87,7 @@ class SubscriptionController
     public function store(Request $request)
     {
         Subscription::validate($request);
-        $subscription = Subscription::store($request->get('type'), $request->get('id'), $request->user()->id);
+        $subscription = $this->subscriptionRepository->store($request->get('type'), $request->get('id'), $request->user()->id);
         return $this->singleView($subscription, $this->transformerFactory->make(SubscriptionTransformer::class));
     }
 

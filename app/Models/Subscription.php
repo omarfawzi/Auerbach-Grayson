@@ -24,22 +24,6 @@ class Subscription extends Model
     }
 
     /**
-     * @param string $subscribableType
-     * @param string $subscribableId
-     * @param string $userId
-     * @return Subscription
-     */
-    public static function store(string $subscribableType, string $subscribableId, string $userId): Subscription
-    {
-        $subscription = new Subscription();
-        $subscription->subscribable_id = $subscribableId;
-        $subscription->subscribable_type = $subscribableType;
-        $subscription->user_id = $userId;
-        $subscription->save();
-        return $subscription;
-    }
-
-    /**
      * @param Request $request
      */
     public static function validate(Request $request)
