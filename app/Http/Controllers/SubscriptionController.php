@@ -3,15 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Factories\TransformerFactory;
-use App\Models\SQL\Company;
-use App\Models\SQL\Sector;
 use App\Models\Subscription;
 use App\Repositories\SubscriptionRepository;
 use App\Traits\FractalView;
 use App\Transformers\SubscriptionTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 class SubscriptionController
@@ -89,29 +86,9 @@ class SubscriptionController
      */
     public function store(Request $request)
     {
-        $userId = $request->user()->id;
-        $subscribableId = $request->get('id');
-        $subscribableType = $request->get('type');
-        $query = null;
-        if ($subscribableType == Subscription::COMPANY_SUBSCRIPTION_TYPE) {
-            $query = Company::getTableName() . ',' . Company::getPrimaryKey();
-        }
-        if ($subscribableType == Subscription::SECTOR_SUBSCRIPTION_TYPE) {
-            $query = Sector::getTableName() . ',' . Sector::getPrimaryKey();
-        }
-        $validator = Validator::make(
-            $request->all(['id', 'type']),
-            [
-                'type' => 'required|in:' . implode(',', Subscription::SUBSCRIPTION_TYPES),
-                'id' => 'required|exists:sqlsrv.' . $query
-            ]
-        );
-        $validator->validate();
-        $subscription = new Subscription();
-        $subscription->subscribable_id = $subscribableId;
-        $subscription->subscribable_type = $subscribableType;
-        $subscription->user_id = $userId;
-        $subscription->save();
+        Subscription::validate($request);
+        $subscription = Subscription::store($request->get('type'), $request->get('id'), $request->user()->id);
         return $this->singleView($subscription, $this->transformerFactory->make(SubscriptionTransformer::class));
     }
+
 }
