@@ -1,16 +1,16 @@
 <?php
 
+
 namespace App\Schema\Output;
 
 use OpenApi\Annotations as OA;
 
 /**
- * Class Company
- * @OA\Schema(description="Company Output Description")
- *
+ * Class Subscribable
+ * @OA\Schema(description="Subscribable Output Description")
  * @package App\Schema
  */
-class Company
+class Subscribable
 {
     /**
      * @OA\Property(
@@ -25,20 +25,10 @@ class Company
     /**
      * @OA\Property(
      *     type="string",
-     *     description="Company Name"
+     *     description="Subscribable Name"
      * )
      *
      * @var string $name
      */
     public $name;
-
-    /**
-     * @OA\Property(
-     *     type="string",
-     *     description="Company Ticker"
-     * )
-     *
-     * @var string $ticker
-     */
-    public $ticker;
 }

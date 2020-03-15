@@ -12,7 +12,6 @@ use OpenApi\Annotations as OA;
 class Meta
 {
     /**
-     *
      * @OA\Property(ref="#/components/schemas/Pagination")
      * @var int $total
      */

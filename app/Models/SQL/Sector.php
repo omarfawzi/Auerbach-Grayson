@@ -35,8 +35,7 @@ class Sector extends Model
     {
         return [
             'id' => $this->GICS_SectorId,
-            'name' => $this->GICS_Sector,
-            'subscriptions' => $this->subscriptions->toArray()
+            'name' => $this->GICS_Sector
         ];
     }
 }

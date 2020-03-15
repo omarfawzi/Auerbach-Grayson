@@ -48,8 +48,8 @@ class Company extends Model
     {
         return [
             'id'     => $this->CompanyID,
-            'title'  => $this->Company,
-            'ticker' => $this->getTicker(),
+            'name'   => $this->Company,
+            'ticker' => $this->getTicker()
         ];
     }
 }

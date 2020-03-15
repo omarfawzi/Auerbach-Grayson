@@ -25,10 +25,17 @@ class Subscription
     /**
      * @OA\Property(
      *     type="string",
-     *     description= "Subscribable Name"
+     *     description="Subscribable Type"
      * )
      *
-     * @var string $subscribable
+     * @var string $type
+     */
+    public $type;
+
+    /**
+     * @OA\Property(ref="#/components/schemas/Subscribable")
+     *
+     * @var Subscribable $subscribable
      */
     public $subscribable;
 }
