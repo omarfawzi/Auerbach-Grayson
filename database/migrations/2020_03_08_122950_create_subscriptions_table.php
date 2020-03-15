@@ -31,7 +31,7 @@ class CreateSubscriptionsTable extends Migration
                 $table->integer('subscribable_id');
                 $table->enum('subscribable_type', Subscription::SUBSCRIPTION_TYPES);
                 $table->unsignedInteger('user_id');
-                $table->primary(['subscribable_id','subscribable_type']);
+                $table->unique(['subscribable_id','subscribable_type']);
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
             }

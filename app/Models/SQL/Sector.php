@@ -13,6 +13,16 @@ class Sector extends Model
 
     protected $primaryKey = 'GICS_SectorId';
 
+    public static function getTableName()
+    {
+        return with(new static)->getTable();
+    }
+
+    public static function getPrimaryKey()
+    {
+        return with(new static)->getKeyName();
+    }
+
     public function subscriptions()
     {
         return $this->morphMany(Subscription::class,'subscribable',null,null,'GICS_SectorId');

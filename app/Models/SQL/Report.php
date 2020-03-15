@@ -9,6 +9,10 @@ class Report extends Model
 {
     use Filterable;
 
+    protected $casts = [
+        'Pages' => 'int'
+    ];
+
     protected $connection = 'sqlsrv';
 
     protected $table = 'Report';
