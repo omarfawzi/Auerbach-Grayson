@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Schema;
+namespace App\Schema\Output;
+
 use OpenApi\Annotations as OA;
 
 /**
- * Class Recommendation
- * @OA\Schema(description="Recommendation Output Description")
- *
+ * Class Sector
+ * @OA\Schema(description="Sector Output Description")
  * @package App\Schema
  */
-class Recommendation
+class Sector
 {
     /**
      * @OA\Property(
@@ -24,7 +24,7 @@ class Recommendation
     /**
      * @OA\Property(
      *     type="string",
-     *     description="Recommendation Name"
+     *     description= "Sector Name"
      * )
      *
      * @var string $name

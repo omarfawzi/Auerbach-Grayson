@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Schema;
+namespace App\Schema\Output;
+
 use OpenApi\Annotations as OA;
+
 /**
  * Class Company
  * @OA\Schema(description="Company Output Description")
