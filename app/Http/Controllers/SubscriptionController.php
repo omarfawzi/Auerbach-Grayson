@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Factories\TransformerFactory;
-use App\Models\Subscription;
 use App\Repositories\SubscriptionRepository;
 use App\Traits\FractalView;
 use App\Transformers\SubscriptionTransformer;
+use App\Validators\SubscriptionValidator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
@@ -21,16 +21,20 @@ class SubscriptionController
     /** @var TransformerFactory $transformerFactory */
     protected $transformerFactory;
 
+    /** @var SubscriptionValidator $subscriptionValidator */
+    protected $subscriptionValidator;
+
     /**
      * SubscriptionController constructor.
-     *
      * @param SubscriptionRepository $subscriptionRepository
      * @param TransformerFactory $transformerFactory
+     * @param SubscriptionValidator $subscriptionValidator
      */
-    public function __construct(SubscriptionRepository $subscriptionRepository, TransformerFactory $transformerFactory)
+    public function __construct(SubscriptionRepository $subscriptionRepository, TransformerFactory $transformerFactory, SubscriptionValidator $subscriptionValidator)
     {
         $this->subscriptionRepository = $subscriptionRepository;
         $this->transformerFactory = $transformerFactory;
+        $this->subscriptionValidator = $subscriptionValidator;
     }
 
 
@@ -86,7 +90,7 @@ class SubscriptionController
      */
     public function store(Request $request)
     {
-        Subscription::validate($request);
+        $this->subscriptionValidator->validate($request);
         $subscription = $this->subscriptionRepository->store($request->get('type'), $request->get('id'), $request->user()->id);
         return $this->singleView($subscription, $this->transformerFactory->make(SubscriptionTransformer::class));
     }
