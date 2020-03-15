@@ -71,7 +71,6 @@ class SubscriptionController
      *     summary="Add Subscription",
      *     tags={"Subscriptions"},
      *     @OA\RequestBody(
-     *        request="Subscription",
      *        @OA\MediaType(mediaType="application/json",@OA\Schema(ref="#/components/schemas/SubscriptionInput"))
      *     ),
      *     @OA\Response(
