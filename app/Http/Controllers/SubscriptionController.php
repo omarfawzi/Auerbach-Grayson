@@ -61,7 +61,7 @@ class SubscriptionController
      */
     public function index(Request $request): JsonResponse
     {
-        $subscriptions = $this->subscriptionRepository->getSubscriptions($request->user()->id, $request->get('limit', config('api.defaults.limit')));
+        $subscriptions = $this->subscriptionRepository->getSubscriptions($request->user()->id, $request->get('limit', config('api.defaults.limit')), $request->all());
         return $this->listView($subscriptions, $this->transformerFactory->make(SubscriptionTransformer::class));
     }
 

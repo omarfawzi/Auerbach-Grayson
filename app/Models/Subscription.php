@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
 class Subscription extends Model
 {
+    use Filterable;
+
     public const SECTOR_SUBSCRIPTION_TYPE = 'sector';
 
     public const COMPANY_SUBSCRIPTION_TYPE = 'company';

@@ -10,11 +10,12 @@ class SubscriptionRepository
     /**
      * @param int $userId
      * @param int $limit
+     * @param array $filters
      * @return LengthAwarePaginator
      */
-    public function getSubscriptions(int $userId , int $limit) : LengthAwarePaginator
+    public function getSubscriptions(int $userId , int $limit , array $filters = []) : LengthAwarePaginator
     {
-        return Subscription::where('user_id',$userId)->paginate($limit);
+        return Subscription::filter($filters)->where('user_id',$userId)->paginate($limit);
     }
 
     /**
