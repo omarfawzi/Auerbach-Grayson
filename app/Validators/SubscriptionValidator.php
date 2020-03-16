@@ -17,12 +17,14 @@ class SubscriptionValidator
     public function validate(Request $request)
     {
         $subscribableType = $request->get('type');
-        $query = null;
+        $subscribableId = $request->get('id');
         if ($subscribableType == Subscription::COMPANY_SUBSCRIPTION_TYPE) {
-            $query = Company::getTableName() . ',' . Company::getPrimaryKey();
+            $tableName = Company::getTableName();
+            $primaryKey = Company::getPrimaryKey();
         }
         if ($subscribableType == Subscription::SECTOR_SUBSCRIPTION_TYPE) {
-            $query = Sector::getTableName() . ',' . Sector::getPrimaryKey();
+            $tableName = Sector::getTableName();
+            $primaryKey = Sector::getPrimaryKey();
         }
         $validator = Validator::make(
             $request->all(['type']),
@@ -32,9 +34,10 @@ class SubscriptionValidator
         );
         $validator->validate();
         $validator = Validator::make(
-            $request->all(['id']),
+            $request->all(['id', 'type']),
             [
-                'id' => 'required|exists:sqlsrv.' . $query
+                'id' => "required|exists:sqlsrv.$tableName,$primaryKey|unique:subscriptions,subscribable_id,NULL,id,subscribable_type,$subscribableType",
+                'type' => "unique:subscriptions,subscribable_type,NULL,id,subscribable_id,$subscribableId"
             ]
         );
         $validator->validate();
