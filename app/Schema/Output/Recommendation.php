@@ -8,7 +8,7 @@ use OpenApi\Annotations as OA;
  * Class Recommendation
  * @OA\Schema(description="Recommendation Output Description")
  *
- * @package App\Schema
+ * @package App\Schema\Output
  */
 class Recommendation
 {

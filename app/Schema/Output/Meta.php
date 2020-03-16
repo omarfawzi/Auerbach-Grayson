@@ -7,7 +7,7 @@ use OpenApi\Annotations as OA;
 /**
  * Class Meta
  * @OA\Schema(description="Meta Body")
- * @package App\Schema
+ * @package App\Schema\Output
  */
 class Meta
 {

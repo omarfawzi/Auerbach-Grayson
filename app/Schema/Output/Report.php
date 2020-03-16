@@ -7,7 +7,7 @@ use OpenApi\Annotations as OA;
 /**
  * Class Report
  * @OA\Schema(description="Report Output Description")
- * @package App\Schema
+ * @package App\Schema\Output
  */
 class Report
 {

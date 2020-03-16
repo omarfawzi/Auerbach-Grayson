@@ -7,7 +7,7 @@ use OpenApi\Annotations as OA;
 /**
  * Class Sector
  * @OA\Schema(description="Sector Output Description")
- * @package App\Schema
+ * @package App\Schema\Output
  */
 class Sector
 {

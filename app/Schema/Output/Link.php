@@ -7,7 +7,7 @@ use OpenApi\Annotations as OA;
 /**
  * Class Link
  * @OA\Schema(description="Link inside pagination")
- * @package App\Schema
+ * @package App\Schema\Output
  */
 class Link
 {

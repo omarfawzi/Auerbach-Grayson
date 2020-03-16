@@ -7,7 +7,7 @@ use OpenApi\Annotations as OA;
 /**
  * Class Region
  * @OA\Schema(description="Region Output Description")
- * @package App\Schema
+ * @package App\Schema\Output
  */
 class Region
 {

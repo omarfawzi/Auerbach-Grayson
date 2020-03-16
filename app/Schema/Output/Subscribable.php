@@ -8,7 +8,7 @@ use OpenApi\Annotations as OA;
 /**
  * Class Subscribable
  * @OA\Schema(description="Subscribable Output Description")
- * @package App\Schema
+ * @package App\Schema\Output
  */
 class Subscribable
 {

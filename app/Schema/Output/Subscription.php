@@ -8,7 +8,7 @@ use OpenApi\Annotations as OA;
 /**
  * Class Subscription
  * @OA\Schema(description="Subscriptions Output Description")
- * @package App\Schema
+ * @package App\Schema\Output
  */
 class Subscription
 {

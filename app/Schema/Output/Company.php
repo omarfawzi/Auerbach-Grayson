@@ -8,7 +8,7 @@ use OpenApi\Annotations as OA;
  * Class Company
  * @OA\Schema(description="Company Output Description")
  *
- * @package App\Schema
+ * @package App\Schema\Output
  */
 class Company
 {

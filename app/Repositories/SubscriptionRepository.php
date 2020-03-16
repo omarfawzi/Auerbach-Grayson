@@ -33,4 +33,12 @@ class SubscriptionRepository
         $subscription->save();
         return $subscription;
     }
+
+    /**
+     * @param int $id
+     */
+    public function destroy(int $id) : void
+    {
+        Subscription::destroy($id);
+    }
 }

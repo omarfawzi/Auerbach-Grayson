@@ -7,7 +7,7 @@ use OpenApi\Annotations as OA;
 /**
  * Class ListParams
  * @OA\Schema(description="Default Parameters For List View")
- * @package App\Schema
+ * @package App\Schema\Output
  */
 class ListParams
 {

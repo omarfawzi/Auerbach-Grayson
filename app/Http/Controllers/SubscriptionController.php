@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Factories\TransformerFactory;
 use App\Repositories\SubscriptionRepository;
 use App\Traits\FractalView;
+use App\Transformers\MessageTransformer;
 use App\Transformers\SubscriptionTransformer;
 use App\Validators\SubscriptionValidator;
 use Illuminate\Http\JsonResponse;
@@ -92,6 +93,32 @@ class SubscriptionController
         $this->subscriptionValidator->validate($request);
         $subscription = $this->subscriptionRepository->store($request->get('type'), $request->get('id'), $request->user()->id);
         return $this->singleView($subscription, $this->transformerFactory->make(SubscriptionTransformer::class));
+    }
+
+    /**
+     * @OA\Delete(
+     *     path="/subscriptions",
+     *     summary="Remove Subscription",
+     *     tags={"Subscriptions"},
+     *     @OA\Parameter(in="path",name="id",required=true,@OA\Schema(type="number")),
+     *     @OA\Response(
+     *        response="200",
+     *        description="Remove Subscription",
+     *        @OA\MediaType(
+     *           mediaType="application/json",
+     *           @OA\Schema(
+     *             @OA\Property(property="data",ref="#/components/schemas/Message")
+     *          )
+     *       )
+     *     )
+     * )
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function destroy(int $id)
+    {
+        $this->subscriptionRepository->destroy($id);
+        return $this->singleView('Unsubscribed Succesfully',$this->transformerFactory->make(MessageTransformer::class));
     }
 
 }
