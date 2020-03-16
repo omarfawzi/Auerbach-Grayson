@@ -118,7 +118,7 @@ class SubscriptionController
     public function destroy(int $id)
     {
         $this->subscriptionRepository->destroy($id);
-        return $this->singleView('Unsubscribed Succesfully',$this->transformerFactory->make(MessageTransformer::class));
+        return $this->singleView('Unsubscribed Successfully',$this->transformerFactory->make(MessageTransformer::class));
     }
 
 }
