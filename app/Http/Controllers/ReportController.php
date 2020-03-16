@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Factories\TransformerFactory;
 use App\Repositories\ReportRepository;
+use App\Repositories\ReportViewRepository;
 use App\Traits\FractalView;
 use App\Transformers\ReportTransformer;
 use Illuminate\Http\JsonResponse;
@@ -17,18 +18,22 @@ class ReportController
     /** @var ReportRepository $reportRepository */
     protected $reportRepository;
 
+    /** @var ReportViewRepository $reportViewRepository */
+    protected $reportViewRepository;
+
     /** @var TransformerFactory $transformerFactory */
     protected $transformerFactory;
 
     /**
      * ReportController constructor.
-     *
-     * @param ReportRepository   $reportRepository
+     * @param ReportRepository $reportRepository
+     * @param ReportViewRepository $reportViewRepository
      * @param TransformerFactory $transformerFactory
      */
-    public function __construct(ReportRepository $reportRepository, TransformerFactory $transformerFactory)
+    public function __construct(ReportRepository $reportRepository, ReportViewRepository $reportViewRepository, TransformerFactory $transformerFactory)
     {
-        $this->reportRepository   = $reportRepository;
+        $this->reportRepository = $reportRepository;
+        $this->reportViewRepository = $reportViewRepository;
         $this->transformerFactory = $transformerFactory;
     }
 
@@ -88,12 +93,15 @@ class ReportController
      *      )
      *    )
      * )
+     * @param Request $request
      * @param int $id
      * @return JsonResponse
      */
-    public function show(int $id): JsonResponse
+    public function show(Request $request , int $id): JsonResponse
     {
         $report = $this->reportRepository->getReport($id);
+
+        $this->reportViewRepository->store($request->user()->id, $id);
 
         return $this->singleView($report, $this->transformerFactory->make(ReportTransformer::class));
     }
