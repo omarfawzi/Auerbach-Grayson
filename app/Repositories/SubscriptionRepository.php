@@ -20,11 +20,11 @@ class SubscriptionRepository
 
     /**
      * @param string $subscribableType
-     * @param string $subscribableId
+     * @param int $subscribableId
      * @param string $userId
      * @return Subscription
      */
-    public function store(string $subscribableType, string $subscribableId, string $userId): Subscription
+    public function store(string $subscribableType, int $subscribableId, string $userId): Subscription
     {
         $subscription = new Subscription();
         $subscription->subscribable_id = $subscribableId;
