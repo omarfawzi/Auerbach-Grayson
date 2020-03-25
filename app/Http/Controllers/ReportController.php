@@ -91,6 +91,14 @@ class ReportController
      *           @OA\Property(property="data",ref="#/components/schemas/Report")
      *        )
      *      )
+     *    ),
+     *    @OA\Response(
+     *         response="404",
+     *         description="Not Found",
+     *         @OA\MediaType(
+     *           mediaType="application/json",
+     *           @OA\Property(ref="#/components/schemas/NotFoundException")
+     *        )
      *    )
      * )
      * @param Request $request

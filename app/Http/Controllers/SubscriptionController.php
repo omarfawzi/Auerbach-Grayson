@@ -111,7 +111,15 @@ class SubscriptionController
      *             @OA\Property(property="data",ref="#/components/schemas/Message")
      *          )
      *       )
-     *     )
+     *     ),
+     *     @OA\Response(
+     *         response="404",
+     *         description="Not Found",
+     *         @OA\MediaType(
+     *           mediaType="application/json",
+     *           @OA\Property(ref="#/components/schemas/NotFoundException")
+     *        )
+     *    )
      * )
      * @param int $id
      * @return JsonResponse
