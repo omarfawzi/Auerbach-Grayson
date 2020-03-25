@@ -11,6 +11,7 @@ use App\Transformers\ReportTransformer;
 use App\Transformers\SectorTransformer;
 use App\Transformers\SubscriptionTransformer;
 use App\Transformers\TokenTransformer;
+use App\Transformers\TypeTransformer;
 use App\Transformers\UserTransformer;
 use InvalidArgumentException;
 use League\Fractal\TransformerAbstract;
@@ -47,6 +48,9 @@ class TransformerFactory
     /** @var SubscriptionTransformer $subscriptionTransformer */
     protected $subscriptionTransformer;
 
+    /** @var TypeTransformer $typeTransformer */
+    protected $typeTransformer;
+
     /**
      * TransformerFactory constructor.
      *
@@ -60,6 +64,7 @@ class TransformerFactory
      * @param RegionTransformer         $regionTransformer
      * @param RecommendationTransformer $recommendationTransformer
      * @param SubscriptionTransformer   $subscriptionTransformer
+     * @param TypeTransformer           $typeTransformer
      */
     public function __construct(
         UserTransformer $userTransformer,
@@ -71,7 +76,8 @@ class TransformerFactory
         SectorTransformer $sectorTransformer,
         RegionTransformer $regionTransformer,
         RecommendationTransformer $recommendationTransformer,
-        SubscriptionTransformer $subscriptionTransformer
+        SubscriptionTransformer $subscriptionTransformer,
+        TypeTransformer $typeTransformer
     ) {
         $this->userTransformer           = $userTransformer;
         $this->errorTransformer          = $errorTransformer;
@@ -83,6 +89,7 @@ class TransformerFactory
         $this->regionTransformer         = $regionTransformer;
         $this->recommendationTransformer = $recommendationTransformer;
         $this->subscriptionTransformer   = $subscriptionTransformer;
+        $this->typeTransformer           = $typeTransformer;
     }
 
 
@@ -114,6 +121,8 @@ class TransformerFactory
                 return $this->recommendationTransformer;
             case SubscriptionTransformer::class:
                 return $this->subscriptionTransformer;
+            case TypeTransformer::class:
+                return $this->typeTransformer;
             default:
                 throw new InvalidArgumentException("Transformer $transformer not found");
         }
