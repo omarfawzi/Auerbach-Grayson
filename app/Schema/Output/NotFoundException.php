@@ -31,5 +31,5 @@ class NotFoundException
      *
      * @var string $message
      */
-    public $id;
+    public $status;
 }
