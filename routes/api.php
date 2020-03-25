@@ -44,6 +44,11 @@ $router->group(['prefix' => 'api'], function (Router $router) {
             $router->post('/', 'SubscriptionController@store');
             $router->delete('/', 'SubscriptionController@destroy');
         });
+
+        $router->group(['prefix'=>'types'], function (Router $router) {
+            $router->get('/', 'TypeController@index');
+        });
+
     });
 
 });
