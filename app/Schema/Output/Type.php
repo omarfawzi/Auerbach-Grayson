@@ -13,6 +13,16 @@ class Type
 {
     /**
      * @OA\Property(
+     *     type="integer",
+     *     description="ID"
+     * )
+     *
+     * @var int $id
+     */
+    public $id;
+
+    /**
+     * @OA\Property(
      *     type="string",
      *     description= "Type Name"
      * )
