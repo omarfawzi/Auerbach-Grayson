@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
 class Subscription extends Model
 {
-    protected $connection = 'mysql';
+    use Filterable;
 
     public const SECTOR_SUBSCRIPTION_TYPE = 'sector';
 
@@ -17,8 +18,13 @@ class Subscription extends Model
         self::COMPANY_SUBSCRIPTION_TYPE
     ];
 
+    protected $connection = 'mysql';
+
     public function subscribable()
     {
+        if ($this->getAttribute('subscribable_type') == self::SECTOR_SUBSCRIPTION_TYPE) {
+            $this->setAttribute('subscribable_id', strval($this->getAttribute('subscribable_id')));
+        }
         return $this->morphTo();
     }
 

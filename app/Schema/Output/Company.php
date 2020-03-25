@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Schema;
+namespace App\Schema\Output;
+
 use OpenApi\Annotations as OA;
+
 /**
  * Class Company
  * @OA\Schema(description="Company Output Description")
  *
- * @package App\Schema
+ * @package App\Schema\Output
  */
 class Company
 {
@@ -19,15 +21,17 @@ class Company
      * @var int $id
      */
     public $id;
+
     /**
      * @OA\Property(
      *     type="string",
-     *     description="Company Title"
+     *     description="Company Name"
      * )
      *
-     * @var string $title
+     * @var string $name
      */
-    public $title;
+    public $name;
+
     /**
      * @OA\Property(
      *     type="string",

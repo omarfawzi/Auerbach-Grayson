@@ -1,12 +1,16 @@
 <?php
 
-namespace App\Schema;
+
+namespace App\Schema\Output;
+
+use OpenApi\Annotations as OA;
+
 /**
- * Class Sector
- * @OA\Schema(description="Sector Output Description")
- * @package App\Schema
+ * Class Subscribable
+ * @OA\Schema(description="Subscribable Output Description")
+ * @package App\Schema\Output
  */
-class Sector
+class Subscribable
 {
     /**
      * @OA\Property(
@@ -21,7 +25,7 @@ class Sector
     /**
      * @OA\Property(
      *     type="string",
-     *     description= "Sector Name"
+     *     description="Subscribable Name"
      * )
      *
      * @var string $name

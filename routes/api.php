@@ -41,6 +41,8 @@ $router->group(['prefix' => 'api'], function (Router $router) {
 
         $router->group(['prefix'=>'subscriptions'], function (Router $router) {
             $router->get('/', 'SubscriptionController@index');
+            $router->post('/', 'SubscriptionController@store');
+            $router->delete('/', 'SubscriptionController@destroy');
         });
     });
 

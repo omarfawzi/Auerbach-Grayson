@@ -13,6 +13,16 @@ class Company extends Model
 
     protected $primaryKey = 'CompanyID';
 
+    public static function getTableName()
+    {
+        return with(new static)->getTable();
+    }
+
+    public static function getPrimaryKey()
+    {
+        return with(new static)->getKeyName();
+    }
+
     /**
      * @return string
      */
@@ -38,8 +48,8 @@ class Company extends Model
     {
         return [
             'id'     => $this->CompanyID,
-            'title'  => $this->Company,
-            'ticker' => $this->getTicker(),
+            'name'   => $this->Company,
+            'ticker' => $this->getTicker()
         ];
     }
 }

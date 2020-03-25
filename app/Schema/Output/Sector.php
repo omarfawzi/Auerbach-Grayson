@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Schema;
+namespace App\Schema\Output;
 
 use OpenApi\Annotations as OA;
 
 /**
- * Class Region
- * @OA\Schema(description="Region Output Description")
- * @package App\Schema
+ * Class Sector
+ * @OA\Schema(description="Sector Output Description")
+ * @package App\Schema\Output
  */
-class Region
+class Sector
 {
     /**
      * @OA\Property(
@@ -24,7 +24,7 @@ class Region
     /**
      * @OA\Property(
      *     type="string",
-     *     description= "Region Name"
+     *     description= "Sector Name"
      * )
      *
      * @var string $name

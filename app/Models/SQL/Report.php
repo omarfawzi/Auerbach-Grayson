@@ -2,12 +2,17 @@
 
 namespace App\Models\SQL;
 
+use App\Models\ReportView;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
 class Report extends Model
 {
     use Filterable;
+
+    protected $casts = [
+        'Pages' => 'int'
+    ];
 
     protected $connection = 'sqlsrv';
 
@@ -35,13 +40,18 @@ class Report extends Model
         return $this->hasManyThrough(Recommendation::class,CompanyDetail::class,'ReportID','RecommendID','ReportID','RecommendID');
     }
 
+    public function views()
+    {
+        return $this->hasMany(ReportView::class,'report_id','ReportID');
+    }
+
     /**
      * @return array
      */
     public function toArray()
     {
         return [
-            'id'    => $this->ReportID,
+            'id' => $this->ReportID,
             'title' => $this->Title,
             'synopsis' => $this->Synopsis,
             'date' => $this->ReportDate,
