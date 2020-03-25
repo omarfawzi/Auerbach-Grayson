@@ -125,12 +125,14 @@ class ReportFilter extends ModelFilter
     }
 
     /**
-     * @param string $title
+     * @param string $searchKey
      * @return ReportFilter|Builder
      */
-    public function title(string $title)
+    public function searchKey(string $searchKey)
     {
-        return $this->where('title', 'like', "%$title%");
+        return $this->where('Title', 'like', "%$searchKey%")
+            ->orWhere('FirstLine','like',"%$searchKey%")
+            ->orWhere('Synopsis','like',"%$searchKey%");
     }
 
     /**
