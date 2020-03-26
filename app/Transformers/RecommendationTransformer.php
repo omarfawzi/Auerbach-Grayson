@@ -13,6 +13,9 @@ class RecommendationTransformer extends TransformerAbstract
      */
     public function transform(Recommendation $recommendation) : array
     {
-        return  $recommendation->toArray();
+        return [
+            'id'   => $recommendation->RecommendID,
+            'name' => $recommendation->Recommendation,
+        ];
     }
 }

@@ -121,12 +121,14 @@ class SubscriptionController
      *        )
      *    )
      * )
-     * @param int $id
+     * @param int     $id
+     * @param Request $request
      * @return JsonResponse
      */
-    public function destroy(int $id)
+    public function destroy(Request $request, int $id)
     {
-        $this->subscriptionRepository->destroy($id);
+        $this->subscriptionRepository->destroy($request->user()->id, $id);
+
         return $this->singleView('Unsubscribed Successfully',$this->transformerFactory->make(MessageTransformer::class));
     }
 

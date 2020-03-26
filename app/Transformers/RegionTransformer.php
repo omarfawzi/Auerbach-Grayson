@@ -13,6 +13,9 @@ class RegionTransformer extends TransformerAbstract
      */
     public function transform(Region $region) : array
     {
-        return $region->toArray();
+        return [
+            'id' => $region->RegionId,
+            'name' => $region->Region
+        ];
     }
 }

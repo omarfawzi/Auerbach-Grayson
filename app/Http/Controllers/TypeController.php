@@ -55,8 +55,8 @@ class TypeController
      */
     public function index(Request $request) : JsonResponse
     {
-        $sectors = $this->typeRepository->getTypes($request->get('limit', config('api.defaults.limit')));
+        $types = $this->typeRepository->getTypes($request->get('limit', config('api.defaults.limit')));
 
-        return $this->listView($sectors, $this->transformerFactory->make(TypeTransformer::class));
+        return $this->listView($types, $this->transformerFactory->make(TypeTransformer::class));
     }
 }

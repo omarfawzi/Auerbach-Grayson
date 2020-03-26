@@ -11,15 +11,4 @@ class Recommendation extends Model
     protected $table = 'Recommendation';
 
     protected $primaryKey = 'RecommendID';
-
-    /**
-     * @return array
-     */
-    public function toArray() : array
-    {
-        return [
-            'id'   => $this->RecommendID,
-            'name' => $this->Recommendation,
-        ];
-    }
 }

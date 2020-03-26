@@ -11,12 +11,4 @@ class Type extends Model
     protected $table = 'Type';
 
     protected $primaryKey = 'TypeID';
-
-    public function toArray()
-    {
-        return [
-            'id' => $this->TypeID,
-            'name' => $this->Type
-        ];
-    }
 }

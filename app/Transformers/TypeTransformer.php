@@ -9,6 +9,9 @@ class TypeTransformer extends TransformerAbstract
 {
     public function transform(Type $type)
     {
-        return $type->toArray();
+        return [
+            'id' => $type->TypeID,
+            'name' => $type->Type
+        ];
     }
 }

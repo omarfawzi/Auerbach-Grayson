@@ -11,15 +11,4 @@ class Region extends Model
     protected $table = 'Region';
 
     protected $primaryKey = 'RegionId';
-
-    /**
-     * @return array
-     */
-    public function toArray()
-    {
-        return [
-            'id' => $this->RegionId,
-            'name' => $this->Region
-        ];
-    }
 }

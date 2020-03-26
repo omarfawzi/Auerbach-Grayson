@@ -28,13 +28,4 @@ class Subscription extends Model
         return $this->morphTo();
     }
 
-    public function toArray()
-    {
-        return [
-            'id' => $this->id,
-            'type' => $this->subscribable_type,
-            'subscribable' => optional($this->subscribable)->toArray()
-        ];
-    }
-
 }

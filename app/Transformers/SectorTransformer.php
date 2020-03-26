@@ -13,6 +13,9 @@ class SectorTransformer extends TransformerAbstract
      */
     public function transform(Sector $sector): array
     {
-        return $sector->toArray();
+        return [
+            'id' => $sector->GICS_SectorId,
+            'name' => $sector->GICS_Sector
+        ];
     }
 }

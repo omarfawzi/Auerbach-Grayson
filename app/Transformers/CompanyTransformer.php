@@ -13,6 +13,10 @@ class CompanyTransformer extends TransformerAbstract
      */
     public function transform(Company $company): array
     {
-        return $company->toArray();
+        return [
+            'id'     => $company->CompanyID,
+            'name'   => $company->Company,
+            'ticker' => $company->getTicker()
+        ];
     }
 }

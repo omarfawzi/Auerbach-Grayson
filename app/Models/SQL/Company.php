@@ -2,10 +2,11 @@
 
 namespace App\Models\SQL;
 
+use App\Contracts\Subscribable;
 use App\Models\Subscription;
 use Illuminate\Database\Eloquent\Model;
 
-class Company extends Model
+class Company extends Model implements Subscribable
 {
     protected $connection = 'sqlsrv';
 
@@ -39,17 +40,5 @@ class Company extends Model
     public function subscriptions()
     {
         return $this->morphMany(Subscription::class,'subscribable',null,null,'CompanyID');
-    }
-
-    /**
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return [
-            'id'     => $this->CompanyID,
-            'name'   => $this->Company,
-            'ticker' => $this->getTicker()
-        ];
     }
 }

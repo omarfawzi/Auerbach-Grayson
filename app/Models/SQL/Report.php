@@ -44,20 +44,4 @@ class Report extends Model
     {
         return $this->hasMany(ReportView::class,'report_id','ReportID');
     }
-
-    /**
-     * @return array
-     */
-    public function toArray()
-    {
-        return [
-            'id' => $this->ReportID,
-            'title' => $this->Title,
-            'synopsis' => $this->Synopsis,
-            'date' => $this->ReportDate,
-            'pages' => $this->Pages,
-            'by' => $this->AnalystIndex,
-            'type' => optional($this->type)->Type
-        ];
-    }
 }

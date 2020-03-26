@@ -13,6 +13,14 @@ class ReportTransformer extends TransformerAbstract
      */
     public function transform(Report $report): array
     {
-        return $report->toArray();
+        return [
+            'id' => $report->ReportID,
+            'title' => $report->Title,
+            'synopsis' => $report->Synopsis,
+            'date' => $report->ReportDate,
+            'pages' => $report->Pages,
+            'by' => $report->AnalystIndex,
+            'type' => optional($report->type)->Type
+        ];
     }
 }
