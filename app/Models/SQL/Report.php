@@ -44,4 +44,9 @@ class Report extends Model
     {
         return $this->hasMany(ReportView::class,'report_id','ReportID');
     }
+
+    public function analysts()
+    {
+        return $this->hasManyThrough(Analyst::class,AnalystDetail::class,'ReportID','AnalystID','ReportID','AnalystID');
+    }
 }
