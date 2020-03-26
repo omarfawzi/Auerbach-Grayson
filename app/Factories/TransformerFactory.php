@@ -7,6 +7,7 @@ use App\Transformers\ErrorTransformer;
 use App\Transformers\MessageTransformer;
 use App\Transformers\RecommendationTransformer;
 use App\Transformers\RegionTransformer;
+use App\Transformers\ReportDetailTransformer;
 use App\Transformers\ReportTransformer;
 use App\Transformers\SectorTransformer;
 use App\Transformers\SubscriptionTransformer;
@@ -51,6 +52,9 @@ class TransformerFactory
     /** @var TypeTransformer $typeTransformer */
     protected $typeTransformer;
 
+    /** @var ReportDetailTransformer $reportDetailTransformer */
+    protected $reportDetailTransformer;
+
     /**
      * TransformerFactory constructor.
      *
@@ -65,6 +69,7 @@ class TransformerFactory
      * @param RecommendationTransformer $recommendationTransformer
      * @param SubscriptionTransformer   $subscriptionTransformer
      * @param TypeTransformer           $typeTransformer
+     * @param ReportDetailTransformer   $reportDetailTransformer
      */
     public function __construct(
         UserTransformer $userTransformer,
@@ -77,7 +82,8 @@ class TransformerFactory
         RegionTransformer $regionTransformer,
         RecommendationTransformer $recommendationTransformer,
         SubscriptionTransformer $subscriptionTransformer,
-        TypeTransformer $typeTransformer
+        TypeTransformer $typeTransformer,
+        ReportDetailTransformer $reportDetailTransformer
     ) {
         $this->userTransformer           = $userTransformer;
         $this->errorTransformer          = $errorTransformer;
@@ -90,6 +96,7 @@ class TransformerFactory
         $this->recommendationTransformer = $recommendationTransformer;
         $this->subscriptionTransformer   = $subscriptionTransformer;
         $this->typeTransformer           = $typeTransformer;
+        $this->reportDetailTransformer   = $reportDetailTransformer;
     }
 
 
@@ -123,6 +130,8 @@ class TransformerFactory
                 return $this->subscriptionTransformer;
             case TypeTransformer::class:
                 return $this->typeTransformer;
+            case ReportDetailTransformer::class:
+                return $this->reportDetailTransformer;
             default:
                 throw new InvalidArgumentException("Transformer $transformer not found");
         }

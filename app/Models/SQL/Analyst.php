@@ -11,4 +11,12 @@ class Analyst extends Model
     protected $table = 'Analyst';
 
     protected $primaryKey = 'AnalystID';
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
 }

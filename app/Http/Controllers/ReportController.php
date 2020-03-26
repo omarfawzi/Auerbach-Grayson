@@ -88,7 +88,7 @@ class ReportController
      *        @OA\MediaType(
      *           mediaType="application/json",
      *           @OA\Schema(
-     *           @OA\Property(property="data",ref="#/components/schemas/Report")
+     *           @OA\Property(property="data",ref="#/components/schemas/ReportDetail")
      *        )
      *      )
      *    ),

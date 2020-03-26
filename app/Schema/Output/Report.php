@@ -81,14 +81,4 @@ class Report
      * @var string|null $type
      */
     public $type;
-
-    /**
-     * @OA\Property(
-     *     type="string",
-     *     description="Report Path"
-     * )
-     *
-     * @var string|null $path
-     */
-    public $path;
 }
