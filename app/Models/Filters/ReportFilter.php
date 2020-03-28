@@ -97,6 +97,19 @@ class ReportFilter extends ModelFilter
     }
 
     /**
+     * @param string $searchKey
+     * @return ReportFilter|Builder
+     */
+    public function searchKey(string $searchKey)
+    {
+        return $this->where('Title', 'like', "%$searchKey%")->orWhere('FirstLine', 'like', "%$searchKey%")->orWhere(
+            'Synopsis',
+            'like',
+            "%$searchKey%"
+        );
+    }
+
+    /**
      * @param array $values
      * @return ReportFilter|Builder|null
      */
@@ -125,14 +138,11 @@ class ReportFilter extends ModelFilter
     }
 
     /**
-     * @param string $searchKey
-     * @return ReportFilter|Builder
+     * @return ReportFilter
      */
-    public function searchKey(string $searchKey)
+    public function trending()
     {
-        return $this->where('Title', 'like', "%$searchKey%")
-            ->orWhere('FirstLine','like',"%$searchKey%")
-            ->orWhere('Synopsis','like',"%$searchKey%");
+        return $this->whereDate('ReportDate', '>=', (new DateFactory())->make(config('api.reports.last_trend_date')));
     }
 
     /**

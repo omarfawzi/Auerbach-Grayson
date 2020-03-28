@@ -7,5 +7,8 @@ return [
     ],
     'messages' => [
         'reset_password_email' => 'Password Sent to Email'
+    ],
+    'reports' => [
+        'last_trend_date' => \App\Constants\ReportDateFilter::YEAR
     ]
 ];

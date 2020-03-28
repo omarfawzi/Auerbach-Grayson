@@ -11,7 +11,7 @@ class Report extends Model
     use Filterable;
 
     protected $casts = [
-        'Pages' => 'int'
+        'Pages' => 'int',
     ];
 
     protected $connection = 'sqlsrv';
@@ -48,5 +48,23 @@ class Report extends Model
     public function analysts()
     {
         return $this->hasManyThrough(Analyst::class,AnalystDetail::class,'ReportID','AnalystID','ReportID','AnalystID');
+    }
+
+    /**
+     * @return Sector[]
+     */
+    public function getUniqueSectors() : array
+    {
+        $sectors = [];
+        /** @var Company $company */
+        foreach ($this->companies as $company)
+        {
+            /** @var Industry $industry */
+            foreach ($company->industries as $industry)
+            {
+                $sectors[] = $industry->sector;
+            }
+        }
+        return array_values(array_unique($sectors));
     }
 }

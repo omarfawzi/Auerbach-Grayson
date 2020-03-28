@@ -6,6 +6,7 @@ use App\Factories\TransformerFactory;
 use App\Repositories\ReportRepository;
 use App\Repositories\ReportViewRepository;
 use App\Traits\FractalView;
+use App\Transformers\ReportDetailTransformer;
 use App\Transformers\ReportTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -45,6 +46,7 @@ class ReportController
      *     tags={"Reports"},
      *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/ListParams")),
      *     @OA\Parameter(in="query",name="type",required=false,@OA\Schema(type="string")),
+     *     @OA\Parameter(in="query",name="trending",required=false,@OA\Schema(type="boolean")),
      *     @OA\Parameter(in="query",name="searchKey",required=false,@OA\Schema(type="string")),
      *     @OA\Parameter(in="query",name="date",required=false,@OA\Schema(type="string"),example="today,week,month,year,all"),
      *     @OA\Parameter(in="query",name="country[]",required=false,@OA\Schema(type="array",@OA\Items(type="string"))),
@@ -111,6 +113,6 @@ class ReportController
 
         $this->reportViewRepository->store($request->user()->id, $id);
 
-        return $this->singleView($report, $this->transformerFactory->make(ReportTransformer::class));
+        return $this->singleView($report, $this->transformerFactory->make(ReportDetailTransformer::class));
     }
 }
