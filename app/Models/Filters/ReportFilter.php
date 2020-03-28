@@ -138,14 +138,6 @@ class ReportFilter extends ModelFilter
     }
 
     /**
-     * @return ReportFilter
-     */
-    public function trending()
-    {
-        return $this->whereDate('ReportDate', '>=', (new DateFactory())->make(config('api.reports.last_trend_date')));
-    }
-
-    /**
      * @param string $type
      * @return ReportFilter|Builder
      */
