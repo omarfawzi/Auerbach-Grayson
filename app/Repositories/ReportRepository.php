@@ -28,7 +28,7 @@ class ReportRepository
     {
         /** @var Builder $queryBuilder */
         $queryBuilder = Report::filter($filters)->where('Approved', 1)->orderBy('ReportDate', 'DESC');
-        if (isset($filters['trending'])) {
+        if (isset($filters['trending']) && $filters['trending']) {
             $trendingReportsIds = $this->getTrendingReportsIds($limit);
             $queryBuilder->whereIn('ReportID',$trendingReportsIds);
             $trendingReportsOrder = [];
