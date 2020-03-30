@@ -108,7 +108,7 @@ class ReportFilter extends ModelFilter
                 'LOWER(FirstLine) like ?',
                 ["%$searchKey%"])
             ->orWhereRaw(
-                'LOWER(CAST(Synopsis as varchar(500))) like ?',
+                'LOWER(CAST(Synopsis as varchar(1000))) like ?',
                 ["%$searchKey%"]
             );
     }
