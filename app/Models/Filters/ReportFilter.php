@@ -102,11 +102,15 @@ class ReportFilter extends ModelFilter
      */
     public function searchKey(string $searchKey)
     {
-        return $this->where('Title', 'like', "%$searchKey%")->orWhere('FirstLine', 'like', "%$searchKey%")->orWhere(
-            'Synopsis',
-            'like',
-            "%$searchKey%"
-        );
+        $searchKey = strtolower($searchKey);
+        return $this->whereRaw('LOWER(Title) like ?', ["%$searchKey%"])
+            ->orWhereRaw(
+                'LOWER(FirstLine) like ?',
+                ["%$searchKey%"])
+            ->orWhereRaw(
+                'LOWER(CAST(Synopsis as varchar(500))) like ?',
+                ["%$searchKey%"]
+            );
     }
 
     /**
