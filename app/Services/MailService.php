@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Factories\MailableFactory;
 use App\Models\SQL\Analyst;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\View\View;
 
 class MailService
 {
@@ -21,15 +20,14 @@ class MailService
 
 
     /**
-     * @param array           $to
-     * @param string          $cc
+     * @param array $to
+     * @param string $cc
      * @param Analyst[]|mixed $mailables
-     * @param View            $view
      */
-    public function bulkEmail(array $to, string $cc, array $mailables, View $view)
+    public function bulkEmail(array $to, string $cc, array $mailables)
     {
         foreach ($mailables as $mailable) {
-            Mail::to($to)->cc($cc)->send($this->mailableFactory->make($mailable, $view));
+            Mail::to($to)->cc($cc)->send($this->mailableFactory->make($mailable));
         }
     }
 }
