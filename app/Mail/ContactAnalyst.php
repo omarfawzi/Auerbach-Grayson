@@ -6,7 +6,6 @@ use App\Models\SQL\Analyst;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\View\View;
 
 class ContactAnalyst extends Mailable
 {
@@ -15,19 +14,14 @@ class ContactAnalyst extends Mailable
     /** @var Analyst $analyst */
     protected $analyst;
 
-    /** @var View $analystView */
-    protected $analystView;
-
     /**
      * Create a new message instance.
      *
      * @param Analyst $analyst
-     * @param View    $analystView
      */
-    public function __construct(Analyst $analyst, View $analystView)
+    public function __construct(Analyst $analyst)
     {
-        $this->analyst     = $analyst;
-        $this->analystView = $analystView;
+        $this->analyst = $analyst;
     }
 
     /**
@@ -37,6 +31,6 @@ class ContactAnalyst extends Mailable
      */
     public function build()
     {
-        return $this->view($this->analystView->getName(), $this->analystView->getData());
+        return $this->view('')->with(['analyst' => $this->analyst]);
     }
 }

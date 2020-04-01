@@ -133,7 +133,9 @@ class ReportController
      */
     public function contactAnalyst(Request $request , int $id)
     {
+        $report = $this->reportRepository->getReport($id);
 
+        $this->mailService->bulkEmail([],env('ANALYST_MAIL_CC'),$report->analysts);
     }
 
     /**
