@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "074c4d18abc7fe4fcaed81a41db8658c",
+    "content-hash": "1043acbd72a64f5728f5766ad26d1df2",
     "packages": [
         {
             "name": "darkaonline/swagger-lume",
@@ -6591,7 +6591,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1.3"
+        "php": "^7.2"
     },
     "platform-dev": []
 }
