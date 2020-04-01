@@ -30,6 +30,7 @@ $app->configure('swagger-lume');
 // $app->configure('broadcasting');
 // $app->configure('cache');
 $app->configure('database');
+$app->configure('mail');
 // $app->configure('filesystems');
 // $app->configure('logging');
 // $app->configure('queue');
@@ -98,6 +99,11 @@ $app->register(\Spatie\QueryBuilder\QueryBuilderServiceProvider::class);
 $app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(\EloquentFilter\LumenServiceProvider::class);
 $app->register(\SwaggerLume\ServiceProvider::class);
+$app->register(Illuminate\Mail\MailServiceProvider::class);
+
+$app->alias('mailer', Illuminate\Mail\Mailer::class);
+$app->alias('mailer', Illuminate\Contracts\Mail\Mailer::class);
+$app->alias('mailer', Illuminate\Contracts\Mail\MailQueue::class);
 
 if ($app->environment() == 'local') {
     $app->register(\Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Factories\TransformerFactory;
 use App\Repositories\ReportRepository;
 use App\Repositories\ReportViewRepository;
+use App\Services\MailService;
 use App\Traits\FractalView;
 use App\Transformers\ReportDetailTransformer;
 use App\Transformers\ReportTransformer;
@@ -25,17 +26,27 @@ class ReportController
     /** @var TransformerFactory $transformerFactory */
     protected $transformerFactory;
 
+    /** @var MailService $mailService */
+    protected $mailService;
+
     /**
      * ReportController constructor.
-     * @param ReportRepository $reportRepository
+     *
+     * @param ReportRepository     $reportRepository
      * @param ReportViewRepository $reportViewRepository
-     * @param TransformerFactory $transformerFactory
+     * @param TransformerFactory   $transformerFactory
+     * @param MailService          $mailService
      */
-    public function __construct(ReportRepository $reportRepository, ReportViewRepository $reportViewRepository, TransformerFactory $transformerFactory)
-    {
-        $this->reportRepository = $reportRepository;
+    public function __construct(
+        ReportRepository $reportRepository,
+        ReportViewRepository $reportViewRepository,
+        TransformerFactory $transformerFactory,
+        MailService $mailService
+    ) {
+        $this->reportRepository     = $reportRepository;
         $this->reportViewRepository = $reportViewRepository;
-        $this->transformerFactory = $transformerFactory;
+        $this->transformerFactory   = $transformerFactory;
+        $this->mailService          = $mailService;
     }
 
 
@@ -114,5 +125,23 @@ class ReportController
         $this->reportViewRepository->store($request->user()->id, $id);
 
         return $this->singleView($report, $this->transformerFactory->make(ReportDetailTransformer::class));
+    }
+
+    /**
+     * @param Request $request
+     * @param int     $id
+     */
+    public function contactAnalyst(Request $request , int $id)
+    {
+
+    }
+
+    /**
+     * @param Request $request
+     * @param int     $id
+     */
+    public function emailAnalyst(Request $request , int $id)
+    {
+
     }
 }
