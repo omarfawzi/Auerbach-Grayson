@@ -43,15 +43,39 @@ class CompanyDetailTransformer extends TransformerAbstract
      */
     public function transform(Company $company, int $reportId = null)
     {
-        $sector         = optional($company->industries()->first())->sector;
-        $recommendation = $company->recommendations()->where('ReportID', $reportId)->first();
-
         return array_merge(
             $this->companyTransformer->transform($company),
             [
-                'sector'         => $sector instanceof Sector ? $this->sectorTransformer->transform($sector) : null,
-                'recommendation' => $recommendation instanceof Recommendation ? $this->recommendationTransformer->transform($recommendation) : null
+                'sector'         => $this->getSector($company) instanceof Sector ? $this->sectorTransformer->transform(
+                    $this->getSector($company)
+                ) : null,
+                'recommendation' => $this->getRecommendation($company, $reportId) instanceof Recommendation
+                    ? $this->recommendationTransformer->transform($this->getRecommendation($company, $reportId)) : null,
             ]
         );
+    }
+
+    /**
+     * @param Company  $company
+     * @param int|null $reportId
+     * @return Recommendation|null
+     */
+    private function getRecommendation(Company $company, int $reportId = null): ?Recommendation
+    {
+        $recommendation = $company->recommendations();
+        if ($reportId) {
+            $recommendation->where('ReportID', $reportId);
+        }
+
+        return $recommendation->first();
+    }
+
+    /**
+     * @param Company $company
+     * @return Sector|null
+     */
+    private function getSector(Company $company): ?Sector
+    {
+        return optional($company->industries()->first())->sector;
     }
 }
