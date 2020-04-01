@@ -20,7 +20,7 @@ class MailableFactory
         switch (true)
         {
             case $mailable instanceof Analyst:
-                return new ContactAnalyst($mailable , $view);
+                return new ContactAnalyst($mailable , $view->with(['analyst'=>$mailable]));
             default:
                 throw new InvalidArgumentException("Mailable not found");
         }
