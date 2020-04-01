@@ -52,24 +52,17 @@ class ReportDetailTransformer extends TransformerAbstract
         return array_merge(
             $this->reportTransformer->transform($report),
             [
-                'path'            => $report->FileLocation,
-                'sectors'         => array_map(
-                    function (Sector $sector) {
-                        return $this->sectorTransformer->transform($sector);
-                    },
-                    $report->getUniqueSectors()
-                ),
-                'companies'       => $report->companies->map(
-                    function (Company $company) {
-                        return $this->companyTransformer->transform($company);
-                    }
-                ),
-                'recommendations' => $report->recommendations->map(
-                    function (Recommendation $recommendation) {
-                        return $this->recommendationTransformer->transform($recommendation);
-                    }
-                ),
-                'summary'         => $report->FirstLine,
+                'path'           => $report->FileLocation,
+                'sector'         => $report->getSector() instanceof Sector ? $this->sectorTransformer->transform(
+                    $report->getSector()
+                ) : null,
+                'company'        => $report->companies()->first() instanceof Company
+                    ? $this->companyTransformer->transform(
+                        $report->companies()->first()
+                    ) : null,
+                'recommendation' => $report->recommendations()->first() instanceof Recommendation
+                    ? $this->recommendationTransformer->transform($report->recommendations()->first()) : null,
+                'summary'        => $report->FirstLine,
             ]
         );
     }

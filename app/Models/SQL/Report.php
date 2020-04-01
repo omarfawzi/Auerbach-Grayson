@@ -51,20 +51,19 @@ class Report extends Model
     }
 
     /**
-     * @return Sector[]
+     * @return Sector|null
      */
-    public function getUniqueSectors() : array
+    public function getSector() : ?Sector
     {
-        $sectors = [];
         /** @var Company $company */
         foreach ($this->companies as $company)
         {
             /** @var Industry $industry */
             foreach ($company->industries as $industry)
             {
-                $sectors[] = $industry->sector;
+                return $industry->sector;
             }
         }
-        return array_values(array_unique($sectors));
+        return null;
     }
 }
