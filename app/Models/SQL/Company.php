@@ -41,4 +41,9 @@ class Company extends Model implements Subscribable
     {
         return $this->morphMany(Subscription::class,'subscribable',null,null,'CompanyID');
     }
+
+    public function recommendations()
+    {
+        return $this->hasManyThrough(Recommendation::class,CompanyDetail::class,'CompanyID','RecommendID','CompanyID','RecommendID');
+    }
 }

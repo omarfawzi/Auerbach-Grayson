@@ -25,7 +25,7 @@ class ReportFilter extends ModelFilter
                         'Recommendation',
                         'Recommendation.RecommendID',
                         '=',
-                        'CompanyDetail.RecommendID'
+                        'CompanyReportDetail.RecommendID'
                     )->whereIn('Recommendation.Recommendation', $this->input('recommendation'));
                 }
                 if ($this->input('sector')) {

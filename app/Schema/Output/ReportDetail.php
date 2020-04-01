@@ -21,25 +21,12 @@ class ReportDetail extends Report
     public $path;
 
     /**
-     * @OA\Property(ref="#/components/schemas/Sector")
+     * @OA\Property(type="array",@OA\Items(type="object",ref="#/components/schemas/CompanyDetail"))
      *
-     * @var Sector $sector
+     * @var CompanyDetail[] $companies
      */
-    public $sector;
+    public $companies;
 
-    /**
-     * @OA\Property(ref="#/components/schemas/Company")
-     *
-     * @var Company $company
-     */
-    public $company;
-
-    /**
-     * @OA\Property(ref="#/components/schemas/Recommendation")
-     *
-     * @var Recommendation $recommendation
-     */
-    public $recommendation;
 
     /**
      * @OA\Property(

@@ -49,21 +49,4 @@ class Report extends Model
     {
         return $this->hasManyThrough(Analyst::class,AnalystDetail::class,'ReportID','AnalystID','ReportID','AnalystID');
     }
-
-    /**
-     * @return Sector|null
-     */
-    public function getSector() : ?Sector
-    {
-        /** @var Company $company */
-        foreach ($this->companies as $company)
-        {
-            /** @var Industry $industry */
-            foreach ($company->industries as $industry)
-            {
-                return $industry->sector;
-            }
-        }
-        return null;
-    }
 }

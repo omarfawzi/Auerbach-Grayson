@@ -2,6 +2,7 @@
 
 namespace App\Factories;
 
+use App\Transformers\CompanyDetailTransformer;
 use App\Transformers\CompanyTransformer;
 use App\Transformers\ErrorTransformer;
 use App\Transformers\MessageTransformer;
@@ -55,6 +56,9 @@ class TransformerFactory
     /** @var ReportDetailTransformer $reportDetailTransformer */
     protected $reportDetailTransformer;
 
+    /** @var CompanyDetailTransformer $companyDetailTransformer */
+    protected $companyDetailTransformer;
+
     /**
      * TransformerFactory constructor.
      *
@@ -70,6 +74,7 @@ class TransformerFactory
      * @param SubscriptionTransformer   $subscriptionTransformer
      * @param TypeTransformer           $typeTransformer
      * @param ReportDetailTransformer   $reportDetailTransformer
+     * @param CompanyDetailTransformer  $companyReportDetailTransformer
      */
     public function __construct(
         UserTransformer $userTransformer,
@@ -83,7 +88,8 @@ class TransformerFactory
         RecommendationTransformer $recommendationTransformer,
         SubscriptionTransformer $subscriptionTransformer,
         TypeTransformer $typeTransformer,
-        ReportDetailTransformer $reportDetailTransformer
+        ReportDetailTransformer $reportDetailTransformer,
+        CompanyDetailTransformer $companyDetailTransformer
     ) {
         $this->userTransformer           = $userTransformer;
         $this->errorTransformer          = $errorTransformer;
@@ -97,6 +103,7 @@ class TransformerFactory
         $this->subscriptionTransformer   = $subscriptionTransformer;
         $this->typeTransformer           = $typeTransformer;
         $this->reportDetailTransformer   = $reportDetailTransformer;
+        $this->companyDetailTransformer  = $companyDetailTransformer;
     }
 
 
@@ -132,6 +139,8 @@ class TransformerFactory
                 return $this->typeTransformer;
             case ReportDetailTransformer::class:
                 return $this->reportDetailTransformer;
+            case CompanyDetailTransformer::class:
+                return $this->companyDetailTransformer;
             default:
                 throw new InvalidArgumentException("Transformer $transformer not found");
         }

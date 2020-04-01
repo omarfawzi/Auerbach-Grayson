@@ -3,9 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\SQL\Company;
-use App\Models\SQL\Recommendation;
 use App\Models\SQL\Report;
-use App\Models\SQL\Sector;
 use League\Fractal\TransformerAbstract;
 
 class ReportDetailTransformer extends TransformerAbstract
@@ -13,35 +11,22 @@ class ReportDetailTransformer extends TransformerAbstract
     /** @var ReportTransformer $reportTransformer */
     protected $reportTransformer;
 
-    /** @var CompanyTransformer $companyTransformer */
-    protected $companyTransformer;
-
-    /** @var SectorTransformer $sectorTransformer */
-    protected $sectorTransformer;
-
-    /** @var RecommendationTransformer $recommendationTransformer */
-    protected $recommendationTransformer;
+    /** @var CompanyDetailTransformer $companyDetailTransformer */
+    protected $companyDetailTransformer;
 
     /**
      * ReportDetailTransformer constructor.
      *
-     * @param ReportTransformer         $reportTransformer
-     * @param CompanyTransformer        $companyTransformer
-     * @param SectorTransformer         $sectorTransformer
-     * @param RecommendationTransformer $recommendationTransformer
+     * @param ReportTransformer        $reportTransformer
+     * @param CompanyDetailTransformer $companyDetailTransformer
      */
     public function __construct(
         ReportTransformer $reportTransformer,
-        CompanyTransformer $companyTransformer,
-        SectorTransformer $sectorTransformer,
-        RecommendationTransformer $recommendationTransformer
+        CompanyDetailTransformer $companyDetailTransformer
     ) {
-        $this->reportTransformer         = $reportTransformer;
-        $this->companyTransformer        = $companyTransformer;
-        $this->sectorTransformer         = $sectorTransformer;
-        $this->recommendationTransformer = $recommendationTransformer;
+        $this->reportTransformer        = $reportTransformer;
+        $this->companyDetailTransformer = $companyDetailTransformer;
     }
-
 
     /**
      * @param Report $report
@@ -53,15 +38,9 @@ class ReportDetailTransformer extends TransformerAbstract
             $this->reportTransformer->transform($report),
             [
                 'path'           => $report->FileLocation,
-                'sector'         => $report->getSector() instanceof Sector ? $this->sectorTransformer->transform(
-                    $report->getSector()
-                ) : null,
-                'company'        => $report->companies()->first() instanceof Company
-                    ? $this->companyTransformer->transform(
-                        $report->companies()->first()
-                    ) : null,
-                'recommendation' => $report->recommendations()->first() instanceof Recommendation
-                    ? $this->recommendationTransformer->transform($report->recommendations()->first()) : null,
+                'companies'        => $report->companies->map(function (Company $company) use($report) {
+                    return $this->companyDetailTransformer->transform($company , $report->getKey());
+                }),
                 'summary'        => $report->FirstLine,
             ]
         );
