@@ -128,10 +128,9 @@ class ReportController
     }
 
     /**
-     * @param Request $request
-     * @param int     $id
+     * @param int $id
      */
-    public function contactAnalyst(Request $request , int $id)
+    public function contactAnalyst(int $id)
     {
         $report = $this->reportRepository->getReport($id);
 
