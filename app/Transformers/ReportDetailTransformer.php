@@ -37,11 +37,19 @@ class ReportDetailTransformer extends TransformerAbstract
         return array_merge(
             $this->reportTransformer->transform($report),
             [
-                'path'           => $report->FileLocation,
-                'companies'        => $report->companies->map(function (Company $company) use($report) {
-                    return $this->companyDetailTransformer->transform($company , $report->getKey());
-                }),
-                'summary'        => $report->FirstLine,
+                'path'      => env('REPORT_FETCH_URL').'?'.http_build_query(
+                        [
+                            'R' => $report->getKey(),
+                            'S' => 'PORT',
+                            'F' => 'PDF',
+                        ]
+                    ),
+                'companies' => $report->companies->map(
+                    function (Company $company) use ($report) {
+                        return $this->companyDetailTransformer->transform($company, $report->getKey());
+                    }
+                ),
+                'summary'   => $report->FirstLine,
             ]
         );
     }
