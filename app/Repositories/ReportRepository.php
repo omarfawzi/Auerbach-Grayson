@@ -6,10 +6,26 @@ use App\Factories\DateFactory;
 use App\Models\SQL\Report;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReportRepository
 {
+    /** @var SavedReportRepository $savedReportRepository */
+    protected $savedReportRepository;
+
+    /**
+     * ReportRepository constructor.
+     *
+     * @param SavedReportRepository $savedReportRepository
+     */
+    public function __construct(SavedReportRepository $savedReportRepository)
+    {
+        $this->savedReportRepository = $savedReportRepository;
+    }
+
+
     /**
      * @param int $id
      * @return Report|null
@@ -24,36 +40,53 @@ class ReportRepository
      * @param array    $filters
      * @return LengthAwarePaginator
      */
-    public function getReports(int $limit, array $filters = []) : LengthAwarePaginator
+    public function getReports(int $limit, array $filters = []): LengthAwarePaginator
     {
         /** @var Builder $queryBuilder */
-        $queryBuilder = Report::filter($filters)->where('Approved', 1)->orderBy('ReportDate', 'DESC');
+        $queryBuilder = Report::filter($filters);
         if (isset($filters['trending']) && $filters['trending']) {
-            $trendingReportsIds = $this->getTrendingReportsIds($limit);
-            $queryBuilder->whereIn('ReportID',$trendingReportsIds);
-            $trendingReportsOrder = [];
-            foreach ($trendingReportsIds as $index => $trendingReportsId)
-            {
-                $trendingReportsOrder[$trendingReportsId] = $index;
-            }
-            $sortedCollection = $queryBuilder->get()->sort(
-                function (Report $report) use ($trendingReportsOrder) {
-                    return $trendingReportsOrder[$report->ReportID];
-                }
-            );
-            $paginated        = $sortedCollection->forPage($filters['page'] ?? 1, $limit);
 
-            return new LengthAwarePaginator($paginated, $sortedCollection->count(), $limit);
+            $collection = $this->getTrendingReportsCollection($queryBuilder, $limit);
+            $paginated  = $collection->forPage($filters['page'] ?? 1, $limit);
+
+            return new LengthAwarePaginator($paginated, $collection->count(), $limit);
         } else {
-            return $queryBuilder->paginateFilter($limit);
+            if (isset($filters['saved']) && $filters['saved']) {
+                $queryBuilder->whereIn(
+                    'ReportID',
+                    $this->savedReportRepository->getUserSavedReportsIds(Auth::user()->id)
+                );
+            }
+            return $queryBuilder->where('Approved', 1)->orderBy('ReportDate', 'DESC')->paginateFilter($limit);
         }
+    }
+
+    /**
+     * @param Builder $queryBuilder
+     * @param int     $limit
+     * @return Collection
+     */
+    private function getTrendingReportsCollection(Builder $queryBuilder, int $limit): Collection
+    {
+        $trendingReportsIds = $this->getTrendingReportsIds($limit);
+        $queryBuilder->whereIn('ReportID', $trendingReportsIds)->where('Approved', 1);
+        $trendingReportsOrder = [];
+        foreach ($trendingReportsIds as $index => $trendingReportsId) {
+            $trendingReportsOrder[$trendingReportsId] = $index;
+        }
+
+        return $queryBuilder->get()->sort(
+            function (Report $report) use ($trendingReportsOrder) {
+                return $trendingReportsOrder[$report->ReportID];
+            }
+        );
     }
 
     /**
      * @param int $limit
      * @return array
      */
-    private function getTrendingReportsIds(int $limit) : array
+    private function getTrendingReportsIds(int $limit): array
     {
         return DB::table('report_views')->whereDate(
             'created_at',

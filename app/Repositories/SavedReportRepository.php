@@ -18,4 +18,13 @@ class SavedReportRepository
         $savedReport->user_id = $userId;
         return $savedReport->save();
     }
+
+    /**
+     * @param int $userId
+     * @return int[]
+     */
+    public function getUserSavedReportsIds(int $userId) : array
+    {
+        return SavedReport::select('report_id')->where('user_id',$userId)->get()->pluck('report_id')->toArray();
+    }
 }
