@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\Models\SavedReport;
 use App\Models\SQL\Company;
 use App\Models\SQL\Report;
 use League\Fractal\TransformerAbstract;
@@ -38,12 +39,13 @@ class ReportDetailTransformer extends TransformerAbstract
             $this->reportTransformer->transform($report),
             [
                 'path'      => env('REPORT_FETCH_URL').'?'.http_build_query(
-                    [
-                        'R' => $report->getKey(),
-                        'S' => 'PORT',
-                        'F' => 'PDF',
-                    ]
-                ),
+                        [
+                            'R' => $report->getKey(),
+                            'S' => 'PORT',
+                            'F' => 'PDF',
+                        ]
+                    ),
+                'isSaved'   => $report->isSaved instanceof SavedReport ? true : false,
                 'companies' => $report->companies->map(
                     function (Company $company) use ($report) {
                         return $this->companyDetailTransformer->transform($company, $report->getKey());

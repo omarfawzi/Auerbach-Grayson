@@ -21,6 +21,16 @@ class ReportDetail extends Report
     public $path;
 
     /**
+     * @OA\Property(
+     *     type="boolean",
+     *     description="Report Saved or Not"
+     * )
+     *
+     * @var boolean|null $isSaved
+     */
+    public $isSaved;
+
+    /**
      * @OA\Property(type="array",@OA\Items(type="object",ref="#/components/schemas/CompanyDetail"))
      *
      * @var CompanyDetail[] $companies

@@ -3,8 +3,10 @@
 namespace App\Models\SQL;
 
 use App\Models\ReportView;
+use App\Models\SavedReport;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Report extends Model
 {
@@ -48,5 +50,13 @@ class Report extends Model
     public function analysts()
     {
         return $this->hasManyThrough(Analyst::class,AnalystDetail::class,'ReportID','AnalystID','ReportID','AnalystID');
+    }
+
+    public function isSaved()
+    {
+        return $this->hasOne(SavedReport::class, 'report_id', 'ReportID')->where(
+            'user_id',
+            Auth::user()->id
+        );
     }
 }
