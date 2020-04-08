@@ -38,12 +38,12 @@ class ReportDetailTransformer extends TransformerAbstract
             $this->reportTransformer->transform($report),
             [
                 'path'      => env('REPORT_FETCH_URL').'?'.http_build_query(
-                        [
-                            'R' => $report->getKey(),
-                            'S' => 'PORT',
-                            'F' => 'PDF',
-                        ]
-                    ),
+                    [
+                        'R' => $report->getKey(),
+                        'S' => 'PORT',
+                        'F' => 'PDF',
+                    ]
+                ),
                 'companies' => $report->companies->map(
                     function (Company $company) use ($report) {
                         return $this->companyDetailTransformer->transform($company, $report->getKey());
