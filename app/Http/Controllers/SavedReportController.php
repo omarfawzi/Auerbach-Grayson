@@ -85,7 +85,7 @@ class SavedReportController
 
 
     /**
-     * @OA\Post(
+     * @OA\Delete(
      *     path="/reports/{id}/unsave",
      *     summary="Unsave Report",
      *     tags={"Reports"},

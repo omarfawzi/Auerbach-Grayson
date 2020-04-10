@@ -8,11 +8,12 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 class SectorRepository
 {
     /**
-     * @param int $limit
+     * @param int   $limit
+     * @param array $filters
      * @return LengthAwarePaginator
      */
-    public function getSectors(int $limit) : LengthAwarePaginator
+    public function getSectors(int $limit , array $filters = []) : LengthAwarePaginator
     {
-        return Sector::paginate($limit);
+        return Sector::filter($filters)->paginate($limit);
     }
 }

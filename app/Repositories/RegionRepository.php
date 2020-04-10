@@ -8,11 +8,12 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 class RegionRepository
 {
     /**
-     * @param int $limit
+     * @param int   $limit
+     * @param array $filters
      * @return LengthAwarePaginator
      */
-    public function getRegions(int $limit) : LengthAwarePaginator
+    public function getRegions(int $limit , array $filters = []) : LengthAwarePaginator
     {
-        return Region::paginate($limit);
+        return Region::filter($filters)->paginate($limit);
     }
 }

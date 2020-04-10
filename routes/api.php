@@ -22,7 +22,7 @@ $router->group(['prefix' => 'api'], function (Router $router) {
             $router->get('/', 'ReportController@index');
             $router->get('/{id}', 'ReportController@show');
             $router->post('/{id}/save','SavedReportController@save');
-            $router->post('/{id}/delete','SavedReportController@unsave');
+            $router->delete('/{id}/unsave','SavedReportController@unsave');
             $router->group(['prefix'=>'/{id}/analysts'],function (Router $router){
                 $router->get('/email', 'ReportController@emailAnalyst');
                 $router->get('/contact', 'ReportController@contactAnalyst');

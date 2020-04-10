@@ -4,10 +4,13 @@ namespace App\Models\SQL;
 
 use App\Contracts\Subscribable;
 use App\Models\Subscription;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model implements Subscribable
 {
+    use Filterable;
+
     protected $connection = 'sqlsrv';
 
     protected $table = 'Company';

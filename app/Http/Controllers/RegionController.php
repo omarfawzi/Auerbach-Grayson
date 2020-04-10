@@ -38,6 +38,7 @@ class RegionController
      *     summary="Get Regions",
      *     tags={"Regions"},
      *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/ListParams")),
+     *     @OA\Parameter(in="query",name="name",required=false,@OA\Schema(type="string")),
      *     @OA\Response(
      *        response="200",
      *        description="Get Regions",
@@ -55,7 +56,10 @@ class RegionController
      */
     public function index(Request $request) : JsonResponse
     {
-        $regions = $this->regionRepository->getRegions($request->get('limit', config('api.defaults.limit')));
+        $regions = $this->regionRepository->getRegions(
+            $request->get('limit', config('api.defaults.limit')),
+            $request->all()
+        );
 
         return $this->listView($regions,$this->transformerFactory->make(RegionTransformer::class));
     }

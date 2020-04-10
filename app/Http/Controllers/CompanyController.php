@@ -38,6 +38,7 @@ class CompanyController
      *     summary="Get Companies",
      *     tags={"Companies"},
      *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/ListParams")),
+     *     @OA\Parameter(in="query",name="name",required=false,@OA\Schema(type="string")),
      *     @OA\Response(
      *        response="200",
      *        description="Get Companies",
@@ -56,7 +57,8 @@ class CompanyController
     public function index(Request $request): JsonResponse
     {
         $companies = $this->companyRepository->getCompanies(
-            $request->get('limit', config('api.defaults.limit'))
+            $request->get('limit', config('api.defaults.limit')),
+            $request->all()
         );
 
         return $this->listView($companies, $this->transformerFactory->make(CompanyTransformer::class));

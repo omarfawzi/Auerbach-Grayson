@@ -38,6 +38,7 @@ class SectorController
      *     summary="Get Sectors",
      *     tags={"Sectors"},
      *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/ListParams")),
+     *     @OA\Parameter(in="query",name="name",required=false,@OA\Schema(type="string")),
      *     @OA\Response(
      *        response="200",
      *        description="Get Sectors",
@@ -55,7 +56,10 @@ class SectorController
      */
     public function index(Request $request) : JsonResponse
     {
-        $sectors = $this->sectorRepository->getSectors($request->get('limit', config('api.defaults.limit')));
+        $sectors = $this->sectorRepository->getSectors(
+            $request->get('limit', config('api.defaults.limit')),
+            $request->all()
+        );
 
         return $this->listView($sectors, $this->transformerFactory->make(SectorTransformer::class));
     }
