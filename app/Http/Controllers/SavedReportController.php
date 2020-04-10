@@ -82,4 +82,45 @@ class SavedReportController
             $this->transformerFactory->make(MessageTransformer::class)
         );
     }
+
+
+    /**
+     * @OA\Post(
+     *     path="/reports/{id}/unsave",
+     *     summary="Unsave Report",
+     *     tags={"Reports"},
+     *     @OA\Parameter(in="path",name="id",required=true,@OA\Schema(type="number")),
+     *     @OA\Response(
+     *        response="200",
+     *        description="Unsave Report",
+     *        @OA\MediaType(
+     *           mediaType="application/json",
+     *           @OA\Schema(
+     *             @OA\Property(property="data",ref="#/components/schemas/Message")
+     *          )
+     *       )
+     *     ),
+     *     @OA\Response(
+     *         response="404",
+     *         description="Not Found",
+     *         @OA\MediaType(
+     *           mediaType="application/json",
+     *           @OA\Property(ref="#/components/schemas/NotFoundException")
+     *        )
+     *    )
+     * )
+     * @param Request $request
+     * @param int     $reportId
+     * @return JsonResponse
+     */
+    public function unsave(Request $request, int $reportId): JsonResponse
+    {
+        $userId = $request->user()->id;
+        $this->savedReportRepository->deleteReport($reportId, $userId);
+
+        return $this->singleView(
+            'Unsaved Successfully',
+            $this->transformerFactory->make(MessageTransformer::class)
+        );
+    }
 }

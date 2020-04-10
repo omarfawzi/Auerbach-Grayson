@@ -20,6 +20,16 @@ class SavedReportRepository
     }
 
     /**
+     * @param int $reportId
+     * @param int $userId
+     * @return void
+     */
+    public function deleteReport(int $reportId, int $userId) : void
+    {
+        SavedReport::where(['report_id'=>$reportId,'user_id'=>$userId])->delete();
+    }
+
+    /**
      * @param int $userId
      * @return int[]
      */
