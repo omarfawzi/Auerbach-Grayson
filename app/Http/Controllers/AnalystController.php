@@ -32,7 +32,7 @@ class AnalystController
     /**
      * @param int $id
      */
-    public function contactAnalyst(int $id)
+    public function contact(int $id)
     {
         $report = $this->reportRepository->getReport($id);
         if ($report instanceof Report) {
@@ -44,7 +44,7 @@ class AnalystController
      * @param Request $request
      * @param int $id
      */
-    public function emailAnalyst(Request $request, int $id)
+    public function email(Request $request, int $id)
     {
         $report = $this->reportRepository->getReport($id);
         if ($report instanceof Report) {
