@@ -4,19 +4,21 @@ namespace App\Listeners;
 
 use App\Events\User\ClientSignUp;
 use App\Models\User;
+use App\Services\MailService;
 use Carbon\Carbon;
 
 class SendSignUpEmail
 {
+    /** @var MailService $mailService */
+    protected $mailService;
+
     /**
-     * Create the event listener.
+     * SendSignUpEmail constructor.
      *
-     * @return void
+     * @param MailService $mailService
      */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(MailService $mailService) { $this->mailService = $mailService; }
+
 
     /**
      * Handle the event.
@@ -26,17 +28,20 @@ class SendSignUpEmail
      */
     public function handle(ClientSignUp $event)
     {
-        $password = str_random(8);
+        $plainPassword = str_random(8);
 
         $user = new User();
 
         $user->setEmail($event->client->getEmail());
+
         $user->setName($event->client->getName());
 
-        $user->setPassword(app('hash')->make($password));
+        $user->setPassword(app('hash')->make($plainPassword));
+
+        $user->setPlainPassword($plainPassword);
 
         $user->save();
 
-        //@Todo Send signup email
+        $this->mailService->email([$user->getEmail()],'',[$user],view('signup'));
     }
 }

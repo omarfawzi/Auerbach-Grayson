@@ -25,7 +25,7 @@ class ContactAnalyst extends Mailable
      */
     public function __construct(Analyst $analyst, View $analystView)
     {
-        $this->analyst = $analyst;
+        $this->analyst     = $analyst;
         $this->analystView = $analystView;
     }
 
@@ -36,6 +36,11 @@ class ContactAnalyst extends Mailable
      */
     public function build()
     {
-        return $this->view($this->analystView->getName(), $this->analystView->getData());
+        return $this->view(
+            $this->analystView->getName(),
+            [
+                'analyst' => $this->analyst,
+            ]
+        );
     }
 }

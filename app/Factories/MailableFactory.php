@@ -3,7 +3,9 @@
 namespace App\Factories;
 
 use App\Mail\ContactAnalyst;
+use App\Mail\UserSignUp;
 use App\Models\SQL\Analyst;
+use App\Models\User;
 use Illuminate\Mail\Mailable;
 use Illuminate\View\View;
 use InvalidArgumentException;
@@ -12,15 +14,16 @@ class MailableFactory
 {
     /**
      * @param Mailable $mailable
-     * @param View $view
+     * @param View     $view
      * @return Mailable
      */
-    public function make(Mailable $mailable , View $view) : Mailable
+    public function make(Mailable $mailable, View $view): Mailable
     {
-        switch (true)
-        {
+        switch (true) {
             case $mailable instanceof Analyst:
-                return new ContactAnalyst($mailable , $view->with(['analyst'=>$mailable]));
+                return new ContactAnalyst($mailable, $view);
+            case $mailable instanceof User:
+                return new UserSignUp($mailable, $view);
             default:
                 throw new InvalidArgumentException('Mailable not found');
         }

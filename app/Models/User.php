@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\Mailable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
+class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject , Mailable
 {
     use Authenticatable, Authorizable;
 
@@ -40,6 +41,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'id', 'name', 'email',
     ];
 
+    /** @var string $plainPassword */
+    protected $plainPassword;
 
     /**
      * Validation rules for the model.
@@ -128,4 +131,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->password;
     }
+
+    /**
+     * @return string
+     */
+    public function getPlainPassword(): string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string $plainPassword
+     */
+    public function setPlainPassword(string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+
 }
