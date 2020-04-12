@@ -38,9 +38,11 @@ class ContactAnalyst extends Mailable
     {
         return $this->view(
             $this->analystView->getName(),
+            array_merge(
+            $this->analystView->getData(),
             [
                 'analyst' => $this->analyst,
-            ]
+            ])
         );
     }
 }
