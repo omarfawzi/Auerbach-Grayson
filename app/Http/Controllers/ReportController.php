@@ -127,23 +127,4 @@ class ReportController
 
         return $this->singleView($report, $this->transformerFactory->make(ReportDetailTransformer::class));
     }
-
-    /**
-     * @param int $id
-     */
-    public function contactAnalyst(int $id)
-    {
-        $report = $this->reportRepository->getReport($id);
-
-        $this->mailService->bulkEmail([],env('ANALYST_MAIL_CC'),$report->analysts);
-    }
-
-    /**
-     * @param Request $request
-     * @param int     $id
-     */
-    public function emailAnalyst(Request $request , int $id)
-    {
-
-    }
 }

@@ -2,9 +2,10 @@
 
 namespace App\Models\SQL;
 
+use App\Contracts\Mailable;
 use Illuminate\Database\Eloquent\Model;
 
-class Analyst extends Model
+class Analyst extends Model implements Mailable
 {
     protected $connection = 'sqlsrv';
 

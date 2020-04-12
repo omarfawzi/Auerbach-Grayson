@@ -11,18 +11,18 @@ use InvalidArgumentException;
 class MailableFactory
 {
     /**
-     * @param object $mailable
-     * @param View   $view
+     * @param Mailable $mailable
+     * @param View $view
      * @return Mailable
      */
-    public function make(object $mailable , View $view) : Mailable
+    public function make(Mailable $mailable , View $view) : Mailable
     {
         switch (true)
         {
             case $mailable instanceof Analyst:
                 return new ContactAnalyst($mailable , $view->with(['analyst'=>$mailable]));
             default:
-                throw new InvalidArgumentException("Mailable not found");
+                throw new InvalidArgumentException('Mailable not found');
         }
     }
 }
