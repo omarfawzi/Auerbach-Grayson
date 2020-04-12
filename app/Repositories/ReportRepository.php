@@ -7,25 +7,10 @@ use App\Models\SQL\Report;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReportRepository
 {
-    /** @var SavedReportRepository $savedReportRepository */
-    protected $savedReportRepository;
-
-    /**
-     * ReportRepository constructor.
-     *
-     * @param SavedReportRepository $savedReportRepository
-     */
-    public function __construct(SavedReportRepository $savedReportRepository)
-    {
-        $this->savedReportRepository = $savedReportRepository;
-    }
-
-
     /**
      * @param int $id
      * @return Report|null
@@ -52,12 +37,6 @@ class ReportRepository
             return new LengthAwarePaginator($paginated, $collection->count(), $limit);
         }
 
-        if (isset($filters['saved']) && $filters['saved']) {
-            $queryBuilder->whereIn(
-                'ReportID',
-                $this->savedReportRepository->getUserSavedReportsIds(Auth::user()->id)
-            );
-        }
         return $queryBuilder->where('Approved', 1)->orderBy('ReportDate', 'DESC')->paginateFilter($limit);
     }
 

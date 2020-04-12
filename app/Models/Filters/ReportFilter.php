@@ -3,8 +3,10 @@
 namespace App\Models\Filters;
 
 use App\Factories\DateFactory;
+use App\Repositories\SavedReportRepository;
 use EloquentFilter\ModelFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class ReportFilter extends ModelFilter
 {
@@ -153,5 +155,17 @@ class ReportFilter extends ModelFilter
                 $query->where('Type', $type);
             }
         );
+    }
+
+    /**
+     * @param bool $saved
+     * @return ReportFilter|null
+     */
+    public function saved(bool $saved)
+    {
+        return $saved ? $this->whereIn(
+            'ReportID',
+            app(SavedReportRepository::class)->getUserSavedReportsIds(Auth::user()->id)
+        ) : null;
     }
 }
