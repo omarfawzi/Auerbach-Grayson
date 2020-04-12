@@ -50,15 +50,15 @@ class ReportRepository
             $paginated  = $collection->forPage($filters['page'] ?? 1, $limit);
 
             return new LengthAwarePaginator($paginated, $collection->count(), $limit);
-        } else {
-            if (isset($filters['saved']) && $filters['saved']) {
-                $queryBuilder->whereIn(
-                    'ReportID',
-                    $this->savedReportRepository->getUserSavedReportsIds(Auth::user()->id)
-                );
-            }
-            return $queryBuilder->where('Approved', 1)->orderBy('ReportDate', 'DESC')->paginateFilter($limit);
         }
+
+        if (isset($filters['saved']) && $filters['saved']) {
+            $queryBuilder->whereIn(
+                'ReportID',
+                $this->savedReportRepository->getUserSavedReportsIds(Auth::user()->id)
+            );
+        }
+        return $queryBuilder->where('Approved', 1)->orderBy('ReportDate', 'DESC')->paginateFilter($limit);
     }
 
     /**
