@@ -40,9 +40,11 @@ class UserSignUp extends Mailable
     {
         return $this->view(
             $this->userView->getName(),
+            array_merge(
+            $this->userView->getData(),
             [
                 'user' => $this->user,
-            ]
+            ])
         );
     }
 
