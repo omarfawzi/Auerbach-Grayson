@@ -67,10 +67,9 @@ class CompanyDetailTransformer extends TransformerAbstract
                 'marketCap'      => $company->marketCap instanceof MarketCap ? $this->marketCapTranformer->transform(
                     $company->marketCap
                 ) : null,
-                'sector'         => $this->getSector($company->industry) instanceof Sector
-                    ? $this->sectorTransformer->transform(
-                        $this->getSector($company->industry)
-                    ) : null,
+                'sector'         => optional($company->industry)->sector instanceof Sector ? $this->sectorTransformer->transform(
+                    $company->industry->sector
+                ) : null,
                 'recommendation' => $this->getRecommendation($company, $reportId) instanceof Recommendation
                     ? $this->recommendationTransformer->transform($this->getRecommendation($company, $reportId)) : null,
             ]
@@ -95,14 +94,5 @@ class CompanyDetailTransformer extends TransformerAbstract
     private function getRecommendation(Company $company, int $reportId): ?Recommendation
     {
         return $company->recommendation()->where('ReportID', $reportId)->first();
-    }
-
-    /**
-     * @param Industry|null $industry
-     * @return Sector|null
-     */
-    private function getSector(?Industry $industry): ?Sector
-    {
-        return optional($industry)->sector;
     }
 }
