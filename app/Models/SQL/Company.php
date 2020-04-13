@@ -35,9 +35,9 @@ class Company extends Model implements Subscribable
         return $this->Bloomberg;
     }
 
-    public function industries()
+    public function industry()
     {
-        return $this->hasManyThrough(Industry::class,IndustryDetail::class,'CompanyID','IndustryID','CompanyID','IndustryID');
+        return $this->hasOneThrough(Industry::class,IndustryDetail::class,'CompanyID','IndustryID','CompanyID','IndustryID');
     }
 
     public function subscriptions()
@@ -45,8 +45,18 @@ class Company extends Model implements Subscribable
         return $this->morphMany(Subscription::class,'subscribable',null,null,'CompanyID');
     }
 
-    public function recommendations()
+    public function recommendation()
     {
-        return $this->hasManyThrough(Recommendation::class,CompanyDetail::class,'CompanyID','RecommendID','CompanyID','RecommendID');
+        return $this->hasOneThrough(Recommendation::class,CompanyDetail::class,'CompanyID','RecommendID','CompanyID','RecommendID');
+    }
+
+    public function detail()
+    {
+        return $this->hasOne(CompanyDetail::class,'CompanyID','CompanyID');
+    }
+
+    public function marketCap()
+    {
+        return $this->hasOne(MarketCap::class,'MarketCapId','MarketCapId');
     }
 }

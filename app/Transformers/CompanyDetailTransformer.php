@@ -3,6 +3,8 @@
 namespace App\Transformers;
 
 use App\Models\SQL\Company;
+use App\Models\SQL\Industry;
+use App\Models\SQL\MarketCap;
 use App\Models\SQL\Recommendation;
 use App\Models\SQL\Sector;
 use League\Fractal\TransformerAbstract;
@@ -18,37 +20,57 @@ class CompanyDetailTransformer extends TransformerAbstract
     /** @var RecommendationTransformer $recommendationTransformer */
     protected $recommendationTransformer;
 
+    /** @var IndustryTransformer $industryTransformer */
+    protected $industryTransformer;
+
+    /** @var MarketCapTransformer $marketCapTranformer */
+    protected $marketCapTranformer;
+
     /**
      * CompanyDetailTransformer constructor.
      *
      * @param CompanyTransformer        $companyTransformer
      * @param SectorTransformer         $sectorTransformer
      * @param RecommendationTransformer $recommendationTransformer
+     * @param IndustryTransformer       $industryTransformer
+     * @param MarketCapTransformer      $marketCapTransformer
      */
     public function __construct(
         CompanyTransformer $companyTransformer,
         SectorTransformer $sectorTransformer,
-        RecommendationTransformer $recommendationTransformer
+        RecommendationTransformer $recommendationTransformer,
+        IndustryTransformer $industryTransformer,
+        MarketCapTransformer $marketCapTransformer
     ) {
         $this->companyTransformer        = $companyTransformer;
         $this->sectorTransformer         = $sectorTransformer;
         $this->recommendationTransformer = $recommendationTransformer;
+        $this->industryTransformer       = $industryTransformer;
+        $this->marketCapTranformer       = $marketCapTransformer;
     }
 
 
     /**
-     * @param Company  $company
-     * @param int|null $reportId
+     * @param Company $company
+     * @param int     $reportId
      * @return array
      */
-    public function transform(Company $company, int $reportId = null)
+    public function transform(Company $company, int $reportId)
     {
         return array_merge(
             $this->companyTransformer->transform($company),
             [
-                'sector'         => $this->getSector($company) instanceof Sector ? $this->sectorTransformer->transform(
-                    $this->getSector($company)
+                'price'          => $this->getPHPPrice($company, $reportId),
+                'industry'       => $company->industry instanceof Industry ? $this->industryTransformer->transform(
+                    $company->industry
                 ) : null,
+                'marketCap'      => $company->marketCap instanceof MarketCap ? $this->marketCapTranformer->transform(
+                    $company->marketCap
+                ) : null,
+                'sector'         => $this->getSector($company->industry) instanceof Sector
+                    ? $this->sectorTransformer->transform(
+                        $this->getSector($company->industry)
+                    ) : null,
                 'recommendation' => $this->getRecommendation($company, $reportId) instanceof Recommendation
                     ? $this->recommendationTransformer->transform($this->getRecommendation($company, $reportId)) : null,
             ]
@@ -56,26 +78,31 @@ class CompanyDetailTransformer extends TransformerAbstract
     }
 
     /**
-     * @param Company  $company
-     * @param int|null $reportId
-     * @return Recommendation|null
+     * @param Company $company
+     * @param int     $reportId
+     * @return float
      */
-    private function getRecommendation(Company $company, int $reportId = null): ?Recommendation
+    private function getPHPPrice(Company $company, int $reportId): float
     {
-        $recommendation = $company->recommendations();
-        if ($reportId) {
-            $recommendation->where('ReportID', $reportId);
-        }
-
-        return $recommendation->first();
+        return $company->detail()->where('ReportID', $reportId)->first()->Price;
     }
 
     /**
      * @param Company $company
+     * @param int     $reportId
+     * @return Recommendation|null
+     */
+    private function getRecommendation(Company $company, int $reportId): ?Recommendation
+    {
+        return $company->recommendation()->where('ReportID', $reportId)->first();
+    }
+
+    /**
+     * @param Industry|null $industry
      * @return Sector|null
      */
-    private function getSector(Company $company): ?Sector
+    private function getSector(?Industry $industry): ?Sector
     {
-        return optional($company->industries()->first())->sector;
+        return optional($industry)->sector;
     }
 }

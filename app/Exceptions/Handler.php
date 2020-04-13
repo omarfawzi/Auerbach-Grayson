@@ -13,6 +13,7 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -30,33 +31,21 @@ class Handler extends ExceptionHandler
         ValidationException::class,
     ];
 
-    /**
-     * Report or log an exception.
-     *
-     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-     *
-     * @param Exception $exception
-     * @return void
-     * @throws Exception
-     */
-    public function report(Exception $exception): void
-    {
-        parent::report($exception);
-    }
 
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  Request $request
-     * @param Exception                 $exception
+     * @param Request   $request
+     * @param Throwable $throwable
      * @return Response
+     * @throws Throwable
      */
-    public function render($request, Exception $exception): Response
+    public function render($request, Throwable $throwable): Response
     {
-        if ($this->isJsonRenderable($request, $exception)) {
-            return $this->jsonResponse($exception, new ErrorTransformer(), new ErrorSerializer());
+        if ($this->isJsonRenderable($request, $throwable)) {
+            return $this->jsonResponse($throwable, new ErrorTransformer(), new ErrorSerializer());
         }
 
-        return parent::render($request, $exception);
+        return parent::render($request, $throwable);
     }
 }

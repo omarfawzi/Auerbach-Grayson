@@ -1,12 +1,21 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+use App\Http\Middleware\Authenticate;
+use App\Providers\AuthServiceProvider;
+use App\Providers\EventServiceProvider;
+use EloquentFilter\LumenServiceProvider;
+use Flipbox\LumenGenerator\LumenGeneratorServiceProvider;
+use Laravel\Lumen\Application;
+use Spatie\Fractal\FractalServiceProvider;
+use Spatie\QueryBuilder\QueryBuilderServiceProvider;
+use SwaggerLume\ServiceProvider;
 
-try {
-    (new \Dotenv\Dotenv(dirname(__DIR__)))->load();
-} catch (\Dotenv\Exception\InvalidPathException $e) {
-    //
-}
+require_once __DIR__.'/../vendor/autoload.php';
+
+(new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
+    dirname(__DIR__)
+))->bootstrap();
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +28,7 @@ try {
 |
  */
 
-$app = new \Laravel\Lumen\Application(
+$app = new Application(
     dirname(__DIR__)
 );
 
@@ -49,17 +58,18 @@ $app->withEloquent();
 | register the exception handler and the console kernel. You may add
 | your own bindings here if you like or you can make another file.
 |
- */
+*/
 
 $app->singleton(
-    \Illuminate\Contracts\Debug\ExceptionHandler::class,
-    \App\Exceptions\Handler::class
+    Illuminate\Contracts\Debug\ExceptionHandler::class,
+    App\Exceptions\Handler::class
 );
 
 $app->singleton(
-    \Illuminate\Contracts\Console\Kernel::class,
-    \App\Console\Kernel::class
+    Illuminate\Contracts\Console\Kernel::class,
+    App\Console\Kernel::class
 );
+
 
 /*
 |--------------------------------------------------------------------------
@@ -77,7 +87,7 @@ $app->singleton(
 // ]);
 
 $app->routeMiddleware([
-    'auth' => \App\Http\Middleware\Authenticate::class,
+    'auth' => Authenticate::class,
 ]);
 
 /*
@@ -91,14 +101,14 @@ $app->routeMiddleware([
 |
  */
 
- $app->register(App\Providers\AppServiceProvider::class);
-$app->register(\App\Providers\AuthServiceProvider::class);
-$app->register(\App\Providers\EventServiceProvider::class);
-$app->register(\Spatie\Fractal\FractalServiceProvider::class);
-$app->register(\Spatie\QueryBuilder\QueryBuilderServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
+$app->register(AuthServiceProvider::class);
+$app->register(EventServiceProvider::class);
+$app->register(FractalServiceProvider::class);
+$app->register(QueryBuilderServiceProvider::class);
 $app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
-$app->register(\EloquentFilter\LumenServiceProvider::class);
-$app->register(\SwaggerLume\ServiceProvider::class);
+$app->register(LumenServiceProvider::class);
+$app->register(ServiceProvider::class);
 $app->register(Illuminate\Mail\MailServiceProvider::class);
 
 $app->alias('mailer', Illuminate\Mail\Mailer::class);
@@ -106,7 +116,7 @@ $app->alias('mailer', Illuminate\Contracts\Mail\Mailer::class);
 $app->alias('mailer', Illuminate\Contracts\Mail\MailQueue::class);
 
 if ($app->environment() == 'local') {
-    $app->register(\Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
+    $app->register(LumenGeneratorServiceProvider::class);
 }
 
 config(['eloquentfilter.namespace' => "App\\Models\\Filters\\"]);

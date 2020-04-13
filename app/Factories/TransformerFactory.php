@@ -5,6 +5,8 @@ namespace App\Factories;
 use App\Transformers\CompanyDetailTransformer;
 use App\Transformers\CompanyTransformer;
 use App\Transformers\ErrorTransformer;
+use App\Transformers\IndustryTransformer;
+use App\Transformers\MarketCapTransformer;
 use App\Transformers\MessageTransformer;
 use App\Transformers\RecommendationTransformer;
 use App\Transformers\RegionTransformer;
@@ -59,6 +61,12 @@ class TransformerFactory
     /** @var CompanyDetailTransformer $companyDetailTransformer */
     protected $companyDetailTransformer;
 
+    /** @var IndustryTransformer $industryTransformer */
+    protected $industryTransformer;
+
+    /** @var MarketCapTransformer $marketCapTransformer */
+    protected $marketCapTransformer;
+
     /**
      * TransformerFactory constructor.
      *
@@ -74,7 +82,9 @@ class TransformerFactory
      * @param SubscriptionTransformer   $subscriptionTransformer
      * @param TypeTransformer           $typeTransformer
      * @param ReportDetailTransformer   $reportDetailTransformer
-     * @param CompanyDetailTransformer  $companyReportDetailTransformer
+     * @param CompanyDetailTransformer  $companyDetailTransformer
+     * @param IndustryTransformer       $industryTransformer
+     * @param MarketCapTransformer      $marketCapTransformer
      */
     public function __construct(
         UserTransformer $userTransformer,
@@ -89,7 +99,9 @@ class TransformerFactory
         SubscriptionTransformer $subscriptionTransformer,
         TypeTransformer $typeTransformer,
         ReportDetailTransformer $reportDetailTransformer,
-        CompanyDetailTransformer $companyDetailTransformer
+        CompanyDetailTransformer $companyDetailTransformer,
+        IndustryTransformer $industryTransformer,
+        MarketCapTransformer $marketCapTransformer
     ) {
         $this->userTransformer           = $userTransformer;
         $this->errorTransformer          = $errorTransformer;
@@ -104,8 +116,9 @@ class TransformerFactory
         $this->typeTransformer           = $typeTransformer;
         $this->reportDetailTransformer   = $reportDetailTransformer;
         $this->companyDetailTransformer  = $companyDetailTransformer;
+        $this->industryTransformer       = $industryTransformer;
+        $this->marketCapTransformer      = $marketCapTransformer;
     }
-
 
     /**
      * @param string $transformer
@@ -141,6 +154,10 @@ class TransformerFactory
                 return $this->reportDetailTransformer;
             case CompanyDetailTransformer::class:
                 return $this->companyDetailTransformer;
+            case IndustryTransformer::class:
+                return $this->industryTransformer;
+            case MarketCapTransformer::class:
+                return $this->marketCapTransformer;
             default:
                 throw new InvalidArgumentException("Transformer $transformer not found");
         }

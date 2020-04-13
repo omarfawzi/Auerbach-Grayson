@@ -2,45 +2,45 @@
 
 namespace App\Traits;
 
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Illuminate\Support\Arr;
 use League\Fractal\TransformerAbstract;
 use League\Fractal\Serializer\SerializerAbstract;
+use Symfony\Component\ErrorHandler\Error\FatalError;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 trait ExceptionRenderable
 {
     /**
      * Response the exception in JSON.
      *
-     * @param Exception           $exception
+     * @param Throwable           $throwable
      * @param TransformerAbstract $transformer
      * @param SerializerAbstract  $serializer
      *
      * @return JsonResponse
      */
-    public function jsonResponse(Exception $exception, TransformerAbstract $transformer, SerializerAbstract $serializer): JsonResponse
+    public function jsonResponse(Throwable $throwable, TransformerAbstract $transformer, SerializerAbstract $serializer): JsonResponse
     {
-        $error = fractal($exception, new $transformer(), new $serializer)->toArray();
+        $error = fractal($throwable, new $transformer(), new $serializer)->toArray();
 
         return response()->json($error)
             ->setStatusCode($this->getStatusCode($error))
-            ->withHeaders($this->getHeaders($exception));
+            ->withHeaders($this->getHeaders($throwable));
     }
 
     /**
      * Check if the exception is renderable with JSON
      *
-     * @param  Request $request
-     * @param Exception                 $exception
-     *
+     * @param Request   $request
+     * @param Throwable $throwable
      * @return bool
      */
-    public function isJsonRenderable(Request $request, Exception $exception): bool
+    public function isJsonRenderable(Request $request, Throwable $throwable): bool
     {
-        if (config('app.debug') && $exception instanceof FatalThrowableError) {
+        if (config('app.debug') && $throwable instanceof FatalError) {
             return false;
         }
 
@@ -56,11 +56,11 @@ trait ExceptionRenderable
      */
     public function getStatusCode(array $error): int
     {
-        if ($status = array_get($error, 'data.status')) {
+        if ($status = Arr::get($error, 'data.status')) {
             return $status;
         }
 
-        if ($status = array_get($error, 'error.status')) {
+        if ($status = Arr::get($error, 'error.status')) {
             return $status;
         }
 
@@ -70,14 +70,13 @@ trait ExceptionRenderable
     /**
      * Get the headers of the exception.
      *
-     * @param Exception $exception
-     *
+     * @param Throwable $throwable
      * @return array
      */
-    private function getHeaders(Exception $exception): array
+    private function getHeaders(Throwable $throwable): array
     {
-        if (method_exists($exception, 'getHeaders')) {
-            return $exception->getHeaders();
+        if (method_exists($throwable, 'getHeaders')) {
+            return $throwable->getHeaders();
         }
 
         return [];

@@ -90,7 +90,7 @@ class ReportFilter extends ModelFilter
             return null;
         } else {
             return $this->whereHas(
-                'recommendations',
+                'recommendation',
                 function (Builder $query) use ($values) {
                     $query->whereIn('Recommendation', $values);
                 }
@@ -128,7 +128,7 @@ class ReportFilter extends ModelFilter
                 'companies',
                 function (Builder $query) use ($values) {
                     $query->whereHas(
-                        'industries',
+                        'industry',
                         function (Builder $query) use ($values) {
                             $query->whereHas(
                                 'sector',
