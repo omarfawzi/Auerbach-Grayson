@@ -83,7 +83,7 @@ class CompanyDetailTransformer extends TransformerAbstract
      */
     private function getPHPPrice(Company $company, int $reportId): float
     {
-        return $company->detail()->where('ReportID', $reportId)->first()->Price;
+        return (float) optional($company->detail()->where('ReportID', $reportId)->first())->Price;
     }
 
     /**
