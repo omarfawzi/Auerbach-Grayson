@@ -182,7 +182,6 @@ class ReportFilter extends ModelFilter
             foreach ($trendingReportsIds as $index => $trendingReportsId) {
                 $orderByCase .= "WHEN $trendingReportsId THEN $index ";
             }
-
             return $this->whereIn('ReportID', $trendingReportsIds)->orderByRaw(
                 sprintf('CASE ReportID %s END', $orderByCase)
             );

@@ -2,12 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Factories\DateFactory;
 use App\Models\SQL\Report;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 class ReportRepository
 {
