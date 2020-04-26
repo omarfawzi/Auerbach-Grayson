@@ -8,7 +8,6 @@ use App\Models\ReportWeight;
 use Carbon\Carbon;
 use DateTime;
 use Exception;
-use Illuminate\Database\Query\Builder;
 
 class WeightAssignationService
 {
