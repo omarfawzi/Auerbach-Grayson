@@ -76,7 +76,7 @@ class WeightAssignationService
         }
 
         ReportWeight::insert($bulkInsertData);
-        ReportWeight::increment('weight', $weight, ['updated_at' => Carbon::now()]);
+        ReportWeight::whereIn('company_id', $existingCompanyIds)->increment('weight', $weight, ['updated_at' => Carbon::now()]);
     }
 
 }
