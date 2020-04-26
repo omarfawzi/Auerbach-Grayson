@@ -29,7 +29,7 @@ class Auth
      *
      * @return User
      */
-    public function getAuthenticatedUser(): User
+    public static function getAuthenticatedUser(): User
     {
         return app('auth')->user();
     }
