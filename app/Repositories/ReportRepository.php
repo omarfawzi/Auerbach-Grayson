@@ -30,5 +30,4 @@ class ReportRepository
         return $queryBuilder->where('Approved', 1)->orderBy('ReportDate', 'DESC')->paginateFilter($limit);
     }
 
-
 }

@@ -3,6 +3,7 @@
 namespace App\Models\Filters;
 
 use App\Factories\DateFactory;
+use App\Repositories\ReportViewRepository;
 use App\Repositories\SavedReportRepository;
 use EloquentFilter\ModelFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -177,7 +178,7 @@ class ReportFilter extends ModelFilter
     public function trending(bool $trending)
     {
         if ($trending) {
-            $trendingReportsIds = $this->getTrendingReportsIds($this->input('limit', config('api.defaults.limit')));
+            $trendingReportsIds = ReportViewRepository::getTrendingReportsIds($this->input('limit', config('api.defaults.limit')));
             $orderByCase        = '';
             foreach ($trendingReportsIds as $index => $trendingReportsId) {
                 $orderByCase .= "WHEN $trendingReportsId THEN $index ";
@@ -191,18 +192,17 @@ class ReportFilter extends ModelFilter
     }
 
     /**
-     * @param int $limit
-     * @return array
+     * @param bool $recommended
+     * @return ReportFilter|null
      */
-    private function getTrendingReportsIds(int $limit): array
+    public function recommended(bool $recommended)
     {
-        return DB::table('report_views')->whereDate(
-            'created_at',
-            '>=',
-            (new DateFactory())->make(config('api.reports.last_trend_date'))
-        )->select(['report_id', DB::raw('COUNT(id) as views_count')])->orderBy(
-            'views_count',
-            'desc'
-        )->groupBy('report_id')->limit($limit)->get()->pluck('report_id')->toArray();
+        if ($recommended)
+        {
+
+        }
+        return null;
     }
+
+
 }
