@@ -26,7 +26,7 @@ class WeightAssignationService
     /**
      * @throws Exception
      */
-    public function assignWeights()
+    public function assign()
     {
         $userId = Auth::getAuthenticatedUser()->id;
 
@@ -49,6 +49,31 @@ class WeightAssignationService
         $companySubscriptionsIds = Subscription::select('subscribable_id')->where(
             ['subscribable_type' => Subscription::COMPANY_SUBSCRIPTION_TYPE, 'user_id' => $userId]
         )->get()->pluck('subscribable_id')->toArray();
+
+        $this->assignWeights($userId,$companyEventEntitiesIds,2);
+        $this->assignWeights($userId,$companySubscriptionsIds,1);
+    }
+
+    private function assignWeights(int $userId , array $companyIds , int $weight)
+    {
+        $now = Carbon::now('utc')->toDateTimeString();
+        $existingRecords = ReportWeight::whereIn('company_id',$companyIds)->where('user_id',$userId)->pluck('company_id')->toArray();
+        $newRecords = array_diff($companyIds,$existingRecords);
+
+        $bulkInsertData = [];
+        foreach ($newRecords as $newRecord) {
+            $bulkInsertData[] = [
+                'company_id' => $newRecord,
+                'user_id'    => $userId,
+                'weight'     => $weight,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+        }
+
+        ReportWeight::insert($bulkInsertData);
+        ReportWeight::increment('weight', $weight, ['updated_at' => Carbon::now()]);
+
     }
 
 }
