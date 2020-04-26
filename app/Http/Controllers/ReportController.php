@@ -6,7 +6,6 @@ use App\Factories\TransformerFactory;
 use App\Repositories\ReportRepository;
 use App\Repositories\ReportViewRepository;
 use App\Services\MailService;
-use App\Services\WeightAssignationService;
 use App\Traits\FractalView;
 use App\Transformers\ReportDetailTransformer;
 use App\Transformers\ReportTransformer;
@@ -30,9 +29,6 @@ class ReportController
     /** @var MailService $mailService */
     protected $mailService;
 
-    /** @var WeightAssignationService $weightAssignationService */
-    protected $weightAssignationService;
-
     /**
      * ReportController constructor.
      *
@@ -40,20 +36,17 @@ class ReportController
      * @param ReportViewRepository     $reportViewRepository
      * @param TransformerFactory       $transformerFactory
      * @param MailService              $mailService
-     * @param WeightAssignationService $weightAssignationService
      */
     public function __construct(
         ReportRepository $reportRepository,
         ReportViewRepository $reportViewRepository,
         TransformerFactory $transformerFactory,
-        MailService $mailService,
-        WeightAssignationService $weightAssignationService
+        MailService $mailService
     ) {
         $this->reportRepository         = $reportRepository;
         $this->reportViewRepository     = $reportViewRepository;
         $this->transformerFactory       = $transformerFactory;
         $this->mailService              = $mailService;
-        $this->weightAssignationService = $weightAssignationService;
     }
 
 
@@ -89,7 +82,6 @@ class ReportController
      */
     public function index(Request $request): JsonResponse
     {
-        $this->weightAssignationService->assignWeights($request->user()->id);
         $reports = $this->reportRepository->getReports(
             $request->get('limit', config('api.defaults.limit')),
             $request->all()

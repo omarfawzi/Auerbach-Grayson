@@ -24,11 +24,12 @@ class WeightAssignationService
     public function __construct(IPlannerService $iplannerService) { $this->iplannerService = $iplannerService; }
 
     /**
-     * @param int $userId
      * @throws Exception
      */
-    public function assignWeights(int $userId)
+    public function assignWeights()
     {
+        $userId = Auth::getAuthenticatedUser()->id;
+
         $client = Auth::getAuthenticatedUser()->getClient();
 
         $lastAssignedDate = Carbon::now()->subMonths(6)->toDateTime();
