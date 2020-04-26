@@ -31,11 +31,11 @@ class WeightAssignationService
         $userId = Auth::getAuthenticatedUser()->id;
         $client = Auth::getAuthenticatedUser()->getClient();
 
-        $lastAssignedDate = Carbon::now()->subMonths(6)->toDateTime();
+        $lastAssignedDate = Carbon::now('utc')->subMonths(6)->toDateTime();
 
         $reportWeight = ReportWeight::select('updated_at')->where('user_id', $userId)->orderBy('updated_at', 'desc')->first();
         if ($reportWeight instanceof ReportWeight) {
-            $lastAssignedDate = new DateTime($reportWeight->updated_at);
+            $lastAssignedDate = new DateTime($reportWeight->updated_at,'utc');
         }
 
         $companyEventEntitiesIds = Arr::pluck(
