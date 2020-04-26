@@ -7,6 +7,7 @@ use App\Repositories\SavedReportRepository;
 use EloquentFilter\ModelFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ReportFilter extends ModelFilter
 {
@@ -167,5 +168,42 @@ class ReportFilter extends ModelFilter
             'ReportID',
             app(SavedReportRepository::class)->getUserSavedReportsIds(Auth::user()->id)
         ) : null;
+    }
+
+    /**
+     * @param bool $trending
+     * @return ReportFilter|null
+     */
+    public function trending(bool $trending)
+    {
+        if ($trending) {
+            $trendingReportsIds = $this->getTrendingReportsIds($this->input('limit', config('api.defaults.limit')));
+            $orderByCase        = '';
+            foreach ($trendingReportsIds as $index => $trendingReportsId) {
+                $orderByCase .= "WHEN $trendingReportsId THEN $index ";
+            }
+
+            return $this->whereIn('ReportID', $trendingReportsIds)->orderByRaw(
+                sprintf('CASE ReportID %s END', $orderByCase)
+            );
+        }
+
+        return null;
+    }
+
+    /**
+     * @param int $limit
+     * @return array
+     */
+    private function getTrendingReportsIds(int $limit): array
+    {
+        return DB::table('report_views')->whereDate(
+            'created_at',
+            '>=',
+            (new DateFactory())->make(config('api.reports.last_trend_date'))
+        )->select(['report_id', DB::raw('COUNT(id) as views_count')])->orderBy(
+            'views_count',
+            'desc'
+        )->groupBy('report_id')->limit($limit)->get()->pluck('report_id')->toArray();
     }
 }
