@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Auth;
 use App\Constants\EventCodes;
 use App\Models\ReportWeight;
+use App\Models\Subscription;
 use Carbon\Carbon;
 use DateTime;
 use Exception;
@@ -42,6 +43,10 @@ class WeightAssignationService
             [EventCodes::CONFERENCE_CODE, EventCodes::MEETING_CODE],
             $client->IPREO_ContactID
         );
+
+        $subscriptions = Subscription::select('subscribable_id')->where(
+            ['subscribable_type' => Subscription::COMPANY_SUBSCRIPTION_TYPE, 'user_id' => $userId]
+        )->get()->pluck('subscribable_id')->toArray();
     }
 
 }
