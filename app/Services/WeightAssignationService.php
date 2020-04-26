@@ -9,6 +9,7 @@ use App\Models\Subscription;
 use Carbon\Carbon;
 use DateTime;
 use Exception;
+use Illuminate\Support\Arr;
 
 class WeightAssignationService
 {
@@ -38,13 +39,13 @@ class WeightAssignationService
             $lastAssignedDate = new DateTime($reportWeight->updated_at);
         }
 
-        $eventEntities = $this->iplannerService->getEventEntities(
+        $companyEventEntitiesIds = Arr::pluck($this->iplannerService->getEventEntities(
             $lastAssignedDate,
             [EventCodes::CONFERENCE_CODE, EventCodes::MEETING_CODE],
             $client->IPREO_ContactID
-        );
+        )['DmEventEntity'],'company_id');
 
-        $subscriptions = Subscription::select('subscribable_id')->where(
+        $companySubscriptionsIds = Subscription::select('subscribable_id')->where(
             ['subscribable_type' => Subscription::COMPANY_SUBSCRIPTION_TYPE, 'user_id' => $userId]
         )->get()->pluck('subscribable_id')->toArray();
     }
