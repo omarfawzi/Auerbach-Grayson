@@ -149,7 +149,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $this->plainPassword = $plainPassword;
     }
 
-    public function getClient() : ?Client
+    public function getClient() : Client
     {
         return Client::where('Email',$this->getEmail())->first();
     }

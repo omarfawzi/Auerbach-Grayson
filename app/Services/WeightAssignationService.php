@@ -29,11 +29,15 @@ class WeightAssignationService
     public function assignWeights(int $userId)
     {
         $client = Auth::getAuthenticatedUser()->getClient();
+
         $lastAssignedDate = Carbon::now()->subMonths(6)->toDateTime();
+
         $reportWeight     = ReportWeight::select('updated_at')->where('user_id', $userId)->orderBy('updated_at', 'desc')->first();
+
         if ($reportWeight instanceof ReportWeight) {
             $lastAssignedDate = new DateTime($reportWeight->updated_at);
         }
+
         $eventEntities = $this->iplannerService->getEventEntities(
             $lastAssignedDate,
             [EventCodes::CONFERENCE_CODE, EventCodes::MEETING_CODE],
