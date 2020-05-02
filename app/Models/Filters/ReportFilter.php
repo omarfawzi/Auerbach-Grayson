@@ -8,7 +8,6 @@ use App\Repositories\SavedReportRepository;
 use EloquentFilter\ModelFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class ReportFilter extends ModelFilter
 {
@@ -179,12 +178,9 @@ class ReportFilter extends ModelFilter
     {
         if ($trending) {
             $trendingReportsIds = app(ReportViewRepository::class)->getTrendingReportsIds();
-            $orderByCase        = '';
-            foreach ($trendingReportsIds as $index => $trendingReportsId) {
-                $orderByCase .= "WHEN $trendingReportsId THEN $index ";
-            }
+
             return $this->whereIn('ReportID', $trendingReportsIds)->orderByRaw(
-                sprintf('CASE ReportID %s END', $orderByCase)
+                order_by_field('ReportID', $trendingReportsIds)
             );
         }
 
