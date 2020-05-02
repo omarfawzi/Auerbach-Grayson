@@ -15,7 +15,7 @@ if (!function_exists('config_path')) {
 if (!function_exists('order_by_field')) {
 
     /**
-     * Order by field
+     * Get ordered by field string
      *
      *
      * @param string $field

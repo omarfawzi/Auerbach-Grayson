@@ -4,6 +4,7 @@ namespace App\Models\Filters;
 
 use App\Factories\DateFactory;
 use App\Repositories\ReportViewRepository;
+use App\Repositories\ReportWeightRepository;
 use App\Repositories\SavedReportRepository;
 use EloquentFilter\ModelFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -195,7 +196,13 @@ class ReportFilter extends ModelFilter
     {
         if ($recommended)
         {
+            $recommendedCompanyIds = app(ReportWeightRepository::class)->getWeightedCompanyIds();
 
+            return $this->join('CompanyDetail', 'CompanyDetail.ReportID', '=', 'Report.ReportID')
+                ->whereIn('CompanyID', $recommendedCompanyIds)
+                ->orderByRaw(
+                    order_by_field('CompanyID', $recommendedCompanyIds)
+                );
         }
         return null;
     }
