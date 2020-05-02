@@ -178,7 +178,7 @@ class ReportFilter extends ModelFilter
     public function trending(bool $trending)
     {
         if ($trending) {
-            $trendingReportsIds = ReportViewRepository::getTrendingReportsIds($this->input('limit', config('api.defaults.limit')));
+            $trendingReportsIds = app(ReportViewRepository::class)->getTrendingReportsIds();
             $orderByCase        = '';
             foreach ($trendingReportsIds as $index => $trendingReportsId) {
                 $orderByCase .= "WHEN $trendingReportsId THEN $index ";
