@@ -198,10 +198,10 @@ class ReportFilter extends ModelFilter
         {
             $recommendedCompanyIds = app(ReportWeightRepository::class)->getWeightedCompanyIds();
 
-            return $this->join('CompanyDetail', 'CompanyDetail.ReportID', '=', 'Report.ReportID')
-                ->whereIn('CompanyID', $recommendedCompanyIds)
+            return $this->select('Report.*')->join('CompanyDetail', 'CompanyDetail.ReportID', '=', 'Report.ReportID')
+                ->whereIn('CompanyDetail.CompanyID', $recommendedCompanyIds)
                 ->orderByRaw(
-                    order_by_field('CompanyID', $recommendedCompanyIds)
+                    order_by_field('CompanyDetail.CompanyID', $recommendedCompanyIds)
                 );
         }
         return null;
