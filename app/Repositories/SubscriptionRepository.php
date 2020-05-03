@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Subscription;
+use DateTime;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class SubscriptionRepository
@@ -41,6 +42,20 @@ class SubscriptionRepository
      */
     public function destroy(int $userId, int $id): void
     {
-        Subscription::where(['user_id' => $userId, 'id' => $id])->delete();
+        Subscription::query()->where(['user_id' => $userId, 'id' => $id])->delete();
+    }
+
+    /**
+     * @param int      $userId
+     * @param string   $type
+     * @param DateTime $dateTime
+     * @return array
+     */
+    public function getUserSubscribableIdsAfter(int $userId, string $type, DateTime $dateTime): array
+    {
+        return Subscription::query()->select('subscribable_id')
+            ->where(['subscribable_type' => $type, 'user_id' => $userId])
+            ->whereDate('created_at', '>', $dateTime)
+            ->get()->pluck('subscribable_id')->toArray();
     }
 }

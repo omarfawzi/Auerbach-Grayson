@@ -4,7 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
-
+use App\Console\Commands\AssigningWeightAlgorithmCommand;
 class Kernel extends ConsoleKernel
 {
     /**
@@ -13,21 +13,18 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
-        Commands\AssigningWeightAlgorithm::class,
+        AssigningWeightAlgorithmCommand::class,
     ];
 
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
-        //
-        $schedule->command('weight:day')
-            ->daily();
+        $schedule->command('assign:weight')->daily();
     }
 
     protected function commands()

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Contracts\Mailable;
-use App\Models\SQL\Client;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -148,17 +147,5 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         $this->plainPassword = $plainPassword;
     }
-
-    public function getClient() : Client
-    {
-        return Client::where('Email',$this->getEmail())->first();
-    }
-
-    public function getUserByClientID($clientID)
-    {
-        $client = Client::where('IPREO_ContactID', $clientID)->first();
-        return User::where('email', $client->Email);
-    }
-
 
 }

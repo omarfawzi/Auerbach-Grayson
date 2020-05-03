@@ -2,72 +2,90 @@
 
 namespace App\Services;
 
-use App\Auth;
-use App\Constants\EventCodes;
 use App\Models\ReportWeight;
 use App\Models\Subscription;
-use App\User;
+use App\Repositories\ReportWeightRepository;
+use App\Repositories\SubscriptionRepository;
 use Carbon\Carbon;
 use DateTime;
 use Exception;
-use Illuminate\Support\Arr;
 
 class WeightAssignationService
 {
+    /** @var ReportWeightRepository $reportWeightRepository */
+    protected $reportWeightRepository;
+
+    /** @var SubscriptionRepository $subscriptionRepository */
+    protected $subscriptionRepository;
 
     /**
      * WeightAssignationService constructor.
      *
+     * @param ReportWeightRepository $reportWeightRepository
+     * @param SubscriptionRepository $subscriptionRepository
      */
-    public function __construct() {}
+    public function __construct(
+        ReportWeightRepository $reportWeightRepository,
+        SubscriptionRepository $subscriptionRepository
+    ) {
+        $this->reportWeightRepository = $reportWeightRepository;
+        $this->subscriptionRepository = $subscriptionRepository;
+    }
+
 
     /**
+     * @param int      $userId
+     * @param DateTime $lastAssignedDate
+     * @param array    $eventCompaniesIds
+     * @return void
      * @throws Exception
      */
-    public function assign($userId, $lastAssignedDate, $eventCompanies = array())
+    public function assign(int $userId,DateTime $lastAssignedDate ,array $eventCompaniesIds = []) : void
     {
-        $reportWeight = ReportWeight::select('updated_at')->where('user_id', $userId)->orderBy('updated_at', 'desc')->first();
-        if ($reportWeight instanceof ReportWeight) {
-            $lastAssignedDate = new DateTime($reportWeight->updated_at,'utc');
+        $reportWeight = $this->reportWeightRepository->getLastChangedUserReportWeight($userId);
+
+        $lastAssignedDate = $reportWeight instanceof ReportWeight ? new DateTime($reportWeight->updated_at,'utc') : $lastAssignedDate;
+
+        $companySubscriptionsIds = $this->subscriptionRepository->getUserSubscribableIdsAfter($userId,Subscription::COMPANY_SUBSCRIPTION_TYPE,$lastAssignedDate);
+
+        if(!empty($eventCompaniesIds)){
+            $this->assignWeights($userId, $eventCompaniesIds, 2);
         }
 
-        $companySubscriptionsIds = Subscription::select('subscribable_id')
-            ->where('subscribable_type', Subscription::COMPANY_SUBSCRIPTION_TYPE)
-            ->where('user_id', $userId)
-            ->where('created_at', ">", $lastAssignedDate)->get()->pluck('subscribable_id')->toArray();
-
-        if(!empty($eventCompanies)){
-            $this->assignWeights($userId, $eventCompanies, 2);
-        }
         if(!empty($companySubscriptionsIds)){
             $this->assignWeights($userId, $companySubscriptionsIds, 1);
         }
-        return true;
     }
 
+    /**
+     * @param int   $userId
+     * @param array $companyIds
+     * @param int   $weight
+     */
     private function assignWeights(int $userId, array $companyIds, int $weight) : void
     {
         $now = Carbon::now('utc')->toDateTimeString();
-        $existingCompanyIds = ReportWeight::whereIn('company_id', $companyIds)->where('user_id', $userId)->pluck(
-            'company_id'
-        )->toArray();
+
+        $existingCompanyIds = $this->reportWeightRepository->getExistingCompanyIds($userId,$companyIds);
 
         $newCompanyIds = array_diff($companyIds, $existingCompanyIds);
 
-        $bulkInsertData = [];
-        foreach ($newCompanyIds as $newCompanyId) {
-            $bulkInsertData[] = [
-                'company_id' => $newCompanyId,
-                'user_id'    => $userId,
-                'weight'     => $weight,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ];
-        }
+        $bulkInsertData = array_map(
+            function (int $newCompanyId) use ($userId, $weight, $now) {
+                return [
+                    'company_id' => $newCompanyId,
+                    'user_id'    => $userId,
+                    'weight'     => $weight,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            },
+            $newCompanyIds
+        );
 
-        ReportWeight::where('user_id', $userId)->whereIn('company_id', $existingCompanyIds)->increment('weight', $weight, ['updated_at' => Carbon::now()]);
-        ReportWeight::insert($bulkInsertData);
+        $this->reportWeightRepository->incrementCompaniesAndUserWeight($userId,$existingCompanyIds,$weight);
 
+        $this->reportWeightRepository->bulkStore($bulkInsertData);
     }
 
 }

@@ -12,6 +12,8 @@ class IPlannerService
 
     /** @var Client $guzzleClient */
     private $guzzleClient;
+
+    /** @var CompanyRepository $companyRepository */
     private $companyRepository;
 
     /**
@@ -29,13 +31,10 @@ class IPlannerService
     /**
      * @param DateTime $startDate
      * @param array    $codes
-     * @param int      $clientID
      * @return mixed
      */
-    //public function getEventEntities(DateTime $startDate, array $codes, int $clientID)
     public function getEventEntities(DateTime $startDate, array $codes)
     {
-        //$startDate = DateTime::createFromFormat('j-M-Y', '15-Feb-2009');
         $response = $this->guzzleClient->get(
             env('IPLANNER_URL'),
             [
@@ -51,52 +50,58 @@ class IPlannerService
                 ]
             ]
         );
-        $eventEntities = $this->prepareEventDetails(json_decode($response->getBody()->getContents(), true));
 
-        return $eventEntities;
-        //return json_decode($response->getBody()->getContents(),true);
-    }
+        $content = json_decode($response->getBody()->getContents(), true);
 
-    private function prepareEventDetails($arrEvents){
-        if(empty($arrEvents)){
-            return array();
+        $eventEntities = [];
+
+        if (!empty($content)) {
+            $eventEntities = $this->prepareEventDetails($content);
         }
 
-        $arrEntities = $arrEvents['DmEventEntity'];
-        $arrContacts = $arrEvents['DmEventContact'];
+        return $eventEntities;
+    }
 
-        $arrContacts = array();
-        $arrContacts[] = array('event_id'=>2047523679, 'ext_key_num'=>15381);
+    /**
+     * @param array $events
+     * @return array
+     */
+    private function prepareEventDetails(array $events) : array
+    {
+
+        $eventEntities = $events['DmEventEntity'];
+        $contactEntities = $events['DmEventContact'];
 
         $companiesSymbol = array_filter(
-            Arr::pluck($arrEntities, 'symbol'),
-            function($v)
-            {
+            Arr::pluck($eventEntities, 'symbol'),
+            function ($v) {
                 return $v != null && $v != "";
-            }, ARRAY_FILTER_USE_BOTH);
+            },
+            ARRAY_FILTER_USE_BOTH
+        );
 
         $companyEventEntitiesSymbols = $this->companyRepository->getCompaniesByCode(array_values($companiesSymbol));
 
-        $arrEventCompanies = array();
-        foreach($arrEntities as $entity){
-            if(!array_key_exists($entity['event_id'], $arrEventCompanies)){
-                $arrEventDetails[$entity['event_id']] = array();
-            }
+        $eventCompanies = [];
+
+        foreach($eventEntities as $entity){
             if(!array_key_exists($entity['symbol'], $companyEventEntitiesSymbols)){
                 continue;
             }
-            $arrEventCompanies[$entity['event_id']][] = $companyEventEntitiesSymbols[$entity['symbol']];
+            $eventCompanies[$entity['event_id']][] = $companyEventEntitiesSymbols[$entity['symbol']];
         }
 
-        $arrClientRecommendedCompanies = array();
-        foreach($arrContacts as $contact){
-            if(!array_key_exists($contact['event_id'], $arrEventCompanies)){
+        $clientRecommendedCompanies = [];
+
+        foreach($contactEntities as $contact){
+            if(!array_key_exists($contact['event_id'], $eventCompanies)){
                 continue;
             }
-            $arrClientRecommendedCompanies[$contact['ext_key_num']] = array();
-            $arrClientRecommendedCompanies[$contact['ext_key_num']] = $arrEventCompanies[$contact['event_id']];
+            $clientRecommendedCompanies[$contact['ext_key_num']] = array();
+            $clientRecommendedCompanies[$contact['ext_key_num']] = $eventCompanies[$contact['event_id']];
         }
-        return $arrClientRecommendedCompanies;
+
+        return $clientRecommendedCompanies;
     }
 }
 
