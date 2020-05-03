@@ -154,5 +154,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return Client::where('Email',$this->getEmail())->first();
     }
 
+    public function getUserByClientID($clientID)
+    {
+        $client = Client::where('IPREO_ContactID', $clientID)->first();
+        return User::where('email', $client->Email);
+    }
+
 
 }

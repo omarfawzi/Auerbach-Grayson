@@ -16,4 +16,17 @@ class CompanyRepository
     {
         return Company::filter($filters)->paginate($limit);
     }
+
+    public function getCompaniesByCode(array $companiesCode)
+    {
+        $companies = Company::whereIn('Bloomberg', $companiesCode)->get();
+
+        $companyIDs = array();
+        if(!empty($companies)){
+            foreach($companies as $company){
+                $companyIDs[$company->Bloomberg] = $company->CompanyID;
+            }
+        }
+        return $companyIDs;
+    }
 }

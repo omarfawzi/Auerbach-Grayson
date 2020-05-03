@@ -82,9 +82,9 @@ $app->singleton(
 |
  */
 
-// $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->middleware([
+    \Fruitcake\Cors\HandleCors::class,
+ ]);
 
 $app->routeMiddleware([
     'auth' => Authenticate::class,
@@ -110,6 +110,7 @@ $app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(LumenServiceProvider::class);
 $app->register(ServiceProvider::class);
 $app->register(Illuminate\Mail\MailServiceProvider::class);
+$app->register(\Fruitcake\Cors\CorsServiceProvider::class);
 
 $app->alias('mailer', Illuminate\Mail\Mailer::class);
 $app->alias('mailer', Illuminate\Contracts\Mail\Mailer::class);
