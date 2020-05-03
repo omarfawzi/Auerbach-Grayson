@@ -79,7 +79,7 @@ class AssigningWeightAlgorithmCommand extends Command
 
             if ($user instanceof User) {
                 try {
-                    $this->weightAssignationService->assign(1, $lastAssignedDate, $companiesID);
+                    $this->weightAssignationService->assign($user->id, $lastAssignedDate, $companiesID);
                 } catch (Exception $exception) {
                     $this->error("Exception happened while assigning weights : {$exception->getMessage()}");
                 }
