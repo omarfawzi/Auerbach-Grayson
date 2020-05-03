@@ -68,7 +68,6 @@ class IPlannerService
      */
     private function prepareEventDetails(array $events) : array
     {
-
         $eventEntities = $events['DmEventEntity'];
         $contactEntities = $events['DmEventContact'];
 
