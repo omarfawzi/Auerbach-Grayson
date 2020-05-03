@@ -96,7 +96,6 @@ class IPlannerService
             if(!array_key_exists($contact['event_id'], $eventCompanies)){
                 continue;
             }
-            $clientRecommendedCompanies[$contact['ext_key_num']] = array();
             $clientRecommendedCompanies[$contact['ext_key_num']] = $eventCompanies[$contact['event_id']];
         }
 
