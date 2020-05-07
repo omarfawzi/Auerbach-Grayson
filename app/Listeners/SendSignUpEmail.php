@@ -28,7 +28,7 @@ class SendSignUpEmail
      */
     public function handle(ClientSignUp $event)
     {
-        $plainPassword = Str::random(8);
+        $plainPassword = Str::random(16);
 
         $user = new User();
 

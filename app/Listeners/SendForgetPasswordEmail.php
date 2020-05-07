@@ -26,7 +26,7 @@ class SendForgetPasswordEmail
      */
     public function handle(UserForgetPassword $event)
     {
-        $plainPassword = Str::random(8);
+        $plainPassword = Str::random(16);
 
         $event->user->setPassword(app('hash')->make($plainPassword));
 
