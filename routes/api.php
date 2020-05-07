@@ -16,6 +16,7 @@ use Laravel\Lumen\Routing\Router;
 $router->group(['prefix' => 'api'], function (Router $router) {
 
     $router->post('/login', 'AuthController@login');
+    $router->post('/forget', 'AuthController@forgetPassword');
 
     $router->group(['middleware' => Authenticate::class],function (Router $router){
 

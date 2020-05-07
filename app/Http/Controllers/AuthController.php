@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Auth;
 use App\Events\User\ClientSignUp;
-use App\Exceptions\UnauthorizedException;
+use App\Events\User\UserForgetPassword;
 use App\Factories\TransformerFactory;
-use App\Models\SQL\Client;
 use App\Models\User;
 use App\Repositories\ClientRepository;
 use App\Repositories\UserRepository;
@@ -63,19 +62,28 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
         $validator = Validator::make(
-            $request->all(['email', 'password']),
+            $request->all(['email']),
             [
-                'email'    => 'required',
-                'password' => 'required',
+                'email'    => 'required|exists:sqlsrv.Client'
+            ],
+            [
+                'email.exists' => 'The provided :attribute is invalid'
             ]
         );
         $validator->validate();
         $client = $this->clientRepository->getClientByEmail($request->input('email'));
-        if (!$client instanceof Client) {
-            throw new UnauthorizedException();
-        }
         $user = $this->userRepository->getUserByEmail($request->input('email'));
         if ($user instanceof User) {
+            $validator = Validator::make(
+                $request->all(['password']),
+                [
+                    'password' => "required|check_hashed_pass:{$user->getPassword()}",
+                ],
+                [
+                    'check_hashed_pass' => 'The provided :attribute is invalid'
+                ]
+            );
+            $validator->validate();
             $token = $this->auth->authenticateByEmailAndPassword(
                 $request->input('email'),
                 $request->input('password')
@@ -91,5 +99,30 @@ class AuthController extends Controller
                 $this->transformerFactory->make(MessageTransformer::class)
             );
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function forgetPassword(Request $request): JsonResponse
+    {
+        $validator = Validator::make(
+            $request->all(['email']),
+            [
+                'email'    => 'required|exists:users'
+            ],
+            [
+                'email.exists' => 'The provided :attribute is invalid'
+            ]
+        );
+        $validator->validate();
+
+        event(new UserForgetPassword($this->userRepository->getUserByEmail($request->get('email'))));
+
+        return $this->singleView(
+            config('api.messages.reset_password_email'),
+            $this->transformerFactory->make(MessageTransformer::class)
+        );
     }
 }

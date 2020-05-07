@@ -4,6 +4,7 @@ namespace App;
 
 use App\Exceptions\UnauthorizedException;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class Auth
 {

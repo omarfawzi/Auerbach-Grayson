@@ -36,7 +36,7 @@ class AnalystController
     {
         $report = $this->reportRepository->getReport($id);
         if ($report instanceof Report) {
-            $this->mailService->email([], env('ANALYST_MAIL_CC'), $report->analysts, view('contact_analyst'));
+            $this->mailService->email([], env('ANALYST_MAIL_CC'), $report->analysts, view('email.contact_analyst'));
         }
     }
 
@@ -48,7 +48,7 @@ class AnalystController
     {
         $report = $this->reportRepository->getReport($id);
         if ($report instanceof Report) {
-            $this->mailService->email([], env('ANALYST_MAIL_CC'), $report->analysts, view('email_analyst'));
+            $this->mailService->email([], env('ANALYST_MAIL_CC'), $report->analysts, view('email.email_analyst'));
         }
     }
 

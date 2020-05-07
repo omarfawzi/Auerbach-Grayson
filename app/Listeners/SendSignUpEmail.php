@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\User\ClientSignUp;
 use App\Models\User;
 use App\Services\MailService;
-use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class SendSignUpEmail
 {
@@ -28,7 +28,7 @@ class SendSignUpEmail
      */
     public function handle(ClientSignUp $event)
     {
-        $plainPassword = str_random(8);
+        $plainPassword = Str::random(8);
 
         $user = new User();
 

@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Events\User\ClientSignUp;
+use App\Events\User\UserForgetPassword;
+use App\Listeners\SendForgetPasswordEmail;
 use App\Listeners\SendSignUpEmail;
 use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
 
@@ -16,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         ClientSignUp::class => [
             SendSignUpEmail::class,
+        ],
+        UserForgetPassword::class => [
+            SendForgetPasswordEmail::class
         ]
     ];
 }

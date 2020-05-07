@@ -7,17 +7,18 @@ use App\Mail\UserSignUp;
 use App\Models\SQL\Analyst;
 use App\Models\User;
 use Illuminate\Mail\Mailable;
+use App\Contracts\Mailable as MailableContract;
 use Illuminate\View\View;
 use InvalidArgumentException;
 
 class MailableFactory
 {
     /**
-     * @param Mailable $mailable
+     * @param MailableContract $mailable
      * @param View     $view
      * @return Mailable
      */
-    public function make(Mailable $mailable, View $view): Mailable
+    public function make(MailableContract $mailable, View $view): Mailable
     {
         switch (true) {
             case $mailable instanceof Analyst:
