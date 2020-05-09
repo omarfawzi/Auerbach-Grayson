@@ -29,7 +29,7 @@ class ReportFilter extends ModelFilter
                         'Recommendation',
                         'Recommendation.RecommendID',
                         '=',
-                        'CompanyReportDetail.RecommendID'
+                        'CompanyDetail.RecommendID'
                     )->whereIn('Recommendation.Recommendation', $this->input('recommendation'));
                 }
                 if ($this->input('sector')) {
@@ -92,7 +92,7 @@ class ReportFilter extends ModelFilter
             return null;
         } else {
             return $this->whereHas(
-                'recommendation',
+                'recommendations',
                 function (Builder $query) use ($values) {
                     $query->whereIn('Recommendation', $values);
                 }
