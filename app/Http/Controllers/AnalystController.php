@@ -10,6 +10,7 @@ use App\Repositories\ReportRepository;
 use App\Services\MailService;
 use App\Traits\FractalView;
 use App\Transformers\MessageTransformer;
+use App\Validators\ContactAnalystValidator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -28,21 +29,27 @@ class AnalystController
     /** @var TransformerFactory $transformerFactory */
     protected $transformerFactory;
 
+    /** @var ContactAnalystValidator $contactAnalystValidator */
+    protected $contactAnalystValidator;
+
     /**
      * AnalystController constructor.
      *
-     * @param ReportRepository   $reportRepository
-     * @param MailService        $mailService
-     * @param TransformerFactory $transformerFactory
+     * @param ReportRepository        $reportRepository
+     * @param MailService             $mailService
+     * @param TransformerFactory      $transformerFactory
+     * @param ContactAnalystValidator $contactAnalystValidator
      */
     public function __construct(
         ReportRepository $reportRepository,
         MailService $mailService,
-        TransformerFactory $transformerFactory
+        TransformerFactory $transformerFactory,
+        ContactAnalystValidator $contactAnalystValidator
     ) {
         $this->reportRepository = $reportRepository;
         $this->mailService = $mailService;
         $this->transformerFactory = $transformerFactory;
+        $this->contactAnalystValidator = $contactAnalystValidator;
     }
 
 
@@ -81,15 +88,25 @@ class AnalystController
      */
     public function contact(Request $request, int $id) : JsonResponse
     {
-        Validator::make($request->all(['dateTime']),[
-            'dateTime' => 'required'
-        ])->validate();
+        $this->contactAnalystValidator->validate($request);
 
         $report = $this->reportRepository->getReport($id);
-        dd($request->all());
+
         if ($report instanceof Report) {
-            $this->mailService->email([], env('ANALYST_MAIL_CC'), $report->analysts, view('email.contact_analyst'));
+            $this->mailService->email(
+                [],
+                env('ANALYST_MAIL_CC'),
+                $report->analysts->toArray(),
+                view('email.contact_analyst')->with(
+                    [
+                        'dateTime' => $request->get('dateTime'),
+                        'link'     => $request->get('link'),
+                        'message'  => $request->get('message'),
+                    ]
+                )
+            );
         }
+
         return $this->singleView(
             'Email sent successfully',
             $this->transformerFactory->make(MessageTransformer::class)
@@ -128,9 +145,11 @@ class AnalystController
     public function email(int $id) : JsonResponse
     {
         $report = $this->reportRepository->getReport($id);
+
         if ($report instanceof Report) {
-            $this->mailService->email([], env('ANALYST_MAIL_CC'), $report->analysts, view('email.email_analyst'));
+            $this->mailService->email([], env('ANALYST_MAIL_CC'), $report->analysts->toArray(), view('email.email_analyst'));
         }
+
         return $this->singleView(
             'Email sent successfully',
             $this->transformerFactory->make(MessageTransformer::class)
