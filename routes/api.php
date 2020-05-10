@@ -26,8 +26,8 @@ $router->group(['prefix' => 'api'], function (Router $router) {
         $router->post('/{id}/save','SavedReportController@save');
         $router->delete('/{id}/unsave','SavedReportController@unsave');
         $router->group(['prefix'=>'/{id}/analysts'],function (Router $router){
-            $router->get('/email', 'AnalystController@email');
-            $router->get('/contact', 'AnalystController@contact');
+            $router->post('/email', 'AnalystController@email');
+            $router->post('/contact', 'AnalystController@contact');
            });
         });
 

@@ -25,7 +25,8 @@ class SubscriptionInput
     /**
      * @OA\Property(
      *     type="string",
-     *     description="The type of the subscribable object"
+     *     description="The type of the subscribable object",
+     *     example="sector or company or country"
      * )
      *
      * @var string $type

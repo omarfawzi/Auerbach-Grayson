@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
             }
             return true;
         });
+
         Relation::morphMap([
             Subscription::COMPANY_SUBSCRIPTION_TYPE => Company::class,
             Subscription::SECTOR_SUBSCRIPTION_TYPE => Sector::class,

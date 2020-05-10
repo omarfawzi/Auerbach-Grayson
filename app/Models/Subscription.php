@@ -13,9 +13,12 @@ class Subscription extends Model
 
     public const COMPANY_SUBSCRIPTION_TYPE = 'company';
 
+    public const COUNTRY_SUBSCRIPTION_TYPE = 'country';
+
     public const SUBSCRIPTION_TYPES = [
         self::SECTOR_SUBSCRIPTION_TYPE,
-        self::COMPANY_SUBSCRIPTION_TYPE
+        self::COMPANY_SUBSCRIPTION_TYPE,
+        self::COUNTRY_SUBSCRIPTION_TYPE
     ];
 
     protected $connection = 'mysql';

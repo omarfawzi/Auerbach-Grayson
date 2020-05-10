@@ -38,6 +38,7 @@ class TypeController
      *     summary="Get Types",
      *     tags={"Types"},
      *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/ListParams")),
+     *     @OA\Parameter(in="query",name="name",required=false,@OA\Schema(type="string")),
      *     @OA\Response(
      *        response="200",
      *        description="Get Types",
@@ -55,7 +56,7 @@ class TypeController
      */
     public function index(Request $request) : JsonResponse
     {
-        $types = $this->typeRepository->getTypes($request->get('limit', config('api.defaults.limit')));
+        $types = $this->typeRepository->getTypes($request->get('limit', config('api.defaults.limit')),$request->all());
 
         return $this->listView($types, $this->transformerFactory->make(TypeTransformer::class));
     }

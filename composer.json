@@ -11,6 +11,7 @@
     "require": {
         "php": "^7.2",
         "darkaonline/swagger-lume": "7.*",
+        "doctrine/dbal": "^2.10",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.5",
         "illuminate/mail": "^7.0",

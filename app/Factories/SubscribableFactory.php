@@ -6,6 +6,7 @@ use App\Contracts\Subscribable;
 use App\Models\SQL\Company;
 use App\Models\SQL\Sector;
 use App\Transformers\CompanyTransformer;
+use App\Transformers\CountryTransformer;
 use App\Transformers\SectorTransformer;
 use League\Fractal\TransformerAbstract;
 
@@ -17,22 +18,30 @@ class SubscribableFactory
     /** @var SectorTransformer $sectorTransformer */
     protected $sectorTransformer;
 
+    /** @var CountryTransformer $countryTransformer */
+    protected $countryTransformer;
+
     /**
      * SubscribableFactory constructor.
      *
      * @param CompanyTransformer $companyTransformer
      * @param SectorTransformer  $sectorTransformer
+     * @param CountryTransformer $countryTransformer
      */
-    public function __construct(CompanyTransformer $companyTransformer, SectorTransformer $sectorTransformer)
-    {
+    public function __construct(
+        CompanyTransformer $companyTransformer,
+        SectorTransformer $sectorTransformer,
+        CountryTransformer $countryTransformer
+    ) {
         $this->companyTransformer = $companyTransformer;
         $this->sectorTransformer  = $sectorTransformer;
+        $this->countryTransformer = $countryTransformer;
     }
 
 
     /**
      * @param Subscribable $subscribable
-     * @return array
+     * @return TransformerAbstract
      */
     public function make(Subscribable $subscribable) : TransformerAbstract
     {
