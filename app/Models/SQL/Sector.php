@@ -32,4 +32,8 @@ class Sector extends Model implements Subscribable
         return $this->morphMany(Subscription::class,'subscribable',null,null,'GICS_SectorId');
     }
 
+    public function industryDetails()
+    {
+        return $this->hasManyThrough(IndustryDetail::class,Industry::class,'GICS_SectorId','IndustryID','GICS_SectorId','IndustryID');
+    }
 }

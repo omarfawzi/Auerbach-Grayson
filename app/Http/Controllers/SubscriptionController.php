@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Factories\HookFactory;
 use App\Factories\TransformerFactory;
+use App\Hooks\SubscribeHook;
+use App\Models\Subscription;
 use App\Repositories\SubscriptionRepository;
 use App\Traits\FractalView;
 use App\Transformers\MessageTransformer;
@@ -25,75 +28,27 @@ class SubscriptionController
     /** @var SubscriptionValidator $subscriptionValidator */
     protected $subscriptionValidator;
 
+    /** @var HookFactory $hookFactory */
+    protected $hookFactory;
+
     /**
      * SubscriptionController constructor.
+     *
      * @param SubscriptionRepository $subscriptionRepository
-     * @param TransformerFactory $transformerFactory
-     * @param SubscriptionValidator $subscriptionValidator
+     * @param TransformerFactory     $transformerFactory
+     * @param SubscriptionValidator  $subscriptionValidator
+     * @param HookFactory            $hookFactory
      */
-    public function __construct(SubscriptionRepository $subscriptionRepository, TransformerFactory $transformerFactory, SubscriptionValidator $subscriptionValidator)
-    {
+    public function __construct(
+        SubscriptionRepository $subscriptionRepository,
+        TransformerFactory $transformerFactory,
+        SubscriptionValidator $subscriptionValidator,
+        HookFactory $hookFactory
+    ) {
         $this->subscriptionRepository = $subscriptionRepository;
-        $this->transformerFactory = $transformerFactory;
-        $this->subscriptionValidator = $subscriptionValidator;
-    }
-
-
-    /**
-     * @OA\Get(
-     *     path="/subscriptions",
-     *     summary="Get Subscriptions",
-     *     tags={"Subscriptions"},
-     *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/ListParams")),
-     *     @OA\Parameter(in="query",name="type",required=false,@OA\Schema(type="string")),
-     *     @OA\Response(
-     *        response="200",
-     *        description="Get Subscriptions",
-     *       @OA\MediaType(
-     *          mediaType="application/json",
-     *          @OA\Schema(
-     *            @OA\Property(property="data",type="array",@OA\Items(type="object",ref="#/components/schemas/Subscription")),
-     *            @OA\Property(property="meta", ref="#/components/schemas/Meta")
-     *        )
-     *      )
-     *    )
-     * )
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function index(Request $request): JsonResponse
-    {
-        $subscriptions = $this->subscriptionRepository->getSubscriptions($request->user()->id, $request->get('limit', config('api.defaults.limit')), $request->all());
-        return $this->listView($subscriptions, $this->transformerFactory->make(SubscriptionTransformer::class));
-    }
-
-    /**
-     * @OA\Post(
-     *     path="/subscriptions",
-     *     summary="Add Subscription",
-     *     tags={"Subscriptions"},
-     *     @OA\RequestBody(
-     *        @OA\MediaType(mediaType="application/json",@OA\Schema(ref="#/components/schemas/SubscriptionInput"))
-     *     ),
-     *     @OA\Response(
-     *        response="200",
-     *        description="Get Subscription",
-     *        @OA\MediaType(
-     *           mediaType="application/json",
-     *           @OA\Schema(
-     *             @OA\Property(property="data",ref="#/components/schemas/Subscription")
-     *          )
-     *       )
-     *     )
-     * )
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function store(Request $request)
-    {
-        $this->subscriptionValidator->validate($request);
-        $subscription = $this->subscriptionRepository->store($request->get('type'), $request->get('id'), $request->user()->id);
-        return $this->singleView($subscription, $this->transformerFactory->make(SubscriptionTransformer::class));
+        $this->transformerFactory     = $transformerFactory;
+        $this->subscriptionValidator  = $subscriptionValidator;
+        $this->hookFactory            = $hookFactory;
     }
 
     /**
@@ -121,7 +76,7 @@ class SubscriptionController
      *        )
      *    )
      * )
-     * @param int     $id
+     * @param int $id
      * @param Request $request
      * @return JsonResponse
      */
@@ -129,7 +84,80 @@ class SubscriptionController
     {
         $this->subscriptionRepository->destroy($request->user()->id, $id);
 
-        return $this->singleView('Unsubscribed Successfully',$this->transformerFactory->make(MessageTransformer::class));
+        return $this->singleView(
+            'Unsubscribed Successfully',
+            $this->transformerFactory->make(MessageTransformer::class)
+        );
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/subscriptions",
+     *     summary="Get Subscriptions",
+     *     tags={"Subscriptions"},
+     *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/ListParams")),
+     *     @OA\Parameter(in="query",name="type",required=false,@OA\Schema(type="string")),
+     *     @OA\Response(
+     *        response="200",
+     *        description="Get Subscriptions",
+     *       @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *            @OA\Property(property="data",type="array",@OA\Items(type="object",ref="#/components/schemas/Subscription")),
+     *            @OA\Property(property="meta", ref="#/components/schemas/Meta")
+     *        )
+     *      )
+     *    )
+     * )
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function index(Request $request): JsonResponse
+    {
+        $subscriptions = $this->subscriptionRepository->getSubscriptions(
+            $request->user()->id,
+            $request->get('limit', config('api.defaults.limit')),
+            $request->all()
+        );
+
+        return $this->listView($subscriptions, $this->transformerFactory->make(SubscriptionTransformer::class));
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/subscriptions",
+     *     summary="Add Subscription",
+     *     tags={"Subscriptions"},
+     *     @OA\RequestBody(
+     *        @OA\MediaType(mediaType="application/json",@OA\Schema(ref="#/components/schemas/SubscriptionInput"))
+     *     ),
+     *     @OA\Response(
+     *        response="200",
+     *        description="Add Subscription",
+     *        @OA\MediaType(
+     *           mediaType="application/json",
+     *           @OA\Schema(
+     *             @OA\Property(property="data",ref="#/components/schemas/Subscription")
+     *          )
+     *       )
+     *     )
+     * )
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function store(Request $request)
+    {
+        $this->subscriptionValidator->validate($request);
+
+        $subscription = $this->subscriptionRepository->store(
+            $request->get('type'),
+            $request->get('id'),
+            $request->user()->id
+        );
+
+        $this->hookFactory->make(SubscribeHook::class)->after($subscription);
+
+        return $this->singleView($subscription, $this->transformerFactory->make(SubscriptionTransformer::class));
     }
 
 }

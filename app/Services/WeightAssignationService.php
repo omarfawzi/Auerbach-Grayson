@@ -49,11 +49,11 @@ class WeightAssignationService
         $companySubscriptionsIds = $this->subscriptionRepository->getUserSubscribableIdsAfter($userId,Subscription::COMPANY_SUBSCRIPTION_TYPE,$lastAssignedDate);
 
         if(!empty($eventCompaniesIds)){
-            $this->assignWeights($userId, $eventCompaniesIds, 2);
+            $this->assignWeights($userId, $eventCompaniesIds, ReportWeight::COMPANY_WEIGHT);
         }
 
         if(!empty($companySubscriptionsIds)){
-            $this->assignWeights($userId, $companySubscriptionsIds, 1);
+            $this->assignWeights($userId, $companySubscriptionsIds, ReportWeight::SUBSCRIPTION_WEIGHT);
         }
     }
 
@@ -62,7 +62,7 @@ class WeightAssignationService
      * @param array $companyIds
      * @param int   $weight
      */
-    private function assignWeights(int $userId, array $companyIds, int $weight) : void
+    public function assignWeights(int $userId, array $companyIds, int $weight) : void
     {
         $now = Carbon::now('utc')->toDateTimeString();
 
