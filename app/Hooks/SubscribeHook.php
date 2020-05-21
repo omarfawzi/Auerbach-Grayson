@@ -25,8 +25,14 @@ class SubscribeHook implements SubscriptionHook
 
     public function hook(Subscription $subscription): void
     {
+        $companiesIds = [];
         if ($subscription->subscribable_type === Subscription::SECTOR_SUBSCRIPTION_TYPE) {
             $companiesIds = $subscription->subscribable->industryDetails->pluck('CompanyID')->unique()->toArray();
+        }
+        if ($subscription->subscribable_type === Subscription::COMPANY_SUBSCRIPTION_TYPE) {
+            $companiesIds = [$subscription->subscribable->id];
+        }
+        if (!empty($companiesIds)) {
             $this->weightAssignationService->assignWeights(
                 Auth::getAuthenticatedUser()->id,
                 $companiesIds,
