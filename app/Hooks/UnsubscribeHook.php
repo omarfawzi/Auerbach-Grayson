@@ -2,18 +2,37 @@
 
 namespace App\Hooks;
 
-use App\Contracts\Hook;
+use App\Auth;
+use App\Contracts\SubscriptionHook;
+use App\Models\ReportWeight;
+use App\Models\Subscription;
+use App\Repositories\ReportWeightRepository;
 
-class UnsubscribeHook implements Hook
+class UnsubscribeHook implements SubscriptionHook
 {
+    /** @var ReportWeightRepository $reportWeightRepository */
+    protected $reportWeightRepository;
 
-    public function before(object $request): void
+    /**
+     * UnsubscribeHook constructor.
+     *
+     * @param ReportWeightRepository $reportWeightRepository
+     */
+    public function __construct(ReportWeightRepository $reportWeightRepository)
     {
-        // TODO: Implement before() method.
+        $this->reportWeightRepository = $reportWeightRepository;
     }
 
-    public function after(object $model): void
+
+    public function hook(Subscription $subscription): void
     {
-        // TODO: Implement after() method.
+        if ($subscription->subscribable_type === Subscription::SECTOR_SUBSCRIPTION_TYPE) {
+            $companiesIds = $subscription->subscribable->industryDetails->pluck('CompanyID')->unique()->toArray();
+            $this->reportWeightRepository->decrementCompaniesAndUserWeight(
+                Auth::getAuthenticatedUser()->id,
+                $companiesIds,
+                ReportWeight::SUBSCRIPTION_WEIGHT
+            );
+        }
     }
 }

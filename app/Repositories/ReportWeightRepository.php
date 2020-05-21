@@ -53,4 +53,18 @@ class ReportWeightRepository
     {
         ReportWeight::query()->insert($bulkData);
     }
+
+    /**
+     * @param int   $userId
+     * @param array $companyIds
+     * @param int   $step
+     * @return int
+     */
+    public function decrementCompaniesAndUserWeight(int $userId , array $companyIds , int $step)
+    {
+        return ReportWeight::query()->where('user_id', $userId)
+            ->whereIn('company_id', $companyIds)
+            ->where('weight','>',0)
+            ->increment('weight', $step, ['updated_at' => Carbon::now()]);
+    }
 }

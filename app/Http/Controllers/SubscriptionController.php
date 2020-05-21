@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Factories\HookFactory;
 use App\Factories\TransformerFactory;
 use App\Hooks\SubscribeHook;
-use App\Models\Subscription;
+use App\Hooks\UnsubscribeHook;
 use App\Repositories\SubscriptionRepository;
 use App\Traits\FractalView;
 use App\Transformers\MessageTransformer;
@@ -53,7 +53,7 @@ class SubscriptionController
 
     /**
      * @OA\Delete(
-     *     path="/subscriptions",
+     *     path="/subscriptions/{id}",
      *     summary="Remove Subscription",
      *     tags={"Subscriptions"},
      *     @OA\Parameter(in="path",name="id",required=true,@OA\Schema(type="number")),
@@ -82,6 +82,10 @@ class SubscriptionController
      */
     public function destroy(Request $request, int $id)
     {
+        $this->hookFactory->make(UnsubscribeHook::class)->hook(
+            $this->subscriptionRepository->getSubscription($request->user()->id, $id)
+        );
+
         $this->subscriptionRepository->destroy($request->user()->id, $id);
 
         return $this->singleView(
@@ -155,7 +159,7 @@ class SubscriptionController
             $request->user()->id
         );
 
-        $this->hookFactory->make(SubscribeHook::class)->after($subscription);
+        $this->hookFactory->make(SubscribeHook::class)->hook($subscription);
 
         return $this->singleView($subscription, $this->transformerFactory->make(SubscriptionTransformer::class));
     }

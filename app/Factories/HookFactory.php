@@ -2,7 +2,7 @@
 
 namespace App\Factories;
 
-use App\Contracts\Hook;
+use App\Contracts\SubscriptionHook;
 use App\Hooks\SubscribeHook;
 use App\Hooks\UnsubscribeHook;
 use InvalidArgumentException;
@@ -30,9 +30,9 @@ class HookFactory
 
     /**
      * @param string $hook
-     * @return Hook
+     * @return SubscriptionHook
      */
-    public function make(string $hook): Hook
+    public function make(string $hook): SubscriptionHook
     {
         switch ($hook) {
             case SubscribeHook::class:

@@ -9,6 +9,16 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 class SubscriptionRepository
 {
     /**
+     * @param int $userId
+     * @param int $id
+     * @return Subscription
+     */
+    public function getSubscription(int $userId, int $id): Subscription
+    {
+        return Subscription::query()->where(['user_id'=>$userId,'id'=>$id])->first();
+    }
+
+    /**
      * @param int   $userId
      * @param int   $limit
      * @param array $filters
