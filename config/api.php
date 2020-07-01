@@ -12,5 +12,8 @@ return [
     ],
     'reports' => [
         'last_trend_date' => ReportDateFilter::YEAR
+    ],
+    'general' => [
+        'limit' => 4
     ]
 ];

@@ -13,6 +13,17 @@ class ReportWeightRepository
      * @param int $userId
      * @return ReportWeight|null
      */
+
+    public function getWeightedCompanyIds(string $order = 'desc'): array
+    {
+        $userId = Auth::getAuthenticatedUser()->id;
+
+        return ReportWeight::query()->select('company_id')
+            ->where('user_id',$userId)
+            ->orderBy('weight', $order)
+            ->groupBy('company_id')->get()->pluck('company_id')->toArray();
+    }
+
     public function getLastChangedUserReportWeight(int $userId) : ?Model
     {
         return ReportWeight::query()->select('updated_at')

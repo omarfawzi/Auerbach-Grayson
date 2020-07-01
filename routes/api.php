@@ -62,3 +62,13 @@ $router->group(['prefix' => 'api'], function (Router $router) {
 });
 
 
+
+$router->group(['prefix' => 'general'], function (Router $router) {
+
+    $router->group(['prefix'=>'reports'], function (Router $router) {
+        $router->get('/', 'ReportController@generalList');
+    });
+
+});
+
+

@@ -128,4 +128,11 @@ class ReportController
 
         return $this->singleView($report, $this->transformerFactory->make(ReportDetailTransformer::class));
     }
+
+    public function generalList(Request $request): JsonResponse
+    {
+        $reports = $this->reportRepository->getReports( config('api.general.limit'), $request->all() );
+
+        return $this->listView($reports, $this->transformerFactory->make(ReportTransformer::class));
+    }
 }
