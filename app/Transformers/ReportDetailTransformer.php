@@ -4,6 +4,7 @@ namespace App\Transformers;
 
 use App\Models\SavedReport;
 use App\Models\SQL\Company;
+use App\Models\SQL\Country;
 use App\Models\SQL\Report;
 use League\Fractal\TransformerAbstract;
 
@@ -15,18 +16,17 @@ class ReportDetailTransformer extends TransformerAbstract
     /** @var CompanyDetailTransformer $companyDetailTransformer */
     protected $companyDetailTransformer;
 
-    /**
-     * ReportDetailTransformer constructor.
-     *
-     * @param ReportTransformer        $reportTransformer
-     * @param CompanyDetailTransformer $companyDetailTransformer
-     */
+    /** CountryTransformer $countryTransformer */
+    protected $countryTransformer;
+
     public function __construct(
         ReportTransformer $reportTransformer,
-        CompanyDetailTransformer $companyDetailTransformer
+        CompanyDetailTransformer $companyDetailTransformer,
+        CountryTransformer $countryTransformer
     ) {
         $this->reportTransformer        = $reportTransformer;
         $this->companyDetailTransformer = $companyDetailTransformer;
+        $this->countryTransformer       = $countryTransformer;
     }
 
     /**
@@ -46,6 +46,11 @@ class ReportDetailTransformer extends TransformerAbstract
                         ]
                     ),
                 'isSaved'   => $report->isSaved instanceof SavedReport ? true : false,
+                'countries' => $report->countries->map(
+                    function (Country $country) {
+                        return $this->countryTransformer->transform($country));
+                    }
+                ),
                 'companies' => $report->companies->map(
                     function (Company $company) use ($report) {
                         return $this->companyDetailTransformer->transform($company, $report->getKey());
