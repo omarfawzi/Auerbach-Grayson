@@ -44,7 +44,7 @@ class ReportDetailTransformer extends TransformerAbstract
                             'S' => 'PORT',
                             'F' => 'PDF',
                         ]
-                    ),
+                ),
                 'isSaved'   => $report->isSaved instanceof SavedReport ? true : false,
                 'countries' => $report->countries->map(
                     function (Country $country) {
