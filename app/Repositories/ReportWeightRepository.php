@@ -16,7 +16,7 @@ class ReportWeightRepository
      * @param string $order
      * @return array
      */
-     public function getWeightedCompanyIds(int $limit , int $page = 0 , string $order = 'desc'): array
+     public function getWeightedCompanyIds(int $limit = 10 , int $page = 0 , string $order = 'desc'): array
      {
          $userId = Auth::getAuthenticatedUser()->id;
 
