@@ -20,7 +20,7 @@ class ReportWeightRepository
      {
          $userId = Auth::getAuthenticatedUser()->id;
 
-         return ReportWeight::query()->distinct()->select('company_id')
+         return ReportWeight::query()->select('company_id')
              ->where('user_id',$userId)
              ->orderBy('weight', $order)
              ->groupBy('company_id')
