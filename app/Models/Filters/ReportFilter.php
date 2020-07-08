@@ -196,7 +196,10 @@ class ReportFilter extends ModelFilter
     {
         if ($recommended)
         {
-            $recommendedCompanyIds = app(ReportWeightRepository::class)->getWeightedCompanyIds();
+            $recommendedCompanyIds = app(ReportWeightRepository::class)->getWeightedCompanyIds(
+                $this->input('rLimit', 10),
+                $this->input('rPage', 0)
+            );
 
             return $this->select('Report.*')->join('CompanyDetail', 'CompanyDetail.ReportID', '=', 'Report.ReportID')
                 ->whereIn('CompanyDetail.CompanyID', $recommendedCompanyIds)
