@@ -56,6 +56,8 @@ class ReportController
      *     summary="Get Reports",
      *     tags={"Reports"},
      *     @OA\Parameter(in="query",name="pagination",@OA\Schema(ref="#/components/schemas/ListParams")),
+     *     @OA\Parameter(in="query",name="rLimit",required=false,@OA\Schema(type="number"),description="Top Recommendation Number"),
+     *     @OA\Parameter(in="query",name="rPage",required=false,@OA\Schema(type="number"),description="Top Recommendation Page"),
      *     @OA\Parameter(in="query",name="type",required=false,@OA\Schema(type="string")),
      *     @OA\Parameter(in="query",name="trending",required=false,@OA\Schema(type="boolean")),
      *     @OA\Parameter(in="query",name="recommended",required=false,@OA\Schema(type="boolean")),
