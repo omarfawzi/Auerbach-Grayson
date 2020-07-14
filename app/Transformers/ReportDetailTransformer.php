@@ -48,7 +48,7 @@ class ReportDetailTransformer extends TransformerAbstract
                 'isSaved'   => $report->isSaved instanceof SavedReport ? true : false,
                 'countries' => $report->countries->map(
                     function (Country $country) {
-                        return $this->countryTransformer->transform($country));
+                        return $this->countryTransformer->transform($country);
                     }
                 ),
                 'companies' => $report->companies->map(
