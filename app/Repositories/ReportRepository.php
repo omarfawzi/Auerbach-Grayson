@@ -27,6 +27,6 @@ class ReportRepository
         /** @var Builder $queryBuilder */
         $queryBuilder = Report::filter($filters);
 
-        return $queryBuilder->where('Approved', 1)->orderBy('ReportDate', 'DESC')->paginateFilter($limit);
+        return $queryBuilder->with('type')->where('Approved', 1)->orderBy('ReportDate', 'DESC')->paginateFilter($limit);
     }
 }
