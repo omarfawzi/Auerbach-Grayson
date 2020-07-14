@@ -11,17 +11,22 @@ class ReportWeightRepository
 {
 
     /**
-      * @param string $order
-      * @return array
-      */
-     public function getWeightedCompanyIds(string $order = 'desc'): array
+     * @param int $limit
+     * @param int $page
+     * @param string $order
+     * @return array
+     */
+     public function getWeightedCompanyIds(int $limit = 10 , int $page = 0 , string $order = 'desc'): array
      {
          $userId = Auth::getAuthenticatedUser()->id;
 
          return ReportWeight::query()->select('company_id')
              ->where('user_id',$userId)
              ->orderBy('weight', $order)
-             ->groupBy('company_id')->get()->pluck('company_id')->toArray();
+             ->groupBy('company_id')
+             ->skip($page * $limit)
+             ->take($limit)
+             ->get()->pluck('company_id')->toArray();
      }
 
 
