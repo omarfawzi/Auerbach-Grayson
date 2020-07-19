@@ -133,7 +133,9 @@ class ReportController
 
     public function generalList(Request $request): JsonResponse
     {
-        $reports = $this->reportRepository->getReports( config('api.general.limit'), $request->all() );
+        $reports = $this->reportRepository->getReports(
+                                                    $request->get('limit', config('api.defaults.limit')),
+                                                    $request->all() );
 
         return $this->listView($reports, $this->transformerFactory->make(ReportTransformer::class));
     }

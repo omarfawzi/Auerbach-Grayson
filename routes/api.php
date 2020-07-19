@@ -57,6 +57,8 @@ $router->group(['prefix' => 'api'], function (Router $router) {
             $router->get('/', 'TypeController@index');
         });
 
+        $router->get('/user', 'AuthController@getLoggedUser');
+
     });
 
 });

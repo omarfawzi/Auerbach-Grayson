@@ -125,4 +125,12 @@ class AuthController extends Controller
             $this->transformerFactory->make(MessageTransformer::class)
         );
     }
+
+    public function getLoggedUser(){
+
+        return $this->singleView(
+            Auth::getAuthenticatedUser(),
+            $this->transformerFactory->make(MessageTransformer::class)
+        );
+    }
 }

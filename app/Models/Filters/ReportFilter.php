@@ -9,6 +9,7 @@ use App\Repositories\SavedReportRepository;
 use EloquentFilter\ModelFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use App\Constants\ReportType;
 
 class ReportFilter extends ModelFilter
 {
@@ -151,12 +152,24 @@ class ReportFilter extends ModelFilter
      */
     public function type(string $type)
     {
-        return $this->whereHas(
-            'type',
-            function (Builder $query) use ($type) {
-                $query->where('Type', $type);
-            }
-        );
+        $tyoeID = -1;
+        switch($type){
+            case 'Company Report':
+                $tyoeID = ReportType::COMPANY;
+                break;
+            case 'Industry Report':
+                $tyoeID = ReportType::SECTOR;
+                break;
+            case 'Market Report (General)':
+                $tyoeID = ReportType::MACRO;
+                break;
+            case 'Daily Report':
+                $tyoeID = ReportType::DAILY;
+                break;
+            default:
+                return;
+        }
+        return $this->where('TypeID', $tyoeID);
     }
 
     /**
