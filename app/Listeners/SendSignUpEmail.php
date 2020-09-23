@@ -42,6 +42,6 @@ class SendSignUpEmail
 
         $user->save();
 
-        $this->mailService->email([$user->getEmail()],'',[$user],view('signup'));
+        $this->mailService->email([$user->getEmail()],'',[$user], view('email.user_credentials'));
     }
 }

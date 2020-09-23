@@ -33,13 +33,5 @@ class SubscriptionValidator
             ]
         );
         $validator->validate();
-        $validator = Validator::make(
-            $request->all(['id', 'type']),
-            [
-                'id' => "required|exists:sqlsrv.$tableName,$primaryKey|unique:subscriptions,subscribable_id,NULL,id,subscribable_type,$subscribableType",
-                'type' => "unique:subscriptions,subscribable_type,NULL,id,subscribable_id,$subscribableId"
-            ]
-        );
-        $validator->validate();
     }
 }

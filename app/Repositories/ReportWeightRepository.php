@@ -85,9 +85,13 @@ class ReportWeightRepository
      */
     public function decrementCompaniesAndUserWeight(int $userId , array $companyIds , int $step)
     {
-        return ReportWeight::query()->where('user_id', $userId)
+        ReportWeight::query()->where('user_id', $userId)
             ->whereIn('company_id', $companyIds)
             ->where('weight','>',0)
-            ->increment('weight', $step, ['updated_at' => Carbon::now()]);
+            ->decrement('weight', $step, ['updated_at' => Carbon::now()]);
+
+        return ReportWeight::query()->where('user_id', $userId)
+            ->where('weight', '<=', 0)
+            ->delete();
     }
 }

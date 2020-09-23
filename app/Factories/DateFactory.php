@@ -23,7 +23,7 @@ class DateFactory
             case ReportDateFilter::YEAR:
                 return Carbon::now()->subYear()->toDateTimeString();
             default:
-                return '';
+                return $date;
         }
     }
 }

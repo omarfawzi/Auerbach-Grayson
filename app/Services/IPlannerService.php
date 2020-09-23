@@ -35,6 +35,7 @@ class IPlannerService
      */
     public function getEventEntities(DateTime $startDate, array $codes)
     {
+
         $response = $this->guzzleClient->get(
             env('IPLANNER_URL'),
             [
@@ -43,16 +44,15 @@ class IPlannerService
                     env('IPLANNER_PASSWORD')
                 ],
                 'query' =>[
-                'EventStartDate_Upper' => $startDate->format('m-d-Y'),
+                'EventStartDate' => $startDate->format('m-d-Y'),
                 'EventTypeCode'        => sprintf("[%s]", implode(',', $codes)),
-                '$Components'          => 'DmEventEntity','DmEventContact',
+                '$Components'          => 'DmEventEntity,DmEventContact',
                 '$format'              => 'json',
                 ]
             ]
         );
 
         $content = json_decode($response->getBody()->getContents(), true);
-
         $eventEntities = [];
 
         if (!empty($content)) {
@@ -80,20 +80,25 @@ class IPlannerService
         );
 
         $companyEventEntitiesSymbols = $this->companyRepository->getCompaniesByCode(array_values($companiesSymbol));
-
         $eventCompanies = [];
 
         foreach($eventEntities as $entity){
+            if(empty($entity['symbol']) || is_null($entity['symbol'])){
+                continue;
+            }
+
             if(!array_key_exists($entity['symbol'], $companyEventEntitiesSymbols)){
                 continue;
             }
             $eventCompanies[$entity['event_id']][] = $companyEventEntitiesSymbols[$entity['symbol']];
         }
-
         $clientRecommendedCompanies = [];
 
         foreach($contactEntities as $contact){
             if(!array_key_exists($contact['event_id'], $eventCompanies)){
+                continue;
+            }
+            if(empty($contact['ext_key_num']) || is_null($contact['ext_key_num'])){
                 continue;
             }
             $clientRecommendedCompanies[$contact['ext_key_num']] = $eventCompanies[$contact['event_id']];

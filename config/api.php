@@ -11,7 +11,7 @@ return [
         'reset_password_email' => 'Password Sent to Email'
     ],
     'reports' => [
-        'last_trend_date' => ReportDateFilter::YEAR
+        'last_trend_date' => ReportDateFilter::WEEK
     ],
     'general' => [
         'limit' => 4

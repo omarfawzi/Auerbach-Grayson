@@ -16,4 +16,9 @@ class Industry extends Model
     {
         return $this->belongsTo(Sector::class,'GICS_SectorId','GICS_SectorId');
     }
+
+    public function companies()
+    {
+        return $this->hasManyThrough(Company::class,IndustryDetail::class,'IndustryID','CompanyID','IndustryID','CompanyID');
+    }
 }

@@ -52,7 +52,7 @@ return [
             'prefix' => env('DB_PREFIX', ''),
             'strict' => env('DB_STRICT_MODE', true),
             'engine' => env('DB_ENGINE', null),
-            'timezone' => env('DB_TIMEZONE', '+00:00'),
+            'timezone' => env('DB_TIMEZONE', '+02:00'),
         ],
 
         'pgsql' => [

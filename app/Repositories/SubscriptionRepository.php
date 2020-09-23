@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\ReportWeight;
 use App\Models\Subscription;
 use DateTime;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -52,7 +53,9 @@ class SubscriptionRepository
      */
     public function destroy(int $userId, int $id): void
     {
-        Subscription::query()->where(['user_id' => $userId, 'id' => $id])->delete();
+        Subscription::query()->where(['user_id' => $userId, 'id' => $id])->decrement('weight', 1);
+        Subscription::query()->where(['user_id' => $userId, 'id' => $id, 'weight'=> 0])->delete();
+
     }
 
     /**

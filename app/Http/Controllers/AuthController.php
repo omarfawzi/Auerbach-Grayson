@@ -72,6 +72,7 @@ class AuthController extends Controller
         );
         $validator->validate();
         $client = $this->clientRepository->getClientByEmail($request->input('email'));
+
         $user = $this->userRepository->getUserByEmail($request->input('email'));
         if ($user instanceof User) {
             $validator = Validator::make(

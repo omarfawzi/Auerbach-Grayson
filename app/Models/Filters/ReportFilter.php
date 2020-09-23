@@ -24,8 +24,8 @@ class ReportFilter extends ModelFilter
         return $this->whereHas(
             'companies',
             function (Builder $query) use ($values) {
-                $query->whereIn('Company', $values);
                 if ($this->input('recommendation')) {
+                    $query->whereIn('Company', $values);
                     $query->join(
                         'Recommendation',
                         'Recommendation.RecommendID',
@@ -34,6 +34,7 @@ class ReportFilter extends ModelFilter
                     )->whereIn('Recommendation.Recommendation', $this->input('recommendation'));
                 }
                 if ($this->input('sector')) {
+                    $query->whereIn('Company', $values);
                     $query->join(
                         'IndustryDetail',
                         'IndustryDetail.CompanyID',
@@ -50,6 +51,24 @@ class ReportFilter extends ModelFilter
                         '=',
                         'Industry.GICS_SectorId'
                     )->whereIn('GICS_Sector.GICS_Sector', $this->input('sector'));
+                }
+                if ($this->input('recommended')) {
+                    return $this->whereHas(
+                        'companies',
+                        function (Builder $query) use ($values) {
+                            $query->whereHas(
+                                'industry',
+                                function (Builder $query) use ($values) {
+                                    $query->whereHas(
+                                        'companies',
+                                        function (Builder $query) use ($values) {
+                                            $query->whereIn('Company', $values);
+                                        }
+                                    );
+                                }
+                            );
+                        }
+                    );
                 }
             }
         );
@@ -152,24 +171,24 @@ class ReportFilter extends ModelFilter
      */
     public function type(string $type)
     {
-        $tyoeID = -1;
+        $typeID = -1;
         switch($type){
             case 'Company Report':
-                $tyoeID = ReportType::COMPANY;
+                $typeID = ReportType::COMPANY;
                 break;
             case 'Industry Report':
-                $tyoeID = ReportType::SECTOR;
+                $typeID = ReportType::SECTOR;
                 break;
             case 'Market Report (General)':
-                $tyoeID = ReportType::MACRO;
+                $typeID = ReportType::MACRO;
                 break;
             case 'Daily Report':
-                $tyoeID = ReportType::DAILY;
+                $typeID = ReportType::DAILY;
                 break;
             default:
                 return;
         }
-        return $this->where('TypeID', $tyoeID);
+        return $this->where('TypeID', $typeID);
     }
 
     /**
