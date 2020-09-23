@@ -11,10 +11,13 @@
 |
  */
 
+
+
 $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
-        'email' => $faker->email,
-        'password' => 'secret',
+        'email' => $faker->unique()->email,
+        'password' => app('hash')->make('12345'),
+        'email_verified_at' => '2020-09-01 10:00:00sudo'
     ];
 });
