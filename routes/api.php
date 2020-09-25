@@ -58,6 +58,7 @@ $router->group(['prefix' => 'api'], function (Router $router) {
         });
 
         $router->get('/user', 'AuthController@getLoggedUser');
+        $router->get('/token', 'AuthController@refreshToken');
 
     });
 

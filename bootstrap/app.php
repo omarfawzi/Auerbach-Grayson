@@ -42,7 +42,7 @@ $app->configure('database');
 $app->configure('mail');
 // $app->configure('filesystems');
 // $app->configure('logging');
-// $app->configure('queue');
+$app->configure('queue');
 // $app->configure('services');
 // $app->configure('view');
 

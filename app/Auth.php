@@ -40,7 +40,7 @@ class Auth
      *
      * @return string
      */
-    public function refreshAuthenticationToken(): string
+    public static function refreshAuthenticationToken(): string
     {
         return app('auth')->refresh();
     }

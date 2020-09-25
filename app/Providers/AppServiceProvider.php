@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        Schema::defaultStringLength(191);
         DB::listen(function($query) {
             File::append(
                 storage_path('/logs/query.log'),
