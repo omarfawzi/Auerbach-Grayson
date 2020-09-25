@@ -127,6 +127,14 @@ class AuthController extends Controller
         );
     }
 
+    public function refreshToken(): string
+    {
+        return $this->singleView(
+            Auth::refreshAuthenticationToken(),
+            $this->transformerFactory->make(MessageTransformer::class)
+        );
+    }
+
     public function getLoggedUser(){
 
         return $this->singleView(
