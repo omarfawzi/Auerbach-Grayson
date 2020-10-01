@@ -37,4 +37,17 @@ class ReportRepository
                                 ->orderBy('ReportDate', 'DESC')
                                 ->paginateFilter($limit);
     }
+
+    public function getReportsByDate($reportDate)
+    {
+        /** @var Builder $queryBuilder */
+        $filters['date'] = $reportDate;
+
+        $queryBuilder = Report::filter($filters);
+
+        return $queryBuilder->with('type')
+            ->where('Approved', 1)
+            ->where('UseCode', 1)
+            ->get();
+    }
 }

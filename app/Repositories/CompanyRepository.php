@@ -29,4 +29,9 @@ class CompanyRepository
         }
         return $companyIDs;
     }
+
+    public function getReportCompaniesID($reportID){
+        // we use the DB direct to make it faster than the normal way.
+        return DB::connection('sqlsrv')->table('CompanyDetail')->where('ReportID', $reportID)->get(['CompanyID']);
+    }
 }

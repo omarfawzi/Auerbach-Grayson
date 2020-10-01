@@ -24,8 +24,26 @@ class ReportFilter extends ModelFilter
         return $this->whereHas(
             'companies',
             function (Builder $query) use ($values) {
-                if ($this->input('recommendation')) {
+                if (!$this->input('recommended')) {
                     $query->whereIn('Company', $values);
+                    /*return $this->whereHas(
+                        'companies',
+                        function (Builder $query) use ($values) {
+                            $query->whereHas(
+                                'industry',
+                                function (Builder $query) use ($values) {
+                                    $query->whereHas(
+                                        'companies',
+                                        function (Builder $query) use ($values) {
+                                            $query->whereIn('Company', $values);
+                                        }
+                                    );
+                                }
+                            );
+                        }
+                    );*/
+                }
+                if ($this->input('recommendation')) {
                     $query->join(
                         'Recommendation',
                         'Recommendation.RecommendID',
@@ -34,7 +52,6 @@ class ReportFilter extends ModelFilter
                     )->whereIn('Recommendation.Recommendation', $this->input('recommendation'));
                 }
                 if ($this->input('sector')) {
-                    $query->whereIn('Company', $values);
                     $query->join(
                         'IndustryDetail',
                         'IndustryDetail.CompanyID',
@@ -51,24 +68,6 @@ class ReportFilter extends ModelFilter
                         '=',
                         'Industry.GICS_SectorId'
                     )->whereIn('GICS_Sector.GICS_Sector', $this->input('sector'));
-                }
-                if ($this->input('recommended')) {
-                    return $this->whereHas(
-                        'companies',
-                        function (Builder $query) use ($values) {
-                            $query->whereHas(
-                                'industry',
-                                function (Builder $query) use ($values) {
-                                    $query->whereHas(
-                                        'companies',
-                                        function (Builder $query) use ($values) {
-                                            $query->whereIn('Company', $values);
-                                        }
-                                    );
-                                }
-                            );
-                        }
-                    );
                 }
             }
         );
@@ -144,6 +143,8 @@ class ReportFilter extends ModelFilter
     public function sector(array $values)
     {
         if ($this->input('company')) {
+            return null;
+        }elseif ($this->input('recommended')) {
             return null;
         } else {
             return $this->whereHas(
@@ -228,10 +229,24 @@ class ReportFilter extends ModelFilter
     {
         if ($recommended)
         {
+            $searchKeys = array();
+            $searchType = '';
+
+            if($this->input('company')){
+                $searchKeys = $this->input('company');
+                $searchType = 'company';
+            }elseif($this->input('sector')){
+                $searchKeys = $this->input('sector');
+                $searchType = 'sector';
+            }
+
             $recommendedCompanyIds = app(ReportWeightRepository::class)->getWeightedCompanyIds(
                 $this->input('rLimit', 10),
-                $this->input('rPage', 0)
+                $this->input('rPage', 0),
+                $searchKeys,
+                $searchType
             );
+
 
             return $this->select('Report.*')->join('CompanyDetail', 'CompanyDetail.ReportID', '=', 'Report.ReportID')
                 ->whereIn('CompanyDetail.CompanyID', $recommendedCompanyIds)

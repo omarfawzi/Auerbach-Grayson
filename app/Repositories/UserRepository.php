@@ -30,4 +30,18 @@ class UserRepository
 
         return User::query()->where('email', $client->Email)->first();
     }
+
+    public function getUsersSubscripedToCompany($companiesID) :?model
+    {
+        if(empty($companiesID)){
+            return array();
+        }
+
+        $userIDs =  DB::connection('mysql')->table('report_weights')->whereIn('company_id', $companiesID)->get(['user_id']);
+        if(empty($userIDs)){
+            return array();
+        }
+
+        return User::query()->whereIn('id', $userIDs)->get();
+    }
 }

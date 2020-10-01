@@ -53,8 +53,7 @@ class SubscriptionRepository
      */
     public function destroy(int $userId, int $id): void
     {
-        Subscription::query()->where(['user_id' => $userId, 'id' => $id])->decrement('weight', 1);
-        Subscription::query()->where(['user_id' => $userId, 'id' => $id, 'weight'=> 0])->delete();
+        Subscription::query()->where(['user_id' => $userId, 'id' => $id])->delete();
 
     }
 

@@ -13,6 +13,7 @@ class CompanyFilter extends ModelFilter
     public function name(string $name)
     {
         $name = strtolower($name);
-        return $this->whereRaw('LOWER(Company) like ?',["%$name%"]);
+        return $this->whereRaw('LOWER(Company) like ? OR LOWER(Bloomberg) like ? ',["%$name%", "%$name%"]);
     }
+
 }

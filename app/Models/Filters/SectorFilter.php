@@ -15,4 +15,5 @@ class SectorFilter extends ModelFilter
         $name = strtolower($name);
         return $this->whereRaw('LOWER(GICS_Sector) like ?',["%$name%"]);
     }
+
 }

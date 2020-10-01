@@ -3,23 +3,28 @@
 
 namespace App\Jobs;
 
-/*use App\Mails\ImportDeliveryOrderSuccessReport;
-use App\Models\DeliveryOrderHistory;
+use App\Models\SQL\Report;
+use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;*/
+use Illuminate\Support\Facades\Mail;
+use App\Services\MailService;
 
 
 class SendReportEmailJob
 {
-    private $currentDate;
+    protected $report;
+    protected $user;
+    protected $mailService;
     /**
      * Create a new job instance.
      *
      * @param Carbon $currentDate
      */
-    /* public function __construct(Carbon $currentDate)
+     public function __construct(Report $report, User $user, MailService $mailService)
      {
-         $this->currentDate = $currentDate;
+         $this->report = $report;
+         $this->user = $user;
+         $this->mailService = $mailService;
      }
 
      /**
@@ -27,20 +32,10 @@ class SendReportEmailJob
       *
       * @return void
       */
-    /* public function handle()
+     public function handle()
     {
-        $deliveryOrders = DeliveryOrder::query()
-            ->whereBetween('createdAt', [$this->currentDate->hour(0), $this->currentDate->addDay(1)->hour(0)])
-            ->get();
-
-        $mail = Mail::to(config('supervision.emails'));
-        // pass objects to mail template
-        $mail->send(
-            new ImportDeliveryOrderSuccessReport([
-                'deliveryOrders' => $deliveryOrders
-            ])
-        );
-    }*/
+        $this->mailService->email([$this->user->getEmail()],'',[$this->report],view('email.report'));
+    }
 
 
 }

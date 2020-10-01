@@ -12,7 +12,7 @@ class UnauthorizedException extends UnauthorizedHttpException
      * @param int        $code      The internal exception code
      * @param array      $headers
      */
-    public function __construct(string $message = null, \Exception $previous = null, ?int $code = 0, array $headers = array())
+    public function __construct(string $message = null, \Exception $previous = null, ?int $code = 401, array $headers = array())
     {
         $challenge = 'Bearer realm=' . config('app.url');
 
