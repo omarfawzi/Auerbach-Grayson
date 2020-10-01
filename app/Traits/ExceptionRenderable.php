@@ -34,17 +34,12 @@ trait ExceptionRenderable
     /**
      * Check if the exception is renderable with JSON
      *
-     * @param Request   $request
      * @param Throwable $throwable
      * @return bool
      */
-    public function isJsonRenderable(Request $request, Throwable $throwable): bool
+    public function isJsonRenderable(Throwable $throwable): bool
     {
-        if (config('app.debug') && $throwable instanceof FatalError) {
-            return false;
-        }
-
-        return true;
+        return !(config('app.debug') && $throwable instanceof FatalError);
     }
 
     /**
@@ -56,7 +51,7 @@ trait ExceptionRenderable
      */
     public function getStatusCode(array $error): int
     {
-        if ($status = Arr::get($error, 'data.status')) {
+        if ($status = Arr::get($error, 'status')) {
             return $status;
         }
 

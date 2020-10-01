@@ -42,7 +42,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $throwable): Response
     {
-        if ($this->isJsonRenderable($request, $throwable)) {
+        if ($this->isJsonRenderable($throwable)) {
             return $this->jsonResponse($throwable, new ErrorTransformer(), new ErrorSerializer());
         }
         return parent::render($request, $throwable);
