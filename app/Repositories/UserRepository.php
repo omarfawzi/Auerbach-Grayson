@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\ReportWeight;
 use App\Models\SQL\Client;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -27,17 +28,21 @@ class UserRepository
     public function getUserByClientID(int $clientID) :?Model
     {
         $client = Client::query()->where('IPREO_ContactID', $clientID)->first();
-
-        return User::query()->where('email', $client->Email)->first();
+        if(!empty($client)){
+            return User::query()->where('email', $client->Email)->first();
+        }
+        return null;
     }
 
-    public function getUsersSubscripedToCompany($companiesID) :?model
+    public function getUsersSubscripedToCompany($companiesID)
     {
         if(empty($companiesID)){
             return array();
         }
 
-        $userIDs =  DB::connection('mysql')->table('report_weights')->whereIn('company_id', $companiesID)->get(['user_id']);
+        $userIDs =  ReportWeight::query()
+                        ->select('user_id')
+                        ->whereIn('company_id', $companiesID)->pluck('user_id')->toArray();
         if(empty($userIDs)){
             return array();
         }

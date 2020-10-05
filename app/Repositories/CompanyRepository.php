@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\SQL\Company;
+use App\Models\SQL\CompanyDetail;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class CompanyRepository
@@ -32,6 +33,8 @@ class CompanyRepository
 
     public function getReportCompaniesID($reportID){
         // we use the DB direct to make it faster than the normal way.
-        return DB::connection('sqlsrv')->table('CompanyDetail')->where('ReportID', $reportID)->get(['CompanyID']);
+        return CompanyDetail::query()->select('CompanyID')
+                ->where('ReportID', $reportID)
+                ->pluck('CompanyID')->toArray();
     }
 }

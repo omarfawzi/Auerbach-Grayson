@@ -44,7 +44,7 @@ class WeightAssignationService
     {
         $reportWeight = $this->reportWeightRepository->getLastChangedUserReportWeight($userId);
 
-        $lastAssignedDate = $reportWeight instanceof ReportWeight ? new DateTime($reportWeight->updated_at,'utc') : $lastAssignedDate;
+        $lastAssignedDate = $reportWeight instanceof ReportWeight ? $reportWeight->updated_at : $lastAssignedDate;
 
         $companySubscriptionsIds = $this->subscriptionRepository->getUserSubscribableIdsAfter($userId,Subscription::COMPANY_SUBSCRIPTION_TYPE,$lastAssignedDate);
 

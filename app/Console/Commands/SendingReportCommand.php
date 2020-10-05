@@ -3,10 +3,12 @@
 namespace App\Console\Commands;
 
 
+use App\Factories\MailableFactory;
 use App\Repositories\CompanyRepository;
 use App\Repositories\ReportRepository;
 use App\Repositories\UserRepository;
 use App\Jobs\SendReportEmailJob;
+use App\Services\MailService;
 use Exception;
 use Illuminate\Console\Command;
 use Carbon\Carbon;
@@ -29,6 +31,7 @@ class SendingReportCommand extends Command
 
     /** @var UserRepository $userRepository */
     /** @var ReportRepository $reportRepository */
+    /** @var CompanyRepository $companyRepository */
     private $userRepository;
     private $reportRepository;
     private $companyRepository;
@@ -61,7 +64,7 @@ class SendingReportCommand extends Command
     {
         $this->info('Starting the sending report command ...');
 
-        $dtCurrentDate = Carbon::now('utc')->toDate()."00:00:00";
+        $dtCurrentDate = Carbon::now('utc')->toDateString()." 00:00:00";
 
         $reports = $this->reportRepository->getReportsByDate($dtCurrentDate);
 
@@ -71,20 +74,20 @@ class SendingReportCommand extends Command
         }
 
         foreach($reports as $report){
-            $companiesID = $this->CompanyRepoitory->getReportCompanies($report->id);
+            $companiesID = $this->companyRepository->getReportCompaniesID($report->ReportID);
             if(empty($companiesID)){
                 continue;
             }
 
             $users = $this->userRepository->getUsersSubscripedToCompany($companiesID);
-            if(empty($users)){
-                continue;
-            }
 
             foreach ($users as $user){
                 try {
                     // Add Queue Job
-                    SendReportEmailJob::dispatch($report, $user);
+                    $mailFactory = new MailableFactory();
+                    $mailService = new MailService($mailFactory);
+                    dispatch(new SendReportEmailJob($report, $user, $mailService));
+
                 } catch (Exception $exception) {
                     $this->error("Exception happened while sending report : {$exception->getMessage()}");
                 }

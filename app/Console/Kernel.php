@@ -2,9 +2,11 @@
 
 namespace App\Console;
 
+use App\Jobs\SendReportEmailJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\AssigningWeightAlgorithmCommand;
+use App\Console\Commands\SendingReportCommand;
 class Kernel extends ConsoleKernel
 {
     /**
@@ -14,6 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         AssigningWeightAlgorithmCommand::class,
+        SendingReportCommand::class,
     ];
 
     /**
@@ -25,7 +28,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('assign:weight')->daily();
+        $schedule->command('send:report')->daily();
     }
+
+
+
 
     protected function commands()
     {

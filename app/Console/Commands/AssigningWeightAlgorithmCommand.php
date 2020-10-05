@@ -64,7 +64,7 @@ class AssigningWeightAlgorithmCommand extends Command
     {
         $this->info('Starting the assigning weight algorithm ...');
 
-        $lastAssignedDate = Carbon::now('utc')->subMonths(1)->toDateTime();
+        $lastAssignedDate = Carbon::now('utc')->subMonths(6)->toDateTime();
 
         $contactEvents = $this->iplannerService->getEventEntities($lastAssignedDate, [EventCodes::CONFERENCE_CODE, EventCodes::MEETING_CODE, EventCodes::CONFERENCE_CALL_CODE, EventCodes::DEAL_RELATED_CODE, EventCodes::STANDARD_EVENT_CODE]);
 

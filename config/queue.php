@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('QUEUE_CONNECTION', 'database'),
+    'default' => env('QUEUE_CONNECTION', 'sync'),
 
     /*
     |--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ return [
         ],
 
         'database' => [
-            'connection' => 'AGCOResearch_Data',
+            'connection' => 'mysql',
             'driver' => 'database',
             'table' => env('QUEUE_TABLE', 'jobs'),
             'queue' => 'default',

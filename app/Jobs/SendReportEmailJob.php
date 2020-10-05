@@ -6,19 +6,21 @@ namespace App\Jobs;
 use App\Models\SQL\Report;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
 use App\Services\MailService;
 
 
-class SendReportEmailJob
+class SendReportEmailJob extends Job
 {
     protected $report;
     protected $user;
     protected $mailService;
+
     /**
-     * Create a new job instance.
+     * AssigningWeightAlgorithmCommand constructor.
      *
-     * @param Carbon $currentDate
+     * @param Report $report
+     * @param User $user
+     * @param MailService $mailService
      */
      public function __construct(Report $report, User $user, MailService $mailService)
      {
