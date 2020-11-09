@@ -36,7 +36,16 @@ class SendReportEmailJob extends Job
       */
      public function handle()
     {
-        $this->mailService->email([$this->user->getEmail()],'',[$this->report],view('email.report'));
+        $this->mailService->email(
+                        [$this->user->getEmail()],
+                        '',
+                        [$this->report],
+                        view('email.report')->with(
+                            [
+                                'user_name' => $this->user->email
+                            ]
+                        )
+        );
     }
 
 

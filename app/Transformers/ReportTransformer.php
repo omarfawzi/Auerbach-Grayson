@@ -15,7 +15,7 @@ class ReportTransformer extends TransformerAbstract
     {
         return [
             'id' => $report->ReportID,
-            'title' => $report->Title,
+            'title' => $report->report_title,
             'synopsis' => $report->Synopsis,
             'date' => $report->ReportDate,
             'pages' => $report->Pages,

@@ -91,17 +91,24 @@ class AnalystController
         $this->contactAnalystValidator->validate($request);
 
         $report = $this->reportRepository->getReport($id);
+        $analystsarr  = $report->analysts;
+        if(empty($analystsarr->toArray())){
+            return $this->singleView(
+                'No Analysts Found',
+                $this->transformerFactory->make(MessageTransformer::class)
+            );
+        }
 
         if ($report instanceof Report) {
             $this->mailService->email(
                 [],
                 env('ANALYST_MAIL_CC'),
-                $report->analysts->toArray(),
+                [$analystsarr],
                 view('email.contact_analyst')->with(
                     [
-                        'dateTime' => $request->get('dateTime'),
-                        'link'     => $request->get('link'),
-                        'message'  => $request->get('message'),
+                        'test_dateTime' => $request->get('dateTime'),
+                        'test_link'     => $request->get('link'),
+                        'test_message'  => $request->get('message'),
                     ]
                 )
             );

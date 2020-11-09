@@ -18,6 +18,15 @@ class CompanyRepository
         return Company::filter($filters)->paginate($limit);
     }
 
+    public function getAllCompanies()
+    {
+        return Company::query()
+                ->where("Inactive", 0)
+                ->whereNotNull("Company")
+                ->orderBy('Company', 'ASC')
+                ->get();
+    }
+
     public function getCompaniesByCode(array $companiesCode)
     {
         $companies = Company::whereIn('Bloomberg', $companiesCode)->get();

@@ -34,6 +34,7 @@ class ReportRepository
         return $queryBuilder->with('type')
                                 ->where('Approved', 1)
                                 ->where('UseCode', 1)
+                                ->where('FileLocation', "like",  '%.PDF')
                                 ->orderBy('ReportDate', 'DESC')
                                 ->paginateFilter($limit);
     }
@@ -48,6 +49,7 @@ class ReportRepository
         return $queryBuilder->with('type')
             ->where('Approved', 1)
             ->where('UseCode', 1)
+            ->where('FileLocation', "like",  '%.PDF')
             ->get();
     }
 }

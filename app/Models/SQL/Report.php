@@ -2,13 +2,14 @@
 
 namespace App\Models\SQL;
 
+use App\Contracts\Mailable;
 use App\Models\ReportView;
 use App\Models\SavedReport;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class Report extends Model
+class Report extends Model implements Mailable
 {
     use Filterable;
 
@@ -22,6 +23,10 @@ class Report extends Model
 
     protected $primaryKey = 'ReportID';
 
+    public function getReportTitleAttribute()
+    {
+        return str_replace('AUERBACH GRAYSON:', '', $this->Title);
+    }
     public function type()
     {
         return $this->belongsTo(Type::class,'TypeID','TypeID');

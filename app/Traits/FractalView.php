@@ -42,7 +42,7 @@ trait FractalView
      * @param array $data
      * @return JsonResponse
      */
-    private function toJson(array $data): JsonResponse
+    public function toJson(array $data): JsonResponse
     {
         return response()->json($data, Response::HTTP_OK);
     }

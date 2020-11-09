@@ -30,7 +30,7 @@ class Company extends Model implements Subscribable
     /**
      * @return string
      */
-    public function getTicker(): string
+    public function getTicker()
     {
         return $this->Bloomberg;
     }

@@ -6,6 +6,7 @@ use App\Models\SavedReport;
 use App\Models\SQL\Company;
 use App\Models\SQL\Country;
 use App\Models\SQL\Report;
+use App\Repositories\ClientRepository;
 use League\Fractal\TransformerAbstract;
 
 class ReportDetailTransformer extends TransformerAbstract
@@ -22,11 +23,13 @@ class ReportDetailTransformer extends TransformerAbstract
     public function __construct(
         ReportTransformer $reportTransformer,
         CompanyDetailTransformer $companyDetailTransformer,
-        CountryTransformer $countryTransformer
+        CountryTransformer $countryTransformer,
+        ClientRepository $clientRepository
     ) {
         $this->reportTransformer        = $reportTransformer;
         $this->companyDetailTransformer = $companyDetailTransformer;
         $this->countryTransformer       = $countryTransformer;
+        $this->clientRepository       = $clientRepository;
     }
 
     /**
@@ -35,6 +38,7 @@ class ReportDetailTransformer extends TransformerAbstract
      */
     public function transform(Report $report)
     {
+        $client = $this->clientRepository->getClientByEmail(app('auth')->user()->email);
         return array_merge(
             $this->reportTransformer->transform($report),
             [
@@ -43,6 +47,7 @@ class ReportDetailTransformer extends TransformerAbstract
                             'R' => $report->getKey(),
                             'S' => 'PORT',
                             'F' => 'PDF',
+                            'C' => $client->ClientID
                         ]
                 ),
                 'isSaved'   => $report->isSaved instanceof SavedReport ? true : false,

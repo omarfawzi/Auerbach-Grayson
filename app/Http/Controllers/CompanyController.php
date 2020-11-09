@@ -63,4 +63,10 @@ class CompanyController
 
         return $this->listView($companies, $this->transformerFactory->make(CompanyTransformer::class));
     }
+
+    public function getAllCompanies(Request $request): JsonResponse
+    {
+        $companies = $this->companyRepository->getAllCompanies();
+        return $this->singleView($companies, $this->transformerFactory->make(CompanyTransformer::class));
+    }
 }

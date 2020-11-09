@@ -33,6 +33,7 @@ $router->group(['prefix' => 'api'], function (Router $router) {
 
         $router->group(['prefix'=>'companies'], function (Router $router) {
             $router->get('/', 'CompanyController@index');
+            $router->get('/all', 'CompanyController@getAllCompanies');
         });
 
         $router->group(['prefix'=>'sectors'], function (Router $router) {

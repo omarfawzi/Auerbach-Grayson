@@ -46,7 +46,6 @@ class UserRepository
         if(empty($userIDs)){
             return array();
         }
-
         return User::query()->whereIn('id', $userIDs)->get();
     }
 }
