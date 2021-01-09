@@ -61,7 +61,7 @@ class ReportDetailTransformer extends TransformerAbstract
                         return $this->companyDetailTransformer->transform($company, $report->getKey());
                     }
                 ),
-                'summary'   => $report->FirstLine,
+                'summary'   => $report->ReportSummary,
             ]
         );
     }

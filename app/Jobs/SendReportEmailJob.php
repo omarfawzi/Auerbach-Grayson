@@ -42,7 +42,7 @@ class SendReportEmailJob extends Job
                         [$this->report],
                         view('email.report')->with(
                             [
-                                'user_name' => $this->user->email
+                                'user_name' => $this->user->name
                             ]
                         )
         );
