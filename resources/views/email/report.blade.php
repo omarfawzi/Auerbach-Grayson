@@ -18,7 +18,7 @@
         </span>
     </b>
     <br><br>
-    <span style="color: #1F497D; margin-left: 50px">{{$report->ReportSummary}}</span>
+    <span style="color: #1F497D; margin-left: 50px">{!! $report->ReportSummary !!} </span>
     <br><br>
     <span style="color: #1F497D">Please let us know if you have any questions or would like a call with our analyst on the name.  </span>
     <br><br><br>
