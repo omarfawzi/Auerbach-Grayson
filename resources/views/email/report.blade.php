@@ -14,7 +14,7 @@
     <br><br><br><br>
     <b>
         <span style="color:#1F497D; font-family: calibri; font-size: 11pt;">
-            <a target="_blank" href="http://Production_URL/reports/{{$report->ReportID}}"> {{$report->Title}} ({{$report->Pages}}pgs)</a>
+            <a target="_blank" href="http://Production_URL/reports/{{$report->ReportID}}"> {{$report->report_title}} ({{$report->Pages}}pgs)</a>
         </span>
     </b>
     <br><br>
