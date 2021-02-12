@@ -68,7 +68,7 @@ class SendingReportCommand extends Command
 
         $reports = $this->reportRepository->getReportsByDate($dtCurrentDate);
 
-        if(empty($reports)){
+        if(count($reports) == 0){
             $this->warn('No Reports found');
             return true;
         }
@@ -77,11 +77,13 @@ class SendingReportCommand extends Command
             if(empty($companiesID)){
                 continue;
             }
+
             $users = $this->userRepository->getUsersSubscripedToCompany($companiesID);
 
             foreach ($users as $user){
                 try {
                     // Add Queue Job
+
                     $mailFactory = new MailableFactory();
                     $mailService = new MailService($mailFactory);
                     dispatch(new SendReportEmailJob($report, $user, $mailService));
@@ -90,6 +92,7 @@ class SendingReportCommand extends Command
                     $this->error("Exception happened while sending report : {$exception->getMessage()}");
                 }
             }
+            $this->info('Ending the sending report command ...');
         }
         return true;
     }

@@ -49,6 +49,8 @@ $app->configure('queue');
 $app->withFacades();
 $app->withEloquent();
 
+
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -82,9 +84,11 @@ $app->singleton(
 |
  */
 
+
 $app->middleware([
-    \Fruitcake\Cors\HandleCors::class,
- ]);
+    // ...
+    Fruitcake\Cors\HandleCors::class,
+]);
 
 $app->routeMiddleware([
     'auth' => Authenticate::class,
@@ -110,7 +114,7 @@ $app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(LumenServiceProvider::class);
 $app->register(ServiceProvider::class);
 $app->register(Illuminate\Mail\MailServiceProvider::class);
-$app->register(\Fruitcake\Cors\CorsServiceProvider::class);
+$app->register(Fruitcake\Cors\CorsServiceProvider::class);
 
 $app->alias('mailer', Illuminate\Mail\Mailer::class);
 $app->alias('mailer', Illuminate\Contracts\Mail\Mailer::class);
