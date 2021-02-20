@@ -58,6 +58,12 @@ $router->group(['prefix' => 'api'], function (Router $router) {
             $router->get('/', 'TypeController@index');
         });
 
+        $router->group(['prefix'=>'users'], function (Router $router) {
+            $router->get('/', 'UserController@index');
+            $router->get('/deactivate/{id}', 'UserController@deactivate');
+            $router->get('/addAdmin/{id}', 'UserController@addAdmin');
+        });
+
         $router->get('/user', 'AuthController@getLoggedUser');
         $router->get('/token', 'AuthController@refreshToken');
 

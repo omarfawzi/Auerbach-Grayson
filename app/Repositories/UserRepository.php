@@ -2,10 +2,12 @@
 
 namespace App\Repositories;
 
+use App\Models\ReportView;
 use App\Models\ReportWeight;
 use App\Models\SQL\Client;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserRepository
 {
@@ -16,6 +18,13 @@ class UserRepository
      **
      * @return User
      */
+
+    public function getUsers(int $limit , array $filters = []) : LengthAwarePaginator
+    {
+        return User::filter($filters)->paginate($limit);
+    }
+
+
     public function getUserByEmail(string $email): ?User
     {
         return User::where('email',$email)->first();
@@ -48,4 +57,27 @@ class UserRepository
         }
         return User::query()->whereIn('id', $userIDs)->get();
     }
+
+    public function makeAsAdmin(int $userId)
+    {
+        $user = User::findOrFail($userId);
+        if($user) {
+            $user->is_admin = 1;
+            $user->save();
+            return true;
+        }
+        return false;
+    }
+
+    public function deactivate(int $userId)
+    {
+        $user = User::findOrFail($userId);
+        if($user) {
+            $user->is_available = 0;
+            $user->save();
+            return true;
+        }
+        return false;
+    }
+
 }

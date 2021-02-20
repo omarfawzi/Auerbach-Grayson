@@ -12,6 +12,7 @@ use App\Repositories\UserRepository;
 use App\Traits\FractalView;
 use App\Transformers\MessageTransformer;
 use App\Transformers\TokenTransformer;
+use App\Transformers\UserTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -137,10 +138,6 @@ class AuthController extends Controller
     }
 
     public function getLoggedUser(){
-
-        return $this->singleView(
-            Auth::getAuthenticatedUser(),
-            $this->transformerFactory->make(MessageTransformer::class)
-        );
+        return $this->singleView(Auth::getAuthenticatedUser(), $this->transformerFactory->make(UserTransformer::class));
     }
 }

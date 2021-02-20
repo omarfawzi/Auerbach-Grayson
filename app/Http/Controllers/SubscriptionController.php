@@ -82,11 +82,19 @@ class SubscriptionController
      */
     public function destroy(Request $request, int $id)
     {
+
+        if($request->get('userID') != -1 && $request->get('userID') > 0){
+            $userID = $request->get('userID');
+        }elseif($request->get('userID') == 0){
+            $userID = $request->user()->id;
+        }else{
+            return false;
+        }
         $this->hookFactory->make(UnsubscribeHook::class)->hook(
-            $this->subscriptionRepository->getSubscription($request->user()->id, $id)
+            $this->subscriptionRepository->getSubscription($userID, $id)
         );
 
-        $this->subscriptionRepository->destroy($request->user()->id, $id);
+        $this->subscriptionRepository->destroy($userID, $id);
 
         return $this->singleView(
             'Unsubscribed Successfully',
@@ -118,8 +126,14 @@ class SubscriptionController
      */
     public function index(Request $request): JsonResponse
     {
+        $userID = -1;
+        if($request->get('userID') != -1 && $request->get('userID') > 0){
+            $userID = $request->get('userID');
+        }elseif($request->get('userID') == 0){
+            $userID = $request->user()->id;
+        }
         $subscriptions = $this->subscriptionRepository->getSubscriptions(
-            $request->user()->id,
+            $userID,
             $request->get('limit', config('api.defaults.limit')),
             $request->all()
         );
@@ -151,12 +165,19 @@ class SubscriptionController
      */
     public function store(Request $request)
     {
+        $userID = -1;
+        if($request->get('userID') != -1 && $request->get('userID') > 0){
+            $userID = $request->get('userID');
+        }elseif($request->get('userID') == 0){
+            $userID = $request->user()->id;
+        }
+
         $this->subscriptionValidator->validate($request);
 
         $subscription = $this->subscriptionRepository->store(
             $request->get('type'),
             $request->get('id'),
-            $request->user()->id
+            $userID
         );
 
         $this->hookFactory->make(SubscribeHook::class)->hook($subscription);

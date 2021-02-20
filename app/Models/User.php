@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Mailable;
+use EloquentFilter\Filterable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -12,7 +13,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject , Mailable
 {
-    use Authenticatable, Authorizable;
+    use Authenticatable, Authorizable, Filterable;
 
     /**
      * The attributes that are mass assignable.
