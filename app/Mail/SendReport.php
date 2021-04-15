@@ -39,12 +39,7 @@ class SendReport extends Mailable
     public function build()
     {
         $subject = "";
-        if ($this->report->TypeID == 2 && !empty($this->report->companies)){
-            $subject = $this->report->companies[0]->Company;
-            $subject.= " Update - ";
-        }else{
-            $subject = "Update - ";
-        }
+
         $subject.= $this->report->report_title;
         $subject.= " (".$this->report->Pages . "pgs)";
 

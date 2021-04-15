@@ -88,30 +88,40 @@ class AnalystController
      */
     public function contact(Request $request, int $id) : JsonResponse
     {
-        $this->contactAnalystValidator->validate($request);
+       // $this->contactAnalystValidator->validate($request);
 
         $report = $this->reportRepository->getReport($id);
         $analystsarr  = $report->analysts;
+
+
         if(empty($analystsarr->toArray())){
             return $this->singleView(
                 'No Analysts Found',
                 $this->transformerFactory->make(MessageTransformer::class)
             );
         }
+        $arr = [];
+        foreach ($analystsarr as $i =>$item){
+        $arr[] = $item;
+        }
 
         if ($report instanceof Report) {
-            $this->mailService->email(
-                [],
-                env('ANALYST_MAIL_CC'),
-                [$analystsarr],
-                view('email.contact_analyst')->with(
-                    [
-                        'test_dateTime' => $request->get('dateTime'),
-                        'test_link'     => $request->get('link'),
-                        'test_message'  => $request->get('message'),
-                    ]
-                )
-            );
+
+            foreach($analystsarr as $i =>$item){
+                $this->mailService->email(
+                    [$item->email],
+                    env('ANALYST_MAIL_CC'),
+                    [$item],
+                    view('email.contact_analyst')->with(
+                        [
+                            'test_dateTime' => $request->get('dateTime'),
+                            'test_link'     => $request->get('link'),
+                            'test_message'  => $request->get('message'),
+                        ]
+                    )
+                );
+            }
+
         }
 
         return $this->singleView(

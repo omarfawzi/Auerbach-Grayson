@@ -72,6 +72,7 @@ class SendingReportCommand extends Command
             $this->warn('No Reports found');
             return true;
         }
+
         foreach($reports as $report){
             $companiesID = $this->companyRepository->getReportCompaniesID($report->ReportID);
             if(empty($companiesID)){

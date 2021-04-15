@@ -28,6 +28,7 @@ class MailService
      */
     public function email(array $to, string $cc, array $mailables , View $view)
     {
+
         foreach ($mailables as $mailable) {
             Mail::to($to)->send($this->mailableFactory->make($mailable,$view));
         }

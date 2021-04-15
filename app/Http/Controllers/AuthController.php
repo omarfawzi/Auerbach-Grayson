@@ -77,6 +77,9 @@ class AuthController extends Controller
 
         $user = $this->userRepository->getUserByEmail($request->input('email'));
         if ($user instanceof User) {
+            if(!$user->is_available){
+                return false;
+            }
             $validator = Validator::make(
                 $request->all(['password']),
                 [
@@ -119,6 +122,11 @@ class AuthController extends Controller
                 'email.exists' => 'The provided :attribute is invalid'
             ]
         );
+        $user = $this->userRepository->getUserByEmail($request->all(['email']));
+        if ($user instanceof User && !$user->is_available) {
+            return false;
+        }
+
         $validator->validate();
 
         event(new UserForgetPassword($this->userRepository->getUserByEmail($request->get('email'))));

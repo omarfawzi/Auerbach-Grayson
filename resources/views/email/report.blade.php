@@ -11,28 +11,35 @@
     <span style="color: #1F497D; font-family: calibri; font-size: 11pt;">Dear {{$user_name}}</span>
     <br><br>
     <span style="color: #1F497D; font-family: calibri; font-size: 11pt;">We’ve just released a new report. Please find the link to the report below as well as key highlights summarized in this email. </span>
-    <br><br><br><br>
+    <br><br>
     <b>
         <span style="color:#1F497D; font-family: calibri; font-size: 11pt;">
-            <a target="_blank" href="http://Production_URL/reports/{{$report->ReportID}}"> {{$report->report_title}} ({{$report->Pages}}pgs)</a>
+            <a target="_blank" href="https://researchportal.agco.com/reports/{{$report->ReportID}}"> {{$report->report_title}} ({{$report->Pages}}pgs)</a>
         </span>
     </b>
     <br><br>
-    <span style="color: #1F497D; margin-left: 50px; font-family: calibri; font-size: 11pt;">{!! $report->ReportSummary !!} </span>
-    <br><br>
+    <div style="color: #1F497D; width:100%; font-family: calibri; font-size: 11pt;">{!! $report->ReportSummary !!} </div>
+    <br>
     <span style="color: #1F497D; font-family: calibri; font-size: 11pt;">Please let us know if you have any questions or would like a call with our analyst on the name.  </span>
-    <br><br><br>
-    <span style="color:#E46C0A; font-family: calibri; font-size: 11pt;">You are receiving this email because of your research subscription preferences.</span>
     <br><br>
+    <span style="color:#E46C0A; font-family: calibri; font-size: 11pt;">You are receiving this email because of your research subscription preferences.</span>
+    <br>
     <i>
         <span style="color:#1F497D; font-family: calibri; font-size: 11pt;">
-            <a rel="nofollow noopener noreferrer" target="_blank" href="http://Production_URL/subscriptions/">Click here to amend those preferences to your core interests/holdings.</a>
+            <a rel="nofollow noopener noreferrer" target="_blank" href="https://researchportal.agco.com/my-subscriptions/">Click here to amend those preferences to your core interests/holdings.</a>
         </span>
     </i>
-    <br><br><br>
+    <br><br>
     <span style="color:#1F497D; font-family: calibri; font-size: 11pt;">Kind Regards,</span>
     <br><br>
     <span style="font-size:12.0pt;color:dimgray; font-family: arial;">Auerbach Grayson Research Team</span>
+    <br>
+
+    <span>
+        <img src="{{ $message->embed(base_path() . '/public/logo.jpeg') }}" style="" />
+    </span>
+
+
     <br><br>
     <span style="font-size:10.0pt;color:dimgray;letter-spacing:.5pt;font-family: arial;">Auerbach Grayson &amp; Company</span>
     <br>
