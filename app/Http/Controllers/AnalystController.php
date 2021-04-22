@@ -117,6 +117,7 @@ class AnalystController
                             'test_dateTime' => $request->get('dateTime'),
                             'test_link'     => $request->get('link'),
                             'test_message'  => $request->get('message'),
+                            'report_title'  => $report->report_title,
                         ]
                     )
                 );

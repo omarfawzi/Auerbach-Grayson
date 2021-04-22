@@ -36,13 +36,17 @@ class ContactAnalyst extends Mailable
      */
     public function build()
     {
-        return $this->view(
+        $data = $this->analystView->getData();
+
+        $title = "Contact Analysis _ ".$data['report_title'];
+
+        return $this->subject($title)->view(
             $this->analystView->getName(),
             array_merge(
-            $this->analystView->getData(),
-            [
-                'analyst' => $this->analyst,
-            ])
+                $data,
+                [
+                    'analyst' => $this->analyst,
+                ])
         );
     }
 }

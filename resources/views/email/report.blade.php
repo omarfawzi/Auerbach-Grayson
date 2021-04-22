@@ -4,8 +4,6 @@
 <head>
     <title>New Published Report</title>
     <meta charset="utf-8">
-
-
 </head>
 <body>
     <span style="color: #1F497D; font-family: calibri; font-size: 11pt;">Dear {{$user_name}}</span>
