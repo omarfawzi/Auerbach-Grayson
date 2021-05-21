@@ -122,7 +122,9 @@ class AuthController extends Controller
                 'email.exists' => 'The provided :attribute is invalid'
             ]
         );
-        $user = $this->userRepository->getUserByEmail($request->all(['email']));
+
+        $data = $request->all(['email']);
+        $user = $this->userRepository->getUserByEmail($data['email']);
         if ($user instanceof User && !$user->is_available) {
             return false;
         }

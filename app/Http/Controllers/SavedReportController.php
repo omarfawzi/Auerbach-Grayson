@@ -67,15 +67,16 @@ class SavedReportController
      *        )
      *    )
      * )
+     *
+     * @param int $id
      * @param Request $request
-     * @param int     $reportId
      * @return JsonResponse
      */
-    public function save(Request $request, int $reportId): JsonResponse
+    public function save(Request $request, $id): JsonResponse
     {
         $userId = $request->user()->id;
-        $this->savedReportValidator->validate($reportId, $userId);
-        $this->savedReportRepository->saveReport($reportId, $userId);
+        $this->savedReportValidator->validate($id, $userId);
+        $this->savedReportRepository->saveReport($id, $userId);
 
         return $this->singleView(
             'Saved Successfully',
@@ -109,14 +110,14 @@ class SavedReportController
      *        )
      *    )
      * )
+     * @param int $id
      * @param Request $request
-     * @param int     $reportId
      * @return JsonResponse
      */
-    public function unsave(Request $request, int $reportId): JsonResponse
+    public function unsave(Request $request, int $id): JsonResponse
     {
         $userId = $request->user()->id;
-        $this->savedReportRepository->deleteReport($reportId, $userId);
+        $this->savedReportRepository->deleteReport($id, $userId);
 
         return $this->singleView(
             'Unsaved Successfully',
