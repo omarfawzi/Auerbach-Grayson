@@ -31,11 +31,11 @@ class UnsubscribeHook implements SubscriptionHook
             $companiesIds = $subscription->subscribable->industryDetails->pluck('CompanyID')->unique()->toArray();
         }
         if ($subscription->subscribable_type === Subscription::COMPANY_SUBSCRIPTION_TYPE) {
-            $companiesIds = [$subscription->subscribable->id];
+            $companiesIds = [$subscription->subscribable_id];
         }
         if (!empty($companiesIds)) {
             $this->reportWeightRepository->decrementCompaniesAndUserWeight(
-                Auth::getAuthenticatedUser()->id,
+                $subscription->user_id,
                 $companiesIds,
                 ReportWeight::SUBSCRIPTION_WEIGHT
             );

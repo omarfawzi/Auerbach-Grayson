@@ -62,14 +62,13 @@ class WeightAssignationService
      * @param array $companyIds
      * @param int   $weight
      */
-    public function assignWeights(int $userId, array $companyIds, int $weight) : void
+    public function assignWeights( $userId, array $companyIds, int $weight) : void
     {
         $now = Carbon::now('utc')->toDateTimeString();
 
         $existingCompanyIds = $this->reportWeightRepository->getExistingCompanyIds($userId,$companyIds);
 
         $newCompanyIds = array_diff($companyIds, $existingCompanyIds);
-
         $bulkInsertData = array_map(
             function (int $newCompanyId) use ($userId, $weight, $now) {
                 return [

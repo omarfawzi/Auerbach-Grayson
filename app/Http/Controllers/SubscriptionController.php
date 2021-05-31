@@ -6,6 +6,7 @@ use App\Factories\HookFactory;
 use App\Factories\TransformerFactory;
 use App\Hooks\SubscribeHook;
 use App\Hooks\UnsubscribeHook;
+use App\Models\Subscription;
 use App\Repositories\SubscriptionRepository;
 use App\Traits\FractalView;
 use App\Transformers\MessageTransformer;
@@ -173,6 +174,17 @@ class SubscriptionController
         }
 
         $this->subscriptionValidator->validate($request);
+// check if he already subscribed before .. return
+
+        $arr = Subscription::query()->select()
+            ->where(['subscribable_type' => $request->get('type'),
+                        'user_id' => $userID,
+                      'subscribable_id'=>$request->get('id')])
+            ->get();
+
+        if(!empty($arr[0])){
+            return $this->singleView($arr[0], $this->transformerFactory->make(SubscriptionTransformer::class));
+        }
 
         $subscription = $this->subscriptionRepository->store(
             $request->get('type'),

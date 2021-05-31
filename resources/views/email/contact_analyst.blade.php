@@ -16,7 +16,7 @@
         @foreach ($test_dateTime as $date)
             <p>{{ $date }}</p>
         @endforeach
-        @if(!is_null($test_link))
+        @if(!empty($test_link))
             <span style="color: #1F497D; font-family: calibri; font-size: 11pt;"> Conference Link : {{$test_link}} </span>
         @endif
         <br>
