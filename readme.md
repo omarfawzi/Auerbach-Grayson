@@ -1,5 +1,5 @@
 # Auerbach Grayson Report Management System
 
-### API
+### API Specification
 
-Docs : [Here](https://app.swaggerhub.com/apis/omarfawzi/AGCO-Research/1.0.0)
+[Here](https://app.swaggerhub.com/apis/omarfawzi/AGCO-Research/1.0.0)
